@@ -19,6 +19,9 @@ BUILDPATH=./build
 # List of all sources (only source-files)
 SOURCES  = main.c
 SOURCES += uart.c
+SOURCES += i2cmaster.c
+SOURCES += pcf8574.c
+SOURCES += button.c
 
 # Progammer
 PROGRAMMER=usbasp
@@ -26,18 +29,19 @@ PROGRAMMER=usbasp
 #BAUD=-B9600
 
 OBJECTS=$(SOURCES:%.c=$(BUILDPATH)/%.o)
-	CFLAGS  = -c
-	CFLAGS += -Os
-	CFLAGS += -Wall
-	CFLAGS += -fpack-struct
-	CFLAGS += -fshort-enums
-	CFLAGS += -ffunction-sections
-	CFLAGS += -fdata-sections
-	CFLAGS += -std=gnu99
-	CFLAGS += -funsigned-char
-	CFLAGS += -funsigned-bitfields
-	CFLAGS += -DF_CPU=$(F_CPU)UL
-	LDFLAGS=
+
+CFLAGS  = -c
+CFLAGS += -Os
+CFLAGS += -Wall
+CFLAGS += -fpack-struct
+CFLAGS += -fshort-enums
+CFLAGS += -ffunction-sections
+CFLAGS += -fdata-sections
+CFLAGS += -std=gnu99
+CFLAGS += -funsigned-char
+CFLAGS += -funsigned-bitfields
+CFLAGS += -DF_CPU=$(F_CPU)UL
+LDFLAGS=
 
 
 
