@@ -19,7 +19,7 @@
 #	error F_CPU is not defined!!
 #endif
 
-#define BAUD 9600UL // Target Baudrate
+#define BAUD 19200UL // Target Baudrate
 
 // Calculations (do not change)
 #define UBRR_VAL                                                               \
