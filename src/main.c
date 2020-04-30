@@ -14,41 +14,43 @@ static void init(void)
 
 static void debug_buttons(void)
 {
-	button_read();
+	static struct Button button;
 
-	if (button_pressed(BUTTON_UP)) {
+	button_read(&button);
+
+	if (button.reg0 & BUTTON_REG0_UP) {
 		uart_puts("BUTTON_UP ");
 	}
 
-	if (button_pressed(BUTTON_DOWN)) {
+	if (button.reg0 & BUTTON_REG0_DOWN) {
 		uart_puts("BUTTON_DOWN ");
 	}
 
-	if (button_pressed(BUTTON_LEFT)) {
+	if (button.reg0 & BUTTON_REG0_LEFT) {
 		uart_puts("BUTTON_LEFT ");
 	}
 
-	if (button_pressed(BUTTON_RIGHT)) {
+	if (button.reg0 & BUTTON_REG0_RIGHT) {
 		uart_puts("BUTTON_RIGHT ");
 	}
 
-	if (button_pressed(BUTTON_A)) {
+	if (button.reg0 & BUTTON_REG0_A) {
 		uart_puts("BUTTON_A ");
 	}
 
-	if (button_pressed(BUTTON_B)) {
+	if (button.reg0 & BUTTON_REG0_B) {
 		uart_puts("BUTTON_B ");
 	}
 
-	if (button_pressed(BUTTON_START)) {
+	if (button.reg0 & BUTTON_REG0_START) {
 		uart_puts("BUTTON_START ");
 	}
 
-	if (button_pressed(BUTTON_SELECT)) {
+	if (button.reg0 & BUTTON_REG0_SELECT) {
 		uart_puts("BUTTON_SELECT ");
 	}
 
-	if (button_pressed(BUTTON_CONFIG)) {
+	if (button.reg1 & BUTTON_REG1_CONFIG) {
 		uart_puts("BUTTON_CONFIG ");
 	}
 
