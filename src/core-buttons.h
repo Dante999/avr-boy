@@ -1,19 +1,26 @@
+/*******************************************************************************
+ *
+ * avr-boy
+ * Copyright (C) 2020 Matthias Escher
+ *
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program.  If not, see <https://www.gnu.org/licenses/>.
+ *
+ ******************************************************************************/
 #ifndef COREBUTTONS_H
 #define COREBUTTONS_H
 
 #include <avr/io.h>
-
-enum BUTTON {
-	BUTTON_UP,
-	BUTTON_DOWN,
-	BUTTON_LEFT,
-	BUTTON_RIGHT,
-	BUTTON_A,
-	BUTTON_B,
-	BUTTON_START,
-	BUTTON_SELECT,
-	BUTTON_CONFIG
-};
 
 #define BUTTON_REG0_UP (1 << 0)
 #define BUTTON_REG0_DOWN (1 << 1)

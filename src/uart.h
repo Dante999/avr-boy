@@ -1,26 +1,31 @@
 /*******************************************************************************
  *
- * File    : uart.h
+ * avr-boy
+ * Copyright (C) 2020 Matthias Escher
  *
- * Author  : Dante999
- * Date    : 28.12.2018
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
  *
- * Tabsize : 4
- * License : GNU GPL v2
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
  *
- * writes to the uart serial interface
- *
+ * You should have received a copy of the GNU General Public License
+ * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  *
  ******************************************************************************/
 #include <avr/io.h>
 
 #ifndef UART_H_
-#define UART_H_
+#	define UART_H_
 
-    extern void uart_init();
-    extern void uart_putc(char c);
-    extern void uart_puts(char *s);
-    extern void uart_putsln(char *s);
-    extern void uart_putui(uint8_t i);
-    extern void uart_puti(int8_t i);
+extern void uart_init();
+extern void uart_putc(char c);
+extern void uart_puts(char *s);
+extern void uart_putsln(char *s);
+extern void uart_putui(uint8_t i);
+extern void uart_puti(int8_t i);
 #endif
