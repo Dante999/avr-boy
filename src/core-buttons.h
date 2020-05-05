@@ -22,13 +22,13 @@
 
 #include <avr/io.h>
 
-#define BUTTON_REG0_UP (1 << 0)
-#define BUTTON_REG0_DOWN (1 << 1)
-#define BUTTON_REG0_LEFT (1 << 2)
-#define BUTTON_REG0_RIGHT (1 << 3)
-#define BUTTON_REG0_A (1 << 4)
-#define BUTTON_REG0_B (1 << 5)
-#define BUTTON_REG0_START (1 << 6)
+#define BUTTON_REG0_UP     (1 << 0)
+#define BUTTON_REG0_DOWN   (1 << 1)
+#define BUTTON_REG0_LEFT   (1 << 2)
+#define BUTTON_REG0_RIGHT  (1 << 3)
+#define BUTTON_REG0_A      (1 << 4)
+#define BUTTON_REG0_B      (1 << 5)
+#define BUTTON_REG0_START  (1 << 6)
 #define BUTTON_REG0_SELECT (1 << 7)
 #define BUTTON_REG1_CONFIG (1 << 0)
 
