@@ -25,10 +25,13 @@
 #include "uart.h"
 #include <util/delay.h>
 
+#include "ks0108.h"
+
 static void init(void)
 {
 	i2c_init();
 	uart_init();
+	ks0108_init();
 }
 
 static void debug_buttons(void)
@@ -84,9 +87,14 @@ int main(void)
 
 	button_init();
 
+	static uint8_t data = 0xF0;
+
 	while (1) {
-		_delay_ms(100);
+		_delay_ms(2000);
 
 		debug_buttons();
+		ks0108_fillscreen(data);
+
+		data ^= 0xFF;
 	}
 }

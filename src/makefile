@@ -22,6 +22,8 @@ SOURCES += uart.c
 SOURCES += i2cmaster.c
 SOURCES += pcf8574.c
 SOURCES += button.c
+SOURCES += ks0108.c
+
 
 # Progammer
 PROGRAMMER=usbasp
