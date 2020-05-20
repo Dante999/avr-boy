@@ -27,7 +27,9 @@
 #include <stdint.h>
 #include <stdio.h>
 #include <stdlib.h>
-#include <string.h>
+#include <string.h> // memset
+
+#include "uart.h"
 
 #define ORIENTATION 0
 
@@ -114,6 +116,25 @@ void graphx_draw_pixel(struct graphxdata *gd, uint8_t x, uint8_t y,
 		gd->buffer[index] &= ~(1 << y_bit);
 }
 
+void graphx_draw_tile(struct graphxdata *gd, uint8_t x, uint8_t y,
+		      uint8_t *tile, uint8_t w, uint8_t h)
+{
+	if (h != 8)
+		return;
+
+	for (uint8_t i = 0; i < w; i++) {
+
+		uint8_t col = tile[i];
+
+		for (uint8_t j = 0; j < 8; j++) {
+
+			uint8_t color = (col & (1 << j)) ? PIXEL_ON : PIXEL_OFF;
+
+			graphx_draw_pixel(gd, x + i, y + j, color);
+		}
+	}
+}
+
 uint8_t graphx_get_pixel(struct graphxdata *gd, uint8_t x, uint8_t y)
 {
 	uint8_t  y_bit = y % 8;
@@ -123,6 +144,23 @@ uint8_t graphx_get_pixel(struct graphxdata *gd, uint8_t x, uint8_t y)
 		return 1;
 	else
 		return 0;
+}
+
+void graphx_putc(struct graphxdata *gd, struct font *f, uint8_t x, uint8_t y,
+		 const char c)
+{
+	uint16_t index = ((uint8_t)c - 0x20) * f->width;
+	uint8_t *data  = (uint8_t *)(&f->data[index]);
+
+	graphx_draw_tile(gd, x, y, data, f->width, f->height);
+}
+
+void graphx_puts(struct graphxdata *gd, struct font *f, uint8_t x, uint8_t y,
+		 const char *s)
+{
+	for (uint8_t i = 0; i < strlen(s); i++) {
+		graphx_putc(gd, f, x + (i * f->width), y, s[i]);
+	}
 }
 
 void graphx_fill_pattern(struct graphxdata *gd, char pattern)

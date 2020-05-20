@@ -31,12 +31,27 @@ struct graphxdata {
 	uint8_t  height;
 };
 
+struct font {
+	uint8_t width;
+	uint8_t height;
+	uint8_t data[];
+};
+
 struct graphxdata *graphx_new(uint8_t width, uint8_t height);
 
 void graphx_destroy(struct graphxdata *gd);
 
 void graphx_draw_pixel(struct graphxdata *gd, uint8_t x, uint8_t y,
 		       uint8_t color);
+void graphx_draw_tile(struct graphxdata *gd, uint8_t x, uint8_t y,
+		      uint8_t *tile, uint8_t w, uint8_t h);
+
+void graphx_putc(struct graphxdata *gd, struct font *f, uint8_t x, uint8_t y,
+		 const char c);
+
+void graphx_puts(struct graphxdata *gd, struct font *f, uint8_t x, uint8_t y,
+		 const char *s);
+
 void graphx_print(struct graphxdata *gd);
 void graphx_read_from(struct graphxdata *gd, const uint8_t *data);
 void graphx_write_to(struct graphxdata *gd, uint8_t *data);

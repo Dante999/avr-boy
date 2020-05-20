@@ -18,16 +18,16 @@
  *
  ******************************************************************************/
 #include <avr/io.h>
-
-#include "button.h"
-#include "graphx.h"
-#include "i2cmaster.h"
-#include "pcf8574.h"
-#include "uart.h"
 #include <string.h> // memset(..)
 #include <util/delay.h>
 
+#include "button.h"
+#include "font8x8.h"
+#include "graphx.h"
+#include "i2cmaster.h"
 #include "ks0108.h"
+#include "pcf8574.h"
+#include "uart.h"
 
 static void init(void)
 {
@@ -86,7 +86,6 @@ int main(void)
 {
 	init();
 
-	// ks0108_testscreen();
 	struct graphxdata *gd = graphx_new(128, 64);
 
 	//	const uint16_t ds = graphx_size(gd);
@@ -108,6 +107,14 @@ int main(void)
 	graphx_draw_pixel(gd, 0, 63, PIXEL_ON);
 	graphx_draw_pixel(gd, 127, 0, PIXEL_ON);
 	graphx_draw_pixel(gd, 127, 63, PIXEL_ON);
+
+	graphx_putc(gd, &font8x8, 24, 15, 'A');
+	graphx_putc(gd, &font8x8, 32, 15, 'B');
+	graphx_putc(gd, &font8x8, 40, 15, 'C');
+	graphx_putc(gd, &font8x8, 48, 15, 'D');
+	graphx_putc(gd, &font8x8, 56, 15, 'W');
+
+	graphx_puts(gd, &font8x8, 24, 23, "abcdw");
 
 	//	graphx_write_to(gd, data);
 
