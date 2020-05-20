@@ -20,9 +20,11 @@
 #include <avr/io.h>
 
 #include "button.h"
+#include "graphx.h"
 #include "i2cmaster.h"
 #include "pcf8574.h"
 #include "uart.h"
+#include <string.h> // memset(..)
 #include <util/delay.h>
 
 #include "ks0108.h"
@@ -31,7 +33,10 @@ static void init(void)
 {
 	i2c_init();
 	uart_init();
+	button_init();
 	ks0108_init();
+
+	uart_putsln("initialization done!");
 }
 
 static void debug_buttons(void)
@@ -41,60 +46,75 @@ static void debug_buttons(void)
 	button_read(&button);
 
 	if (button.reg0 & BUTTON_REG0_UP) {
-		uart_puts("BUTTON_UP ");
+		uart_putsln("BUTTON_UP ");
 	}
 
 	if (button.reg0 & BUTTON_REG0_DOWN) {
-		uart_puts("BUTTON_DOWN ");
+		uart_putsln("BUTTON_DOWN ");
 	}
 
 	if (button.reg0 & BUTTON_REG0_LEFT) {
-		uart_puts("BUTTON_LEFT ");
+		uart_putsln("BUTTON_LEFT ");
 	}
 
 	if (button.reg0 & BUTTON_REG0_RIGHT) {
-		uart_puts("BUTTON_RIGHT ");
+		uart_putsln("BUTTON_RIGHT ");
 	}
 
 	if (button.reg0 & BUTTON_REG0_A) {
-		uart_puts("BUTTON_A ");
+		uart_putsln("BUTTON_A ");
 	}
 
 	if (button.reg0 & BUTTON_REG0_B) {
-		uart_puts("BUTTON_B ");
+		uart_putsln("BUTTON_B ");
 	}
 
 	if (button.reg0 & BUTTON_REG0_START) {
-		uart_puts("BUTTON_START ");
+		uart_putsln("BUTTON_START ");
 	}
 
 	if (button.reg0 & BUTTON_REG0_SELECT) {
-		uart_puts("BUTTON_SELECT ");
+		uart_putsln("BUTTON_SELECT ");
 	}
 
 	if (button.reg1 & BUTTON_REG1_CONFIG) {
-		uart_puts("BUTTON_CONFIG ");
+		uart_putsln("BUTTON_CONFIG ");
 	}
-
-	uart_putsln("");
 }
 
 int main(void)
 {
 	init();
 
-	uart_putsln("initialization done!");
+	// ks0108_testscreen();
+	struct graphxdata *gd = graphx_new(128, 64);
 
-	button_init();
+	//	const uint16_t ds = graphx_size(gd);
 
-	static uint8_t data = 0xF0;
+	//	uint8_t data[ds];
+
+	//	memset(data, 0, ds);
+
+	for (uint8_t i = 0; i < 128; i++) {
+		graphx_draw_pixel(gd, i, 0, PIXEL_ON);
+	}
+
+	for (uint8_t i = 0; i < 64; i++) {
+		graphx_draw_pixel(gd, 16, i, PIXEL_ON);
+		graphx_draw_pixel(gd, 128 - 16, i, PIXEL_ON);
+	}
+
+	graphx_draw_pixel(gd, 0, 0, PIXEL_ON);
+	graphx_draw_pixel(gd, 0, 63, PIXEL_ON);
+	graphx_draw_pixel(gd, 127, 0, PIXEL_ON);
+	graphx_draw_pixel(gd, 127, 63, PIXEL_ON);
+
+	//	graphx_write_to(gd, data);
+
+	ks0108_drawgraphx(gd);
 
 	while (1) {
-		_delay_ms(2000);
-
+		_delay_ms(100);
 		debug_buttons();
-		ks0108_fillscreen(data);
-
-		data ^= 0xFF;
 	}
 }

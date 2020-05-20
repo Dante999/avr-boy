@@ -23,7 +23,7 @@ SOURCES += i2cmaster.c
 SOURCES += pcf8574.c
 SOURCES += button.c
 SOURCES += ks0108.c
-
+SOURCES += graphx.c
 
 # Progammer
 PROGRAMMER=usbasp

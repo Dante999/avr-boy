@@ -22,6 +22,8 @@
 
 #include <avr/io.h>
 
+#include "graphx.h"
+
 #define LCD_DDRX_DATA  DDRA
 #define LCD_PORTX_DATA PORTA
 #define LCD_PINX_DATA  PINA
@@ -56,5 +58,8 @@
 
 void ks0108_init(void);
 void ks0108_fillscreen(uint8_t color);
+void ks0108_drawgraphx(struct graphxdata *gdata);
+void ks0108_testscreen(void);
+// void ks0108_drawbuffer(uint8_t *buffer);
 
 #endif // KS0108_H
