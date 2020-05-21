@@ -52,6 +52,12 @@ void graphx_putc(struct graphxdata *gd, struct font *f, uint8_t x, uint8_t y,
 void graphx_puts(struct graphxdata *gd, struct font *f, uint8_t x, uint8_t y,
 		 const char *s);
 
+void graphx_draw_vline(struct graphxdata *gd, uint8_t x, uint8_t y_start,
+		       uint8_t y_end, uint8_t color);
+
+void graphx_draw_hline(struct graphxdata *gd, uint8_t x_start, uint8_t x_end,
+		       uint8_t y, uint8_t color);
+
 void graphx_print(struct graphxdata *gd);
 void graphx_read_from(struct graphxdata *gd, const uint8_t *data);
 void graphx_write_to(struct graphxdata *gd, uint8_t *data);

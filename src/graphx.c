@@ -135,6 +135,26 @@ void graphx_draw_tile(struct graphxdata *gd, uint8_t x, uint8_t y,
 	}
 }
 
+void graphx_draw_hline(struct graphxdata *gd, uint8_t x_start, uint8_t x_end,
+		       uint8_t y, uint8_t color)
+{
+	uint8_t delta = x_end - x_start;
+
+	for (uint8_t i = 0; i < delta; i++) {
+		graphx_draw_pixel(gd, x_start + i, y, color);
+	}
+}
+
+void graphx_draw_vline(struct graphxdata *gd, uint8_t x, uint8_t y_start,
+		       uint8_t y_end, uint8_t color)
+{
+	uint8_t delta = y_end - y_start;
+
+	for (uint8_t i = 0; i < delta; i++) {
+		graphx_draw_pixel(gd, x, y_start + i, color);
+	}
+}
+
 uint8_t graphx_get_pixel(struct graphxdata *gd, uint8_t x, uint8_t y)
 {
 	uint8_t  y_bit = y % 8;
@@ -149,8 +169,9 @@ uint8_t graphx_get_pixel(struct graphxdata *gd, uint8_t x, uint8_t y)
 void graphx_putc(struct graphxdata *gd, struct font *f, uint8_t x, uint8_t y,
 		 const char c)
 {
-	uint16_t index = ((uint8_t)c - 0x20) * f->width;
-	uint8_t *data  = (uint8_t *)(&f->data[index]);
+	uint8_t  offset = (uint8_t)c - 0x20;
+	uint16_t index  = offset * f->width;
+	uint8_t *data   = (uint8_t *)(&f->data[index]);
 
 	graphx_draw_tile(gd, x, y, data, f->width, f->height);
 }
@@ -159,7 +180,7 @@ void graphx_puts(struct graphxdata *gd, struct font *f, uint8_t x, uint8_t y,
 		 const char *s)
 {
 	for (uint8_t i = 0; i < strlen(s); i++) {
-		graphx_putc(gd, f, x + (i * f->width), y, s[i]);
+		graphx_putc(gd, f, x + (i * (f->width + 1)), y, s[i]);
 	}
 }
 
