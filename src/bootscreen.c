@@ -3,6 +3,7 @@
 #include <avr/io.h>
 
 #include "ks0108.h"
+#include <avr/delay.h>
 
 //#define X_OFFSET 50
 //#define Y_OFFSET 10
@@ -10,8 +11,11 @@
 //#define BOOTSCREEN_WIDTH  72
 //#define BOOTSCREEN_HEIGHT 16
 
-#define X_OFFSET 0
-#define Y_OFFSET 0
+#define Y_SCROLL        40
+#define SCROLL_DELAY_MS 50
+
+#define X_OFFSET 25
+#define Y_OFFSET 10
 
 #define BOOTSCREEN_WIDTH  72
 #define BOOTSCREEN_HEIGHT 16
@@ -38,4 +42,9 @@ void bootscreen_show(struct graphxdata *gd)
 			 BOOTSCREEN_WIDTH, BOOTSCREEN_HEIGHT);
 
 	ks0108_drawgraphx(gd);
+
+	for (uint8_t i = 64; i > Y_SCROLL; i--) {
+		ks0108_scroll(i);
+		_delay_ms(SCROLL_DELAY_MS);
+	}
 }

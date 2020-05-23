@@ -235,7 +235,7 @@ static void ks0108_setpage(uint8_t page, uint8_t chip)
  * Changing the startline is normally used shift the lcd pixel which creates a
  * scrolling effect
  *
- * @param   line   the new startline
+ * @param   line   the new startline (0-63)
  * @param   chip   the chip on which the startline should be set (CSEL_1 or
  *                 CSEL_2)
  *
@@ -448,4 +448,10 @@ void ks0108_drawgraphx(struct graphxdata *gdata)
 			ks0108_writedata(data, csel);
 		}
 	}
+}
+
+void ks0108_scroll(uint8_t line)
+{
+	ks0108_setstartline(line, CSEL_1);
+	ks0108_setstartline(line, CSEL_2);
 }
