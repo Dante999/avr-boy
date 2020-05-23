@@ -24,6 +24,8 @@ SOURCES += pcf8574.c
 SOURCES += button.c
 SOURCES += ks0108.c
 SOURCES += graphx.c
+SOURCES += menu-config.c
+SOURCES += bootscreen.c
 
 # Progammer
 PROGRAMMER=usbasp

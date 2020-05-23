@@ -21,11 +21,13 @@
 #include <string.h> // memset(..)
 #include <util/delay.h>
 
+#include "bootscreen.h"
 #include "button.h"
 #include "font8x8.h"
 #include "graphx.h"
 #include "i2cmaster.h"
 #include "ks0108.h"
+#include "menu-config.h"
 #include "pcf8574.h"
 #include "uart.h"
 
@@ -39,45 +41,44 @@ static void init(void)
 	uart_putsln("initialization done!");
 }
 
-static void debug_buttons(void)
+static void debug_buttons(struct button *buttons)
 {
-	static struct Button button;
 
-	button_read(&button);
+	button_read(buttons);
 
-	if (button.reg0 & BUTTON_REG0_UP) {
+	if (buttons->reg0 & BUTTON_REG0_UP) {
 		uart_putsln("BUTTON_UP ");
 	}
 
-	if (button.reg0 & BUTTON_REG0_DOWN) {
+	if (buttons->reg0 & BUTTON_REG0_DOWN) {
 		uart_putsln("BUTTON_DOWN ");
 	}
 
-	if (button.reg0 & BUTTON_REG0_LEFT) {
+	if (buttons->reg0 & BUTTON_REG0_LEFT) {
 		uart_putsln("BUTTON_LEFT ");
 	}
 
-	if (button.reg0 & BUTTON_REG0_RIGHT) {
+	if (buttons->reg0 & BUTTON_REG0_RIGHT) {
 		uart_putsln("BUTTON_RIGHT ");
 	}
 
-	if (button.reg0 & BUTTON_REG0_A) {
+	if (buttons->reg0 & BUTTON_REG0_A) {
 		uart_putsln("BUTTON_A ");
 	}
 
-	if (button.reg0 & BUTTON_REG0_B) {
+	if (buttons->reg0 & BUTTON_REG0_B) {
 		uart_putsln("BUTTON_B ");
 	}
 
-	if (button.reg0 & BUTTON_REG0_START) {
+	if (buttons->reg0 & BUTTON_REG0_START) {
 		uart_putsln("BUTTON_START ");
 	}
 
-	if (button.reg0 & BUTTON_REG0_SELECT) {
+	if (buttons->reg0 & BUTTON_REG0_SELECT) {
 		uart_putsln("BUTTON_SELECT ");
 	}
 
-	if (button.reg1 & BUTTON_REG1_CONFIG) {
+	if (buttons->reg1 & BUTTON_REG1_CONFIG) {
 		uart_putsln("BUTTON_CONFIG ");
 	}
 }
@@ -87,41 +88,17 @@ int main(void)
 	init();
 
 	struct graphxdata *gd = graphx_new(128, 64);
+	struct button      buttons;
 
-	//	const uint16_t ds = graphx_size(gd);
+	bootscreen_show(gd);
 
-	//	uint8_t data[ds];
-
-	//	memset(data, 0, ds);
-
-	for (uint8_t i = 0; i < 128; i++) {
-		graphx_draw_pixel(gd, i, 0, PIXEL_ON);
-	}
-
-	for (uint8_t i = 0; i < 64; i++) {
-		graphx_draw_pixel(gd, 16, i, PIXEL_ON);
-		graphx_draw_pixel(gd, 128 - 16, i, PIXEL_ON);
-	}
-
-	graphx_draw_pixel(gd, 0, 0, PIXEL_ON);
-	graphx_draw_pixel(gd, 0, 63, PIXEL_ON);
-	graphx_draw_pixel(gd, 127, 0, PIXEL_ON);
-	graphx_draw_pixel(gd, 127, 63, PIXEL_ON);
-
-	graphx_putc(gd, &font8x8, 24, 15, 'A');
-	graphx_putc(gd, &font8x8, 32, 15, 'B');
-	graphx_putc(gd, &font8x8, 40, 15, 'C');
-	graphx_putc(gd, &font8x8, 48, 15, 'D');
-	graphx_putc(gd, &font8x8, 56, 15, 'W');
-
-	graphx_puts(gd, &font8x8, 24, 23, "abcdw");
-
-	//	graphx_write_to(gd, data);
-
-	ks0108_drawgraphx(gd);
+	_delay_ms(1000);
 
 	while (1) {
-		_delay_ms(100);
-		debug_buttons();
+		_delay_ms(10);
+		// menuconfig_refresh(gd, &buttons);
+		debug_buttons(&buttons);
+
+		// ks0108_drawgraphx(gd);
 	}
 }

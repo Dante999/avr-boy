@@ -116,21 +116,37 @@ void graphx_draw_pixel(struct graphxdata *gd, uint8_t x, uint8_t y,
 		gd->buffer[index] &= ~(1 << y_bit);
 }
 
-void graphx_draw_tile(struct graphxdata *gd, uint8_t x, uint8_t y,
-		      uint8_t *tile, uint8_t w, uint8_t h)
+void graphx_draw_byte(struct graphxdata *gd, uint8_t x, uint8_t y, uint8_t byte)
 {
-	if (h != 8)
-		return;
+	for (uint8_t j = 0; j < 8; j++) {
 
-	for (uint8_t i = 0; i < w; i++) {
+		uint8_t color = (byte & (1 << j)) ? PIXEL_ON : PIXEL_OFF;
 
-		uint8_t col = tile[i];
+		graphx_draw_pixel(gd, x, y + j, color);
+	}
+}
 
-		for (uint8_t j = 0; j < 8; j++) {
+void graphx_draw_tile(struct graphxdata *gd, uint8_t x, uint8_t y,
+		      uint8_t *tile, uint8_t tile_width, uint8_t tile_height)
+{
 
-			uint8_t color = (col & (1 << j)) ? PIXEL_ON : PIXEL_OFF;
+	uint8_t rows = tile_height / 8;
 
-			graphx_draw_pixel(gd, x + i, y + j, color);
+	for (uint8_t r = 0; r < rows; r++) {
+
+		for (uint8_t cur_width = 0; cur_width < tile_width;
+		     cur_width++) {
+
+			uint8_t tile_byte = tile[r * tile_width + cur_width];
+			uint8_t x_new     = x + cur_width;
+			uint8_t y_new     = y + (r * 8);
+
+			uart_putui(x_new);
+			uart_puts(" ");
+			uart_putui(y_new);
+			uart_putsln("");
+
+			graphx_draw_byte(gd, x_new, y_new, tile_byte);
 		}
 	}
 }

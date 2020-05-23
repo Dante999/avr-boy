@@ -30,7 +30,7 @@
 
 static uint8_t reg = 0xFF;
 
-static void read_col0(struct Button *button, uint8_t col0)
+static void read_col0(struct button *button, uint8_t col0)
 {
 	if (col0 & ROW0)
 		button->reg0 |= BUTTON_REG0_UP;
@@ -42,7 +42,7 @@ static void read_col0(struct Button *button, uint8_t col0)
 		button->reg0 |= BUTTON_REG0_START;
 }
 
-static void read_col1(struct Button *button, uint8_t col1)
+static void read_col1(struct button *button, uint8_t col1)
 {
 	if (col1 & ROW0)
 		button->reg0 |= BUTTON_REG0_RIGHT;
@@ -54,7 +54,7 @@ static void read_col1(struct Button *button, uint8_t col1)
 		button->reg0 |= BUTTON_REG0_SELECT;
 }
 
-static void read_col2(struct Button *button, uint8_t col2)
+static void read_col2(struct button *button, uint8_t col2)
 {
 	if (col2 & ROW0)
 		button->reg0 |= BUTTON_REG0_LEFT;
@@ -71,7 +71,7 @@ void button_init()
 	pcf8574_set(reg);
 }
 
-void button_read(struct Button *button)
+void button_read(struct button *button)
 {
 	button->reg0 = 0x00;
 	button->reg1 = 0x00;
