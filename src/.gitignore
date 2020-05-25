@@ -11,8 +11,10 @@
 *.pro.user
 
 # C Object files
+*.obj
 *.o
 *.hex
 *.elf
+*.exe 
 
 /build
