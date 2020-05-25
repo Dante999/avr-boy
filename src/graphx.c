@@ -29,7 +29,7 @@
 #include <stdlib.h>
 #include <string.h> // memset
 
-#include "uart.h"
+#include "driver/uart.h"
 
 #define ORIENTATION 0
 

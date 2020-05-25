@@ -22,7 +22,7 @@
 
 #include <avr/io.h>
 
-#include "graphx.h"
+#include "../graphx.h"
 
 #define LCD_DDRX_DATA  DDRA
 #define LCD_PORTX_DATA PORTA

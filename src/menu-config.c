@@ -19,7 +19,7 @@
  ******************************************************************************/
 #include "menu-config.h"
 
-#include <avr/io.h>
+#include <stdint.h>
 
 #include "font5x7.h"
 

@@ -20,7 +20,7 @@
 #ifndef COREBUTTONS_H
 #define COREBUTTONS_H
 
-#include <avr/io.h>
+#include <stdint.h>
 
 #define BUTTON_REG0_UP     (1 << 0)
 #define BUTTON_REG0_DOWN   (1 << 1)

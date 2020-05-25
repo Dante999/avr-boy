@@ -21,7 +21,6 @@
 
 #include <util/delay.h>
 
-#include "graphx.h"
 #include "uart.h"
 
 #define LCD_STATUS_BUSY  (1 << 7) // 0 = lcd is idle  | 1 = lcd is busy      |

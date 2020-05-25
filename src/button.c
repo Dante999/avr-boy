@@ -19,7 +19,9 @@
  ******************************************************************************/
 #include "button.h"
 
-#include "pcf8574.h"
+#include <stdint.h>
+
+#include "driver/pcf8574.h"
 
 #define ROW0 (1 << 7)
 #define ROW1 (1 << 6)

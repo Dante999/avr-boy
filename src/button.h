@@ -21,7 +21,6 @@
 #define BUTTON_H
 
 #include "core-buttons.h"
-#include <avr/io.h>
 
 void button_read(struct button *button);
 void button_init(void);

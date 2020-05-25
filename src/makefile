@@ -32,6 +32,8 @@ PROGRAMMER=usbasp
 #PORT=-P/dev/ttyUSB0
 #BAUD=-B9600
 
+VPATH = driver
+
 OBJECTS=$(SOURCES:%.c=$(BUILDPATH)/%.o)
 
 CFLAGS  = -c

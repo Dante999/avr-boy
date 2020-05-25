@@ -2,7 +2,7 @@
 
 #include <avr/io.h>
 
-#include "ks0108.h"
+#include "driver/ks0108.h"
 #include <avr/delay.h>
 
 //#define X_OFFSET 50

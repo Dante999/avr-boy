@@ -23,13 +23,13 @@
 
 #include "bootscreen.h"
 #include "button.h"
+#include "driver/i2cmaster.h"
+#include "driver/ks0108.h"
+#include "driver/pcf8574.h"
+#include "driver/uart.h"
 #include "font8x8.h"
 #include "graphx.h"
-#include "i2cmaster.h"
-#include "ks0108.h"
 #include "menu-config.h"
-#include "pcf8574.h"
-#include "uart.h"
 
 static void init(void)
 {
