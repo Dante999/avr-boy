@@ -29,8 +29,6 @@
 #include <stdlib.h>
 #include <string.h> // memset
 
-#include "driver/uart.h"
-
 #define ORIENTATION 0
 
 static uint16_t calculate_index(struct graphxdata *gd, uint8_t x, uint8_t y)
@@ -141,11 +139,6 @@ void graphx_draw_tile(struct graphxdata *gd, uint8_t x, uint8_t y,
 			uint8_t x_new     = x + cur_width;
 			uint8_t y_new     = y + (r * 8);
 
-			uart_putui(x_new);
-			uart_puts(" ");
-			uart_putui(y_new);
-			uart_putsln("");
-
 			graphx_draw_byte(gd, x_new, y_new, tile_byte);
 		}
 	}
@@ -156,7 +149,7 @@ void graphx_draw_hline(struct graphxdata *gd, uint8_t x_start, uint8_t x_end,
 {
 	uint8_t delta = x_end - x_start;
 
-	for (uint8_t i = 0; i < delta; i++) {
+	for (uint8_t i = 0; i <= delta; i++) {
 		graphx_draw_pixel(gd, x_start + i, y, color);
 	}
 }
@@ -166,7 +159,7 @@ void graphx_draw_vline(struct graphxdata *gd, uint8_t x, uint8_t y_start,
 {
 	uint8_t delta = y_end - y_start;
 
-	for (uint8_t i = 0; i < delta; i++) {
+	for (uint8_t i = 0; i <= delta; i++) {
 		graphx_draw_pixel(gd, x, y_start + i, color);
 	}
 }
