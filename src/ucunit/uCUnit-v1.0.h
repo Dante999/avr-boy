@@ -57,7 +57,7 @@
  *               device or network. In some cases you will have
  *               also to implement a putch(char c) function.
  */
-#define UCUNIT_WriteString(msg)    System_WriteString(msg)
+#define UCUNIT_WriteString(msg) System_WriteString(msg)
 
 /**
  * @Macro:       UCUNIT_WriteInt(n)
@@ -75,7 +75,7 @@
  *               device or network. In some cases you will have
  *               also to implement a putch(char c) function.
  */
-#define UCUNIT_WriteInt(n)    System_WriteInt(n)
+#define UCUNIT_WriteInt(n) System_WriteInt(n)
 
 /**
  * @Macro:       UCUNIT_Safestate()
@@ -96,7 +96,7 @@
  *                    ...
  *
  */
-#define UCUNIT_Safestate()         System_Safestate()
+#define UCUNIT_Safestate() System_Safestate()
 
 /**
  * @Macro:       UCUNIT_Recover()
@@ -115,7 +115,7 @@
  *                    ...
  *
  */
-#define UCUNIT_Recover()           System_Reset()
+#define UCUNIT_Recover() System_Reset()
 
 /**
  * @Macro:       UCUNIT_Init()
@@ -129,7 +129,7 @@
  *               a host computer.
  *
  */
-#define UCUNIT_Init()              System_Init()
+#define UCUNIT_Init() System_Init()
 
 /**
  * @Macro:       UCUNIT_Shutdown()
@@ -141,7 +141,7 @@
  *               tests.
  *
  */
-#define UCUNIT_Shutdown()          System_Shutdown()
+#define UCUNIT_Shutdown() System_Shutdown()
 
 /**
  * Verbose Mode.
@@ -150,7 +150,7 @@
  * UCUNIT_MODE_VERBOSE: Passed and failed checks are displayed
  */
 //#define UCUNIT_MODE_NORMAL
-#define UCUNIT_MODE_VERBOSE
+#define UCUNIT_MODE_NORMAL
 
 /**
  * Max. number of checkpoints. This may depend on your application
@@ -169,22 +169,24 @@
 #define UCUNIT_VERSION "v1.0" /* Version info */
 
 #ifndef NULL
-#define NULL (void *)0
+#	define NULL (void *)0
 #endif
 
 #ifndef TRUE
-#define TRUE 1
+#	define TRUE 1
 #endif
 
 #ifndef FALSE
-#define FALSE 0
+#	define FALSE 0
 #endif
 
 /* Action to take if check fails */
-#define UCUNIT_ACTION_WARNING   0 /* Goes through the checks
-                                     with message depending on level */
-#define UCUNIT_ACTION_SHUTDOWN  1 /* Stops on the end of the checklist
-                                     if any check has failed */
+#define UCUNIT_ACTION_WARNING                                                  \
+	0 /* Goes through the checks                                           \
+	     with message depending on level */
+#define UCUNIT_ACTION_SHUTDOWN                                                 \
+	1                         /* Stops on the end of the checklist         \
+				     if any check has failed */
 #define UCUNIT_ACTION_SAFESTATE 2 /* Goes in safe state if check fails */
 
 /*****************************************************************************/
@@ -197,11 +199,15 @@ static int ucunit_checks_passed = 0; /* Number of passed checks */
 
 static int ucunit_testcases_failed = 0; /* Number of failed test cases */
 static int ucunit_testcases_passed = 0; /* Number of passed test cases */
-static int ucunit_testcases_failed_checks = 0; /* Number of failed checks in a testcase */
-static int ucunit_checklist_failed_checks = 0; /* Number of failed checks in a checklist */
-static int ucunit_action = UCUNIT_ACTION_WARNING; /* Action to take if a check fails */
-static int ucunit_checkpoints[UCUNIT_MAX_TRACEPOINTS]; /* Max. number of tracepoints */
-static int ucunit_index = 0; /* Tracepoint index */
+static int ucunit_testcases_failed_checks =
+    0; /* Number of failed checks in a testcase */
+static int ucunit_checklist_failed_checks =
+    0; /* Number of failed checks in a checklist */
+static int ucunit_action =
+    UCUNIT_ACTION_WARNING; /* Action to take if a check fails */
+static int
+	   ucunit_checkpoints[UCUNIT_MAX_TRACEPOINTS]; /* Max. number of tracepoints */
+static int ucunit_index = 0;                           /* Tracepoint index */
 
 /*****************************************************************************/
 /* Internal (private) Macros                                                 */
@@ -218,7 +224,7 @@ static int ucunit_index = 0; /* Tracepoint index */
  * @Remarks:     This macro is used by UCUNIT_DefineToString().
  *
  */
-#define UCUNIT_DefineToStringHelper(x)    #x
+#define UCUNIT_DefineToStringHelper(x) #x
 
 /**
  * @Macro:       UCUNIT_DefineToString(x)
@@ -230,7 +236,7 @@ static int ucunit_index = 0; /* Tracepoint index */
  * @Remarks:     This macro uses UCUNIT_DefineToStringHelper().
  *
  */
-#define UCUNIT_DefineToString(x)   UCUNIT_DefineToStringHelper(x)
+#define UCUNIT_DefineToString(x) UCUNIT_DefineToStringHelper(x)
 
 #ifdef UCUNIT_MODE_VERBOSE
 /**
@@ -247,24 +253,23 @@ static int ucunit_index = 0; /* Tracepoint index */
  *               to UCUNIT_MODE_VERBOSE.
  *
  */
-#define UCUNIT_WritePassedMsg(msg, args)                        \
-    do                                                          \
-    {                                                           \
-        UCUNIT_WriteString(__FILE__);                           \
-        UCUNIT_WriteString(":");                                \
-        UCUNIT_WriteString(UCUNIT_DefineToString(__LINE__));    \
-        UCUNIT_WriteString(": passed:");                        \
-        UCUNIT_WriteString(msg);                                \
-        UCUNIT_WriteString("(");                                \
-        UCUNIT_WriteString(args);                               \
-        UCUNIT_WriteString(")\n");                              \
-    } while(0)
+#	define UCUNIT_WritePassedMsg(msg, args)                               \
+		do {                                                           \
+			UCUNIT_WriteString(__FILE__);                          \
+			UCUNIT_WriteString(":");                               \
+			UCUNIT_WriteString(UCUNIT_DefineToString(__LINE__));   \
+			UCUNIT_WriteString(": passed:");                       \
+			UCUNIT_WriteString(msg);                               \
+			UCUNIT_WriteString("(");                               \
+			UCUNIT_WriteString(args);                              \
+			UCUNIT_WriteString(")\n");                             \
+		} while (0)
 #else
-#define UCUNIT_WritePassedMsg(msg, args)
+#	define UCUNIT_WritePassedMsg(msg, args)
 #endif
 
 #ifdef UCUNIT_MODE_SILENT
-#define UCUNIT_WriteFailedMsg(msg, args)
+#	define UCUNIT_WriteFailedMsg(msg, args)
 #else
 /**
  * @Macro:       UCUNIT_WriteFailedMsg(msg, args)
@@ -280,18 +285,17 @@ static int ucunit_index = 0; /* Tracepoint index */
  *               to UCUNIT_MODE_NORMAL and UCUNIT_MODE_VERBOSE.
  *
  */
-#define UCUNIT_WriteFailedMsg(msg, args)                        \
-    do                                                          \
-    {                                                           \
-        UCUNIT_WriteString(__FILE__);                           \
-        UCUNIT_WriteString(":");                                \
-        UCUNIT_WriteString(UCUNIT_DefineToString(__LINE__));    \
-        UCUNIT_WriteString(": failed:");                        \
-        UCUNIT_WriteString(msg);                                \
-        UCUNIT_WriteString("(");                                \
-        UCUNIT_WriteString(args);                               \
-        UCUNIT_WriteString(")\n");                              \
-    } while(0)
+#	define UCUNIT_WriteFailedMsg(msg, args)                               \
+		do {                                                           \
+			UCUNIT_WriteString(__FILE__);                          \
+			UCUNIT_WriteString(":");                               \
+			UCUNIT_WriteString(UCUNIT_DefineToString(__LINE__));   \
+			UCUNIT_WriteString(": failed:");                       \
+			UCUNIT_WriteString(msg);                               \
+			UCUNIT_WriteString("(");                               \
+			UCUNIT_WriteString(args);                              \
+			UCUNIT_WriteString(")\n");                             \
+		} while (0)
 #endif
 
 /**
@@ -308,17 +312,15 @@ static int ucunit_index = 0; /* Tracepoint index */
  *               to UCUNIT_MODE_NORMAL and UCUNIT_MODE_VERBOSE.
  *
  */
-#define UCUNIT_FailCheck(msg, args)                  \
-    do                                               \
-    {                                                \
-        if (UCUNIT_ACTION_SAFESTATE==ucunit_action)  \
-        {                                            \
-            UCUNIT_Safestate();                      \
-        }                                            \
-        UCUNIT_WriteFailedMsg(msg, args);            \
-        ucunit_checks_failed++;                      \
-        ucunit_checklist_failed_checks++;            \
-    } while(0)
+#define UCUNIT_FailCheck(msg, args)                                            \
+	do {                                                                   \
+		if (UCUNIT_ACTION_SAFESTATE == ucunit_action) {                \
+			UCUNIT_Safestate();                                    \
+		}                                                              \
+		UCUNIT_WriteFailedMsg(msg, args);                              \
+		ucunit_checks_failed++;                                        \
+		ucunit_checklist_failed_checks++;                              \
+	} while (0)
 
 /**
  * @Macro:       UCUNIT_PassCheck(msg, args)
@@ -334,12 +336,11 @@ static int ucunit_index = 0; /* Tracepoint index */
  *               to UCUNIT_MODE_VERBOSE.
  *
  */
-#define UCUNIT_PassCheck(message, args)              \
-    do                                               \
-    {                                                \
-        UCUNIT_WritePassedMsg(message, args);        \
-        ucunit_checks_passed++;                      \
-    } while(0)
+#define UCUNIT_PassCheck(message, args)                                        \
+	do {                                                                   \
+		UCUNIT_WritePassedMsg(message, args);                          \
+		ucunit_checks_passed++;                                        \
+	} while (0)
 
 /*****************************************************************************/
 /* Checklist Macros                                                          */
@@ -362,12 +363,11 @@ static int ucunit_index = 0; /* Tracepoint index */
  * @Remarks:     A checklist must be finished with UCUNIT_ChecklistEnd()
  *
  */
-#define UCUNIT_ChecklistBegin(action)                           \
-    do                                                          \
-    {                                                           \
-        ucunit_action = action;                                 \
-        ucunit_checklist_failed_checks = 0;                     \
-    } while (0)
+#define UCUNIT_ChecklistBegin(action)                                          \
+	do {                                                                   \
+		ucunit_action                  = action;                       \
+		ucunit_checklist_failed_checks = 0;                            \
+	} while (0)
 
 /**
  * @Macro:       UCUNIT_ChecklistEnd()
@@ -378,19 +378,16 @@ static int ucunit_index = 0; /* Tracepoint index */
  * @Remarks:     A checklist must begin with UCUNIT_ChecklistBegin(action)
  *
  */
-#define UCUNIT_ChecklistEnd()                         \
-    if (ucunit_checklist_failed_checks!=0)            \
-    {                                                 \
-        UCUNIT_WriteFailedMsg("Checklist","");        \
-        if (UCUNIT_ACTION_SHUTDOWN==ucunit_action)    \
-        {                                             \
-            UCUNIT_Shutdown();                        \
-        }                                             \
-    }                                                 \
-    else                                              \
-    {                                                 \
-        UCUNIT_WritePassedMsg("Checklist","");        \
-    }
+#define UCUNIT_ChecklistEnd()                                                  \
+	if (ucunit_checklist_failed_checks != 0) {                             \
+		UCUNIT_WriteFailedMsg("Checklist", "");                        \
+		if (UCUNIT_ACTION_SHUTDOWN == ucunit_action) {                 \
+			UCUNIT_Shutdown();                                     \
+		}                                                              \
+	}                                                                      \
+	else {                                                                 \
+		UCUNIT_WritePassedMsg("Checklist", "");                        \
+	}
 
 /*****************************************************************************/
 /* Check Macros                                                              */
@@ -407,8 +404,13 @@ static int ucunit_index = 0; /* Tracepoint index */
  * @Remarks:     Basic check. This macro is used by all higher level checks.
  *
  */
-#define UCUNIT_Check(condition, msg, args)             \
-    if ( (condition) ) { UCUNIT_PassCheck(msg, args); } else { UCUNIT_FailCheck(msg, args); }
+#define UCUNIT_Check(condition, msg, args)                                     \
+	if ((condition)) {                                                     \
+		UCUNIT_PassCheck(msg, args);                                   \
+	}                                                                      \
+	else {                                                                 \
+		UCUNIT_FailCheck(msg, args);                                   \
+	}
 
 /**
  * @Macro:       UCUNIT_CheckIsEqual(expected,actual)
@@ -421,8 +423,8 @@ static int ucunit_index = 0; /* Tracepoint index */
  * @Remarks:     This macro uses UCUNIT_Check(condition, msg, args).
  *
  */
-#define UCUNIT_CheckIsEqual(expected,actual)         \
-    UCUNIT_Check( (expected) == (actual), "IsEqual", #expected "," #actual )
+#define UCUNIT_CheckIsEqual(expected, actual)                                  \
+	UCUNIT_Check((expected) == (actual), "IsEqual", #expected "," #actual)
 
 /**
  * @Macro:       UCUNIT_CheckIsNull(pointer)
@@ -434,8 +436,8 @@ static int ucunit_index = 0; /* Tracepoint index */
  * @Remarks:     This macro uses UCUNIT_Check(condition, msg, args).
  *
  */
-#define UCUNIT_CheckIsNull(pointer)                  \
-    UCUNIT_Check( (pointer) == NULL, "IsNull", #pointer)
+#define UCUNIT_CheckIsNull(pointer)                                            \
+	UCUNIT_Check((pointer) == NULL, "IsNull", #pointer)
 
 /**
  * @Macro:       UCUNIT_CheckIsNotNull(pointer)
@@ -447,8 +449,8 @@ static int ucunit_index = 0; /* Tracepoint index */
  * @Remarks:     This macro uses UCUNIT_Check(condition, msg, args).
  *
  */
-#define UCUNIT_CheckIsNotNull(pointer)               \
-    UCUNIT_Check( (pointer) != NULL, "IsNotNull", #pointer)
+#define UCUNIT_CheckIsNotNull(pointer)                                         \
+	UCUNIT_Check((pointer) != NULL, "IsNotNull", #pointer)
 
 /**
  * @Macro:       UCUNIT_CheckIsInRange(value, lower, upper)
@@ -463,8 +465,9 @@ static int ucunit_index = 0; /* Tracepoint index */
  * @Remarks:     This macro uses UCUNIT_Check(condition, msg, args).
  *
  */
-#define UCUNIT_CheckIsInRange(value, lower, upper)   \
-    UCUNIT_Check( ( (value>=lower) && (value<=upper) ), "IsInRange", #value "," #lower "," #upper)
+#define UCUNIT_CheckIsInRange(value, lower, upper)                             \
+	UCUNIT_Check(((value >= lower) && (value <= upper)), "IsInRange",      \
+		     #value "," #lower "," #upper)
 
 /**
  * @Macro:       UCUNIT_CheckIs8Bit(value)
@@ -476,8 +479,8 @@ static int ucunit_index = 0; /* Tracepoint index */
  * @Remarks:     This macro uses UCUNIT_Check(condition, msg, args).
  *
  */
-#define UCUNIT_CheckIs8Bit(value)                      \
-    UCUNIT_Check( value==(value & 0xFF), "Is8Bit", #value )
+#define UCUNIT_CheckIs8Bit(value)                                              \
+	UCUNIT_Check(value == (value & 0xFF), "Is8Bit", #value)
 
 /**
  * @Macro:       UCUNIT_CheckIs16Bit(value)
@@ -489,8 +492,8 @@ static int ucunit_index = 0; /* Tracepoint index */
  * @Remarks:     This macro uses UCUNIT_Check(condition, msg, args).
  *
  */
-#define UCUNIT_CheckIs16Bit(value)                     \
-    UCUNIT_Check( value==(value & 0xFFFF), "Is16Bit", #value )
+#define UCUNIT_CheckIs16Bit(value)                                             \
+	UCUNIT_Check(value == (value & 0xFFFF), "Is16Bit", #value)
 
 /**
  * @Macro:       UCUNIT_CheckIs32Bit(value)
@@ -502,8 +505,8 @@ static int ucunit_index = 0; /* Tracepoint index */
  * @Remarks:     This macro uses UCUNIT_Check(condition, msg, args).
  *
  */
-#define UCUNIT_CheckIs32Bit(value)                     \
-    UCUNIT_Check( value==(value & 0xFFFFFFFF), "Is32Bit", #value )
+#define UCUNIT_CheckIs32Bit(value)                                             \
+	UCUNIT_Check(value == (value & 0xFFFFFFFF), "Is32Bit", #value)
 
 /**
  * Checks if bit is set
@@ -519,8 +522,9 @@ static int ucunit_index = 0; /* Tracepoint index */
  * @Remarks:     This macro uses UCUNIT_Check(condition, msg, args).
  *
  */
-#define UCUNIT_CheckIsBitSet(value, bitno) \
-    UCUNIT_Check( (1==(((value)>>(bitno)) & 0x01) ), "IsBitSet", #value "," #bitno)
+#define UCUNIT_CheckIsBitSet(value, bitno)                                     \
+	UCUNIT_Check((1 == (((value) >> (bitno)) & 0x01)), "IsBitSet",         \
+		     #value "," #bitno)
 
 /**
  * @Macro:       UCUNIT_CheckIsBitClear(value, bitno)
@@ -533,8 +537,9 @@ static int ucunit_index = 0; /* Tracepoint index */
  * @Remarks:     This macro uses UCUNIT_Check(condition, msg, args).
  *
  */
-#define UCUNIT_CheckIsBitClear(value, bitno) \
-    UCUNIT_Check( (0==(((value)>>(bitno)) & 0x01) ), "IsBitClear", #value "," #bitno)
+#define UCUNIT_CheckIsBitClear(value, bitno)                                   \
+	UCUNIT_Check((0 == (((value) >> (bitno)) & 0x01)), "IsBitClear",       \
+		     #value "," #bitno)
 
 /*****************************************************************************/
 /* Testcases */
@@ -551,15 +556,15 @@ static int ucunit_index = 0; /* Tracepoint index */
  * @Remarks:     This macro uses UCUNIT_WriteString(msg) to print the name.
  *
  */
-#define UCUNIT_TestcaseBegin(name)                                        \
-    do                                                                    \
-    {                                                                     \
-        UCUNIT_WriteString("\n======================================\n"); \
-        UCUNIT_WriteString(name);                                         \
-        UCUNIT_WriteString("\n======================================\n"); \
-        ucunit_testcases_failed_checks = ucunit_checks_failed;            \
-    }                                                                     \
-    while(0)
+#define UCUNIT_TestcaseBegin(name)                                             \
+	do {                                                                   \
+		UCUNIT_WriteString(                                            \
+		    "\n======================================\n");             \
+		UCUNIT_WriteString(name);                                      \
+		UCUNIT_WriteString(                                            \
+		    "\n======================================\n");             \
+		ucunit_testcases_failed_checks = ucunit_checks_failed;         \
+	} while (0)
 
 /**
  * @Macro:       UCUNIT_TestcaseEnd()
@@ -570,23 +575,22 @@ static int ucunit_index = 0; /* Tracepoint index */
  * @Remarks:     This macro uses UCUNIT_WriteString(msg) to print the result.
  *
  */
-#define UCUNIT_TestcaseEnd()                                         \
-    do                                                               \
-    {                                                                \
-        UCUNIT_WriteString("======================================\n");  \
-        if( 0==(ucunit_testcases_failed_checks - ucunit_checks_failed) ) \
-        {                                                            \
-            UCUNIT_WriteString("Testcase passed.\n");                \
-            ucunit_testcases_passed++;                               \
-        }                                                            \
-        else                                                         \
-        {                                                            \
-            UCUNIT_WriteFailedMsg("EndTestcase","");                 \
-            ucunit_testcases_failed++;                               \
-        }                                                            \
-        UCUNIT_WriteString("======================================\n"); \
-    }                                                                \
-    while(0)
+#define UCUNIT_TestcaseEnd()                                                   \
+	do {                                                                   \
+		UCUNIT_WriteString(                                            \
+		    "======================================\n");               \
+		if (0 ==                                                       \
+		    (ucunit_testcases_failed_checks - ucunit_checks_failed)) { \
+			UCUNIT_WriteString("Testcase passed.\n");              \
+			ucunit_testcases_passed++;                             \
+		}                                                              \
+		else {                                                         \
+			UCUNIT_WriteFailedMsg("EndTestcase", "");              \
+			ucunit_testcases_failed++;                             \
+		}                                                              \
+		UCUNIT_WriteString(                                            \
+		    "======================================\n");               \
+	} while (0)
 
 /*****************************************************************************/
 /* Support for code coverage */
@@ -598,7 +602,7 @@ static int ucunit_index = 0; /* Tracepoint index */
  * @Description: Marks a trace point.
  *               If a trace point is executed, its coverage state switches
  *               from 0 to the line number.
-  *              If a trace point was never executed, the state
+ *              If a trace point was never executed, the state
  *               remains 0.
  *
  * @Param index: Index of the tracepoint.
@@ -606,15 +610,13 @@ static int ucunit_index = 0; /* Tracepoint index */
  * @Remarks:     This macro fails if index>UCUNIT_MAX_TRACEPOINTS.
  *
  */
-#define UCUNIT_Tracepoint(index)                         \
-    if(index<UCUNIT_MAX_TRACEPOINTS)                     \
-    {                                                    \
-        ucunit_checkpoints[index] = __LINE__;            \
-    }                                                    \
-    else                                                 \
-    {                                                    \
-        UCUNIT_WriteFailedMsg("Tracepoint index", #index);     \
-    }
+#define UCUNIT_Tracepoint(index)                                               \
+	if (index < UCUNIT_MAX_TRACEPOINTS) {                                  \
+		ucunit_checkpoints[index] = __LINE__;                          \
+	}                                                                      \
+	else {                                                                 \
+		UCUNIT_WriteFailedMsg("Tracepoint index", #index);             \
+	}
 
 /**
  * @Macro:       UCUNIT_ResetTracepointCoverage()
@@ -626,11 +628,11 @@ static int ucunit_index = 0; /* Tracepoint index */
  * @Remarks:     This macro fails if index>UCUNIT_MAX_TRACEPOINTS.
  *
  */
-#define UCUNIT_ResetTracepointCoverage()                    \
-    for (ucunit_index=0; ucunit_index<UCUNIT_MAX_TRACEPOINTS; ucunit_index++) \
-    {                                                \
-        ucunit_checkpoints[ucunit_index]=0;          \
-    }
+#define UCUNIT_ResetTracepointCoverage()                                       \
+	for (ucunit_index = 0; ucunit_index < UCUNIT_MAX_TRACEPOINTS;          \
+	     ucunit_index++) {                                                 \
+		ucunit_checkpoints[ucunit_index] = 0;                          \
+	}
 
 /**
  * @Macro:       UCUNIT_CheckTracepointCoverage(index)
@@ -642,8 +644,9 @@ static int ucunit_index = 0; /* Tracepoint index */
  * @Remarks:     This macro fails if index>UCUNIT_MAX_TRACEPOINTS.
  *
  */
-#define UCUNIT_CheckTracepointCoverage(index)    \
-    UCUNIT_Check( (ucunit_checkpoints[index]!=0), "TracepointCoverage", #index);
+#define UCUNIT_CheckTracepointCoverage(index)                                  \
+	UCUNIT_Check((ucunit_checkpoints[index] != 0), "TracepointCoverage",   \
+		     #index);
 
 /*****************************************************************************/
 /* Testsuite Summary                                                         */
@@ -658,18 +661,20 @@ static int ucunit_index = 0; /* Tracepoint index */
  *               UCUNIT_WriteInt(n) to write the summary.
  *
  */
-#define UCUNIT_WriteSummary()                                         \
-{                                                                     \
-    UCUNIT_WriteString("\n**************************************");   \
-    UCUNIT_WriteString("\nTestcases: failed: ");                      \
-    UCUNIT_WriteInt(ucunit_testcases_failed);                         \
-    UCUNIT_WriteString("\n           passed: ");                      \
-    UCUNIT_WriteInt(ucunit_testcases_passed);                         \
-    UCUNIT_WriteString("\nChecks:    failed: ");                      \
-    UCUNIT_WriteInt(ucunit_checks_failed);                            \
-    UCUNIT_WriteString("\n           passed: ");                      \
-    UCUNIT_WriteInt(ucunit_checks_passed);                            \
-    UCUNIT_WriteString("\n**************************************\n"); \
-}
+#define UCUNIT_WriteSummary()                                                  \
+	{                                                                      \
+		UCUNIT_WriteString(                                            \
+		    "\n**************************************");               \
+		UCUNIT_WriteString("\nTestcases: failed: ");                   \
+		UCUNIT_WriteInt(ucunit_testcases_failed);                      \
+		UCUNIT_WriteString("\n           passed: ");                   \
+		UCUNIT_WriteInt(ucunit_testcases_passed);                      \
+		UCUNIT_WriteString("\nChecks:    failed: ");                   \
+		UCUNIT_WriteInt(ucunit_checks_failed);                         \
+		UCUNIT_WriteString("\n           passed: ");                   \
+		UCUNIT_WriteInt(ucunit_checks_passed);                         \
+		UCUNIT_WriteString(                                            \
+		    "\n**************************************\n");             \
+	}
 
 #endif /*UCUNIT_H_*/

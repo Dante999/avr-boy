@@ -175,7 +175,7 @@ void Testsuite_RunTests(void)
 
 	test_graphx_run();
 
-	UCUNIT_WriteSummary();
+	//	UCUNIT_WriteSummary();
 }
 
 int main(void)

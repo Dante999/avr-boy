@@ -35,9 +35,9 @@
  * author.
  */
 
+#include "system.h"
 #include <stdio.h>
 #include <stdlib.h>
-#include "system.h"
 
 /* Stub: Initialize your hardware here */
 void System_Init(void)
@@ -82,9 +82,9 @@ void System_Safestate(void)
 }
 
 /* Stub: Write a string to the host/debugger/simulator */
-void System_WriteString(char * msg)
+void System_WriteString(char *msg)
 {
-	printf(msg);
+	printf("%s", msg);
 }
 
 void System_WriteInt(int n)
