@@ -96,9 +96,9 @@ int main(void)
 
 	while (1) {
 		_delay_ms(10);
-		// menuconfig_refresh(gd, &buttons);
+		menuconfig_refresh(gd, &buttons);
 		debug_buttons(&buttons);
 
-		// ks0108_drawgraphx(gd);
+		ks0108_drawgraphx(gd);
 	}
 }
