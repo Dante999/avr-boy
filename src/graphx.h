@@ -43,8 +43,9 @@ void graphx_destroy(struct graphxdata *gd);
 
 void graphx_draw_pixel(struct graphxdata *gd, uint8_t x, uint8_t y,
 		       uint8_t color);
+
 void graphx_draw_tile(struct graphxdata *gd, uint8_t x, uint8_t y,
-		      uint8_t *tile, uint8_t w, uint8_t h);
+		      const uint8_t *tile, uint8_t w, uint8_t h);
 
 void graphx_putc(struct graphxdata *gd, struct font *f, uint8_t x, uint8_t y,
 		 const char c);

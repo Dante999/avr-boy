@@ -19,11 +19,6 @@
  ******************************************************************************/
 #include "graphx.h"
 
-#include <stdio.h>
-#include <string.h>
-
-#include "graphx.h"
-
 #include <stdint.h>
 #include <stdio.h>
 #include <stdlib.h>
@@ -125,21 +120,21 @@ void graphx_draw_byte(struct graphxdata *gd, uint8_t x, uint8_t y, uint8_t byte)
 }
 
 void graphx_draw_tile(struct graphxdata *gd, uint8_t x, uint8_t y,
-		      uint8_t *tile, uint8_t tile_width, uint8_t tile_height)
+		      const uint8_t *tile, uint8_t tile_width,
+		      uint8_t tile_height)
 {
 
-	uint8_t rows = tile_height / 8;
+	for (uint8_t row = 0; row < (tile_height / 8); row++) {
 
-	for (uint8_t r = 0; r < rows; r++) {
+		for (uint8_t col = 0; col < tile_width; col++) {
 
-		for (uint8_t cur_width = 0; cur_width < tile_width;
-		     cur_width++) {
+			uint16_t offset = row * tile_width;
 
-			uint8_t tile_byte = tile[r * tile_width + cur_width];
-			uint8_t x_new     = x + cur_width;
-			uint8_t y_new     = y + (r * 8);
+			uint8_t data  = tile[offset + col];
+			uint8_t x_new = x + col;
+			uint8_t y_new = y + (row * 8);
 
-			graphx_draw_byte(gd, x_new, y_new, tile_byte);
+			graphx_draw_byte(gd, x_new, y_new, data);
 		}
 	}
 }
