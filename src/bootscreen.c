@@ -29,14 +29,14 @@ static uint8_t bmp_bootscreen[] = {
     0x47, 0x40, 0x40, 0x43, 0x4c, 0x50, 0x50, 0x50, 0x50, 0x4c, 0x43, 0x40,
     0x40, 0x40, 0x40, 0x40, 0x5f, 0x40, 0x40, 0x40, 0x40, 0x00, 0x00, 0x00};
 
-void bootscreen_show(struct graphxdata *gd)
+void bootscreen_show(void)
 {
-	graphx_fill_pattern(gd, 0x00);
+	graphx_fill_pattern(0x00);
 
-	graphx_draw_tile(gd, X_OFFSET, Y_OFFSET, bmp_bootscreen,
-			 BOOTSCREEN_WIDTH, BOOTSCREEN_HEIGHT);
+	graphx_draw_tile(X_OFFSET, Y_OFFSET, bmp_bootscreen, BOOTSCREEN_WIDTH,
+			 BOOTSCREEN_HEIGHT);
 
-	ks0108_drawgraphx(gd);
+	ks0108_drawgraphx();
 
 	for (uint8_t i = 64; i > Y_SCROLL; i--) {
 		ks0108_scroll(i);
@@ -45,8 +45,8 @@ void bootscreen_show(struct graphxdata *gd)
 
 	_delay_ms(BOOTSCREEN_VISIBLE_MS);
 
-	graphx_fill_pattern(gd, 0x00);
+	graphx_fill_pattern(0x00);
 
-	ks0108_drawgraphx(gd);
+	ks0108_drawgraphx();
 	ks0108_scroll(0);
 }

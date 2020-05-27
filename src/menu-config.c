@@ -35,13 +35,12 @@
 static uint8_t cursor[2][6] = {{0x00, 0xfE, 0x7C, 0x38, 0x10},
 			       {0x00, 0x7F, 0x3E, 0x1C, 0x08}};
 
-static void draw_keyvalue(struct graphxdata *gd, uint8_t index, const char *key,
-			  const char *value)
+static void draw_keyvalue(uint8_t index, const char *key, const char *value)
 {
 	uint8_t y = Y_KEYVALUE_START + (Y_DELTA * index);
 
-	graphx_puts(gd, &font5x7, X_KEY_START, y, key);
-	graphx_puts(gd, &font5x7, X_VALUE_START, y, value);
+	graphx_puts(&font5x7, X_KEY_START, y, key);
+	graphx_puts(&font5x7, X_VALUE_START, y, value);
 }
 
 static uint8_t get_index(uint8_t current_index, struct button *buttons)
@@ -69,31 +68,30 @@ uint8_t *cursor_tile()
 	}
 }
 
-static void draw_cursor(struct graphxdata *gd, uint8_t index)
+static void draw_cursor(uint8_t index)
 {
 	static uint8_t old_index = 0;
 
 	//	if (old_index != index) {
-	graphx_puts(gd, &font5x7, 0, Y_KEYVALUE_START + (Y_DELTA * old_index),
-		    " ");
+	graphx_puts(&font5x7, 0, Y_KEYVALUE_START + (Y_DELTA * old_index), " ");
 
-	graphx_draw_tile(gd, 0, Y_KEYVALUE_START + (Y_DELTA * index),
-			 cursor_tile(), 5, 8);
+	graphx_draw_tile(0, Y_KEYVALUE_START + (Y_DELTA * index), cursor_tile(),
+			 5, 8);
 
 	old_index = index;
 	//	}
 }
 
-void menuconfig_refresh(struct graphxdata *gd, struct button *buttons)
+void menuconfig_refresh(struct button *buttons)
 {
 	static uint8_t current_index = 0;
 
-	graphx_puts(gd, &font5x7, 16, 0, "configuration");
-	graphx_draw_hline(gd, 5, 127 - 5, 10, PIXEL_ON);
+	graphx_puts(&font5x7, 16, 0, "configuration");
+	graphx_draw_hline(5, 127 - 5, 10, PIXEL_ON);
 
 	current_index = get_index(current_index, buttons);
-	draw_cursor(gd, current_index);
+	draw_cursor(current_index);
 
-	draw_keyvalue(gd, 0, "Backlight", "+255");
-	draw_keyvalue(gd, 1, "Test Buttons", "");
+	draw_keyvalue(0, "Backlight", "+255");
+	draw_keyvalue(1, "Test Buttons", "");
 }

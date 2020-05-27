@@ -23,6 +23,6 @@
 #include "core-buttons.h"
 #include "graphx.h"
 
-void menuconfig_refresh(struct graphxdata *gd, struct button *buttons);
+void menuconfig_refresh(struct button *buttons);
 
 #endif // MENUCONFIG_H

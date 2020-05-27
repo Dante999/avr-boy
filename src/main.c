@@ -27,7 +27,6 @@
 #include "driver/ks0108.h"
 #include "driver/pcf8574.h"
 #include "driver/uart.h"
-#include "font8x8.h"
 #include "graphx.h"
 #include "menu-config.h"
 
@@ -87,18 +86,18 @@ int main(void)
 {
 	init();
 
-	struct graphxdata *gd = graphx_new(128, 64);
-	struct button      buttons;
+	graphx_init();
+	struct button buttons;
 
-	bootscreen_show(gd);
+	bootscreen_show();
 
 	_delay_ms(1000);
 
 	while (1) {
 		_delay_ms(10);
-		menuconfig_refresh(gd, &buttons);
+		menuconfig_refresh(&buttons);
 		debug_buttons(&buttons);
 
-		ks0108_drawgraphx(gd);
+		ks0108_drawgraphx();
 	}
 }

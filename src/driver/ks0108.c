@@ -415,8 +415,7 @@ void ks0108_init(void)
 //	}
 //}
 
-static uint8_t data_from_graphx(struct graphxdata *gdata, uint8_t page,
-				uint8_t addr)
+static uint8_t data_from_graphx(uint8_t page, uint8_t addr)
 {
 	uint8_t y_start = page * 8;
 	uint8_t x       = addr;
@@ -425,14 +424,14 @@ static uint8_t data_from_graphx(struct graphxdata *gdata, uint8_t page,
 
 	for (uint8_t i = 0; i < 8; i++) {
 
-		if (graphx_get_pixel(gdata, x, y_start + i))
+		if (graphx_get_pixel(x, y_start + i))
 			data |= (1 << i);
 	}
 
 	return data;
 }
 
-void ks0108_drawgraphx(struct graphxdata *gdata)
+void ks0108_drawgraphx(void)
 {
 	for (uint8_t page = 0; page < 8; page++) {
 
@@ -440,7 +439,7 @@ void ks0108_drawgraphx(struct graphxdata *gdata)
 
 			uint8_t csel = (addr < 64) ? CSEL_1 : CSEL_2;
 
-			uint8_t data = data_from_graphx(gdata, page, addr);
+			uint8_t data = data_from_graphx(page, addr);
 
 			ks0108_setpage(page, csel);
 			ks0108_setaddr(addr, csel);

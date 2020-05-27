@@ -3,6 +3,6 @@
 
 #include "graphx.h"
 
-void bootscreen_show(struct graphxdata *gd);
+void bootscreen_show(void);
 
 #endif // BOOTSCREEN_H

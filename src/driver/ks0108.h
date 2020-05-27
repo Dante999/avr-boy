@@ -58,7 +58,7 @@
 
 void ks0108_init(void);
 void ks0108_fillscreen(uint8_t color);
-void ks0108_drawgraphx(struct graphxdata *gdata);
+void ks0108_drawgraphx(void);
 void ks0108_testscreen(void);
 void ks0108_scroll(uint8_t line);
 // void ks0108_drawbuffer(uint8_t *buffer);
