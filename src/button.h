@@ -22,6 +22,7 @@
 
 #include "core-buttons.h"
 
+void button_debug(struct button *buttons);
 void button_read(struct button *button);
 void button_init(void);
 #endif // BUTTON_H

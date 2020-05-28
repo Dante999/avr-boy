@@ -28,65 +28,24 @@
 #include "driver/pcf8574.h"
 #include "driver/uart.h"
 #include "graphx.h"
+#include "logger.h"
 #include "menu-config.h"
 
 static void init(void)
 {
-	i2c_init();
 	uart_init();
+	i2c_init();
 	button_init();
 	ks0108_init();
+	graphx_init();
 
-	uart_putsln("initialization done!");
-}
-
-static void debug_buttons(struct button *buttons)
-{
-
-	button_read(buttons);
-
-	if (buttons->reg0 & BUTTON_REG0_UP) {
-		uart_putsln("BUTTON_UP ");
-	}
-
-	if (buttons->reg0 & BUTTON_REG0_DOWN) {
-		uart_putsln("BUTTON_DOWN ");
-	}
-
-	if (buttons->reg0 & BUTTON_REG0_LEFT) {
-		uart_putsln("BUTTON_LEFT ");
-	}
-
-	if (buttons->reg0 & BUTTON_REG0_RIGHT) {
-		uart_putsln("BUTTON_RIGHT ");
-	}
-
-	if (buttons->reg0 & BUTTON_REG0_A) {
-		uart_putsln("BUTTON_A ");
-	}
-
-	if (buttons->reg0 & BUTTON_REG0_B) {
-		uart_putsln("BUTTON_B ");
-	}
-
-	if (buttons->reg0 & BUTTON_REG0_START) {
-		uart_putsln("BUTTON_START ");
-	}
-
-	if (buttons->reg0 & BUTTON_REG0_SELECT) {
-		uart_putsln("BUTTON_SELECT ");
-	}
-
-	if (buttons->reg1 & BUTTON_REG1_CONFIG) {
-		uart_putsln("BUTTON_CONFIG ");
-	}
+	LOG_INFO("initialization done!");
 }
 
 int main(void)
 {
 	init();
 
-	graphx_init();
 	struct button buttons;
 
 	bootscreen_show();
@@ -95,9 +54,9 @@ int main(void)
 
 	while (1) {
 		_delay_ms(10);
+		button_read(&buttons);
+		button_debug(&buttons);
 		menuconfig_refresh(&buttons);
-		debug_buttons(&buttons);
-
 		ks0108_drawgraphx();
 	}
 }
