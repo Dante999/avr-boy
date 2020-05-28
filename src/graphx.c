@@ -35,25 +35,6 @@ static uint16_t calculate_index(uint8_t x, uint8_t y)
 	return x + ((y / 8) * graphx_width());
 }
 
-// struct graphxdata *graphx_new(uint8_t width, uint8_t height)
-//{
-//	struct graphxdata *gd;
-
-//	gd = (struct graphxdata *)malloc(sizeof(struct graphxdata));
-
-//	g_graphxdata.width  = width;
-//	g_graphxdata.height = height;
-
-//	uint16_t size = graphx_size(gd);
-
-//	g_graphxdata.buffer = (uint8_t *)malloc(size * sizeof(uint8_t));
-
-//	memset(g_graphxdata.buffer, 0x00, size *
-// sizeof(*(g_graphxdata.buffer)));
-
-//	return gd;
-//}
-
 void graphx_init(void)
 {
 	g_graphxdata.width  = GRAPHX_WIDTH;
@@ -89,16 +70,6 @@ uint8_t graphx_height(void)
 {
 	return g_graphxdata.height;
 }
-
-// void graphx_destroy(struct graphxdata *gd)
-//{
-//	if (gd != NULL && g_graphxdata.buffer != NULL)
-//		free(g_graphxdata.buffer);
-
-//	if (gd != NULL) {
-//		free(gd);
-//	}
-//}
 
 void graphx_draw_pixel(uint8_t x, uint8_t y, uint8_t color)
 {
@@ -189,5 +160,5 @@ void graphx_puts(struct font *f, uint8_t x, uint8_t y, const char *s)
 
 void graphx_fill_pattern(char pattern)
 {
-	memset(g_graphxdata.buffer, pattern, graphx_size() - 1);
+	memset(g_graphxdata.buffer, pattern, graphx_size());
 }

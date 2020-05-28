@@ -305,6 +305,33 @@ static void test_draw_tile_128x64(void)
 	UCUNIT_TestcaseEnd();
 }
 
+static void test_fill_pattern(void)
+{
+	UCUNIT_TestcaseBegin("graphx.c : fill pattern");
+
+	graphx_init();
+
+	graphx_fill_pattern((char)0xFF);
+
+	for (uint8_t x = 0; x < GRAPHX_WIDTH; x++) {
+		for (uint8_t y = 0; y < GRAPHX_HEIGHT; y++) {
+			UCUNIT_Check(graphx_get_pixel(x, y) == 1,
+				     "graphx_get_pixel(...) == 1",
+				     print_coordinates(x, y));
+		}
+	}
+
+	graphx_fill_pattern((char)0x00);
+
+	for (uint8_t x = 0; x < GRAPHX_WIDTH; x++) {
+		for (uint8_t y = 0; y < GRAPHX_HEIGHT; y++) {
+			UCUNIT_Check(graphx_get_pixel(x, y) == 0,
+				     "graphx_get_pixel(...) == 0",
+				     print_coordinates(x, y));
+		}
+	}
+}
+
 void test_graphx_run(void)
 {
 	test_draw_pixel();
@@ -314,6 +341,7 @@ void test_graphx_run(void)
 	test_draw_tile_1x64();
 	test_draw_tile_128x8();
 	test_draw_tile_128x64();
+	test_fill_pattern();
 
 	UCUNIT_WriteSummary();
 }
