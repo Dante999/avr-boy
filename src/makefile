@@ -26,7 +26,7 @@ SOURCES += ks0108.c
 SOURCES += graphx.c
 SOURCES += menu-config.c
 SOURCES += bootscreen.c
-
+SOURCES += screensaver.c
 # Progammer
 PROGRAMMER=usbasp
 #PORT=-P/dev/ttyUSB0

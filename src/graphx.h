@@ -54,6 +54,8 @@ void graphx_read_from(const uint8_t *data);
 void graphx_write_to(uint8_t *data);
 void graphx_fill_pattern(char pattern);
 
+uint8_t *graphx_buffer(void);
+
 uint8_t  graphx_get_pixel(uint8_t x, uint8_t y);
 uint16_t graphx_size(void);
 uint8_t  graphx_width(void);

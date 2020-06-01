@@ -30,6 +30,7 @@
 #include "graphx.h"
 #include "logger.h"
 #include "menu-config.h"
+#include "screensaver.h"
 
 static void init(void)
 {
@@ -38,6 +39,7 @@ static void init(void)
 	button_init();
 	ks0108_init();
 	graphx_init();
+	screensaver_init();
 
 	LOG_INFO("initialization done!");
 }
@@ -50,13 +52,13 @@ int main(void)
 
 	bootscreen_show();
 
-	_delay_ms(1000);
-
 	while (1) {
 		_delay_ms(10);
 		button_read(&buttons);
 		button_debug(&buttons);
-		menuconfig_refresh(&buttons);
-		ks0108_drawgraphx();
+
+		screensaver_run(5);
+
+		// ks0108_drawbuffer();
 	}
 }

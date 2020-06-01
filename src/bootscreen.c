@@ -36,7 +36,7 @@ void bootscreen_show(void)
 	graphx_draw_tile(X_OFFSET, Y_OFFSET, bmp_bootscreen, BOOTSCREEN_WIDTH,
 			 BOOTSCREEN_HEIGHT);
 
-	ks0108_drawgraphx();
+	ks0108_drawbuffer(graphx_buffer());
 
 	for (uint8_t i = 64; i > Y_SCROLL; i--) {
 		ks0108_scroll(i);
@@ -47,6 +47,6 @@ void bootscreen_show(void)
 
 	graphx_fill_pattern(0x00);
 
-	ks0108_drawgraphx();
+	ks0108_drawbuffer(graphx_buffer());
 	ks0108_scroll(0);
 }

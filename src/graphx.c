@@ -162,3 +162,8 @@ void graphx_fill_pattern(char pattern)
 {
 	memset(g_graphxdata.buffer, pattern, graphx_size());
 }
+
+uint8_t *graphx_buffer(void)
+{
+	return g_graphxdata.buffer;
+}
