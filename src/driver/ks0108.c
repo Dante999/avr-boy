@@ -21,8 +21,6 @@
 
 #include <util/delay.h>
 
-#include "uart.h"
-
 #define LCD_STATUS_BUSY  (1 << 7) // 0 = lcd is idle  | 1 = lcd is busy      |
 #define LCD_STATUS_OFF   (1 << 5) // 0 = lcd is on    | 1 = lcd is off       |
 #define LCD_STATUS_RESET (1 << 4) // 0 = lcd is ready | 1 = lcd is resetting |
@@ -190,6 +188,30 @@ static void ks0108_writedata(uint8_t data, uint8_t chip)
 
 	ks0108_chipselect(chip);
 	ks0108_writedatabus(data);
+}
+
+/*******************************************************************************
+ * @brief   writes the given data to the lcd
+ *
+ * The method also performs a busy check of the lcd and stays in a loop until
+ * the lcd is ready to receive the data.
+ *
+ * @param   data   the data itself
+ * @param   chip   selection of the chip
+ *
+ * @return  none
+ *
+ ******************************************************************************/
+static uint8_t ks0108_readdata(uint8_t chip)
+{
+	while (ks0108_readstatus(chip) & LCD_STATUS_BUSY) {
+	};
+
+	LCD_PORTX_DI |= LCD_BIT_DI;
+	LCD_PORTX_RW |= LCD_BIT_RW;
+
+	ks0108_chipselect(chip);
+	return ks0108_readdatabus();
 }
 
 /*******************************************************************************
@@ -382,68 +404,21 @@ void ks0108_init(void)
 	ks0108_fillscreen(0x00);
 }
 
-// static uint8_t get_from_buffer(uint8_t *buffer, uint8_t page, uint8_t addr)
-//{
-//	static const uint8_t offset = LCD_WIDTH / 8;
-
-//	const uint16_t page_start = page * offset;
-
-//	uint8_t data = 0x00;
-
-//	for (uint8_t i = 0; i < 8; i++) {
-//		data |= (buffer[offset])
-//	}
-//}
-
-// void ks0108_drawbuffer(uint8_t *buffer)
-//{
-
-//	for (uint8_t page = 0; page < 8; page++) {
-
-//		uint16_t page_start = page * offset;
-
-//		for (uint8_t addr = 0; addr < 128; addr++) {
-
-//			uint8_t data = buffer[page_start + addr];
-
-//			uint8_t csel = (addr < 64) ? CSEL_1 : CSEL_2;
-
-//			ks0108_setpage(page, csel);
-//			ks0108_setaddr(addr, csel);
-//			ks0108_writedata(data, csel);
-//		}
-//	}
-//}
-
-static uint8_t data_from_graphx(uint8_t page, uint8_t addr)
-{
-	uint8_t y_start = page * 8;
-	uint8_t x       = addr;
-
-	uint8_t data = 0x00;
-
-	for (uint8_t i = 0; i < 8; i++) {
-
-		if (graphx_get_pixel(x, y_start + i))
-			data |= (1 << i);
-	}
-
-	return data;
-}
-
-void ks0108_drawgraphx(void)
+void ks0108_drawbuffer(uint8_t *buffer)
 {
 	for (uint8_t page = 0; page < 8; page++) {
 
 		for (uint8_t addr = 0; addr < 128; addr++) {
 
-			uint8_t csel = (addr < 64) ? CSEL_1 : CSEL_2;
+			uint8_t data = *buffer;
 
-			uint8_t data = data_from_graphx(page, addr);
+			uint8_t csel = (addr < 64) ? CSEL_1 : CSEL_2;
 
 			ks0108_setpage(page, csel);
 			ks0108_setaddr(addr, csel);
 			ks0108_writedata(data, csel);
+
+			buffer++;
 		}
 	}
 }
@@ -452,4 +427,40 @@ void ks0108_scroll(uint8_t line)
 {
 	ks0108_setstartline(line, CSEL_1);
 	ks0108_setstartline(line, CSEL_2);
+}
+
+void ks0108_draw_byte(uint8_t page, uint8_t addr, uint8_t length, uint8_t *byte)
+{
+	uint8_t csel = (addr < 64) ? CSEL_1 : CSEL_2;
+
+	ks0108_setpage(page, csel);
+	ks0108_setaddr(addr, csel);
+
+	for (uint8_t i = 0; i < length; i++) {
+		ks0108_writedata(byte[i], csel);
+	}
+}
+
+void ks0108_set_pixel(uint8_t x, uint8_t y, uint8_t on)
+{
+	uint8_t csel = (x < 64) ? CSEL_1 : CSEL_2;
+	uint8_t addr = x % 64;
+	uint8_t page = y / 8;
+	uint8_t bit  = y % 8;
+
+	ks0108_setpage(page, csel);
+	ks0108_setaddr(addr, csel);
+
+	(void)ks0108_readdata(csel);
+	uint8_t data = ks0108_readdata(csel);
+
+	if (on) {
+		data |= (1 << bit);
+	}
+	else {
+		data &= ~(1 << bit);
+	}
+
+	ks0108_setaddr(addr, csel);
+	ks0108_writedata(data, csel);
 }
