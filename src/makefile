@@ -27,6 +27,8 @@ SOURCES += graphx.c
 SOURCES += menu-config.c
 SOURCES += bootscreen.c
 SOURCES += screensaver.c
+SOURCES += lcd.c
+
 # Progammer
 PROGRAMMER=usbasp
 #PORT=-P/dev/ttyUSB0
