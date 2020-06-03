@@ -3,7 +3,7 @@
 #include <avr/io.h>
 #include <util/delay.h>
 
-#include "driver/ks0108.h"
+#include "lcd.h"
 
 #define Y_SCROLL              40
 #define SCROLL_DELAY_MS       30
@@ -36,10 +36,10 @@ void bootscreen_show(void)
 	graphx_draw_tile(X_OFFSET, Y_OFFSET, bmp_bootscreen, BOOTSCREEN_WIDTH,
 			 BOOTSCREEN_HEIGHT);
 
-	ks0108_drawbuffer(graphx_buffer());
+	lcd_drawbuffer(graphx_buffer());
 
 	for (uint8_t i = 64; i > Y_SCROLL; i--) {
-		ks0108_scroll(i);
+		lcd_scroll(i);
 		_delay_ms(SCROLL_DELAY_MS);
 	}
 
@@ -47,6 +47,6 @@ void bootscreen_show(void)
 
 	graphx_fill_pattern(0x00);
 
-	ks0108_drawbuffer(graphx_buffer());
-	ks0108_scroll(0);
+	lcd_drawbuffer(graphx_buffer());
+	lcd_scroll(0);
 }

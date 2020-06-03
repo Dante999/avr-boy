@@ -24,10 +24,10 @@
 #include "bootscreen.h"
 #include "button.h"
 #include "driver/i2cmaster.h"
-#include "driver/ks0108.h"
 #include "driver/pcf8574.h"
 #include "driver/uart.h"
 #include "graphx.h"
+#include "lcd.h"
 #include "logger.h"
 #include "menu-config.h"
 #include "screensaver.h"
@@ -37,7 +37,7 @@ static void init(void)
 	uart_init();
 	i2c_init();
 	button_init();
-	ks0108_init();
+	lcd_init();
 	graphx_init();
 	screensaver_init();
 

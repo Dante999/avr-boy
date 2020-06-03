@@ -19,8 +19,8 @@
  ******************************************************************************/
 #include "screensaver.h"
 
-#include "driver/ks0108.h"
 #include "graphx.h"
+#include "lcd.h"
 
 #define TILE_BALL_WIDTH  2
 #define TILE_BALL_HEIGHT 8
@@ -44,9 +44,9 @@ enum direction {
 static const uint8_t tile_ball[]  = {0x81, 0x81};
 static const uint8_t tile_empty[] = {0x00, 0x00};
 
-static uint8_t        x              = 0;
-static uint8_t        y              = 0;
-static enum direction ball_direction = DIR_DOWN_RIGHT;
+static uint8_t        x              = 120;
+static uint8_t        y              = 63;
+static enum direction ball_direction = DIR_UP_RIGHT;
 
 void screensaver_init(void)
 {
@@ -220,6 +220,6 @@ void screensaver_run(uint8_t speed)
 		break;
 	}
 
-	ks0108_set_pixel(x, y, 1);
+	lcd_draw_pixel(x, y, 1);
 	// graphx_draw_pixel(x, y, PIXEL_ON);
 }
