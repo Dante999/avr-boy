@@ -50,7 +50,7 @@ static enum direction ball_direction = DIR_UP_RIGHT;
 
 void screensaver_init(void)
 {
-	graphx_fill_pattern(0x00);
+	graphx_fill_pattern(0xAA);
 }
 
 static void move_down()
@@ -175,6 +175,7 @@ static void move_downright()
 
 void screensaver_run(uint8_t speed)
 {
+
 	static uint8_t i = 0;
 
 	i++;
@@ -185,6 +186,8 @@ void screensaver_run(uint8_t speed)
 	else {
 		i = 0;
 	}
+
+	graphx_draw_pixel(x, y, PIXEL_OFF);
 
 	switch (ball_direction) {
 	case DIR_UP:
@@ -220,6 +223,5 @@ void screensaver_run(uint8_t speed)
 		break;
 	}
 
-	lcd_draw_pixel(x, y, 1);
-	// graphx_draw_pixel(x, y, PIXEL_ON);
+	graphx_draw_pixel(x, y, PIXEL_ON);
 }

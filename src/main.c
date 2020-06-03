@@ -23,21 +23,17 @@
 
 #include "bootscreen.h"
 #include "button.h"
-#include "driver/i2cmaster.h"
-#include "driver/pcf8574.h"
-#include "driver/uart.h"
+#include "driver/drivers.h"
 #include "graphx.h"
 #include "lcd.h"
 #include "logger.h"
-#include "menu-config.h"
+//#include "menu-config.h"
 #include "screensaver.h"
 
 static void init(void)
 {
-	uart_init();
-	i2c_init();
+	drivers_init();
 	button_init();
-	lcd_init();
 	graphx_init();
 	screensaver_init();
 
@@ -53,12 +49,12 @@ int main(void)
 	bootscreen_show();
 
 	while (1) {
-		_delay_ms(10);
+		//_delay_ms(10);
 		button_read(&buttons);
 		button_debug(&buttons);
 
-		screensaver_run(5);
+		screensaver_run(0);
 
-		// ks0108_drawbuffer();
+		lcd_drawbuffer(graphx_buffer());
 	}
 }
