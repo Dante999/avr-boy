@@ -78,8 +78,10 @@ void graphx_draw_pixel(uint8_t x, uint8_t y, uint8_t color)
 
 	uint16_t index = calculate_index(x, y);
 
-	if (color)
+	if (color == PIXEL_ON)
 		g_graphxdata.buffer[index] |= (1 << y_bit);
+	else if (color == PIXEL_TOGGLE)
+		g_graphxdata.buffer[index] ^= (1 << y_bit);
 	else
 		g_graphxdata.buffer[index] &= ~(1 << y_bit);
 }
@@ -158,7 +160,7 @@ void graphx_puts(struct font *f, uint8_t x, uint8_t y, const char *s)
 	}
 }
 
-void graphx_fill_pattern(char pattern)
+void graphx_fill_pattern(uint8_t pattern)
 {
 	memset(g_graphxdata.buffer, pattern, graphx_size());
 }

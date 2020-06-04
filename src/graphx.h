@@ -22,8 +22,9 @@
 
 #include <stdint.h> // uint8_t
 
-#define PIXEL_ON  1
-#define PIXEL_OFF 0
+#define PIXEL_OFF    0
+#define PIXEL_ON     1
+#define PIXEL_TOGGLE 2
 
 #define GRAPHX_WIDTH  128
 #define GRAPHX_HEIGHT 64
@@ -52,7 +53,7 @@ void graphx_draw_hline(uint8_t x_start, uint8_t x_end, uint8_t y,
 
 void graphx_read_from(const uint8_t *data);
 void graphx_write_to(uint8_t *data);
-void graphx_fill_pattern(char pattern);
+void graphx_fill_pattern(uint8_t pattern);
 
 uint8_t *graphx_buffer(void);
 
