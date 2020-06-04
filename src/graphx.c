@@ -117,21 +117,21 @@ void graphx_draw_tile(uint8_t x, uint8_t y, const uint8_t *tile,
 	}
 }
 
-void graphx_draw_hline(uint8_t x_start, uint8_t x_end, uint8_t y, uint8_t color)
+void graphx_draw_hline(uint8_t x0, uint8_t x1, uint8_t y, uint8_t color)
 {
-	uint8_t delta = x_end - x_start;
+	uint8_t delta = x1 - x0;
 
 	for (uint8_t i = 0; i <= delta; i++) {
-		graphx_draw_pixel(x_start + i, y, color);
+		graphx_draw_pixel(x0 + i, y, color);
 	}
 }
 
-void graphx_draw_vline(uint8_t x, uint8_t y_start, uint8_t y_end, uint8_t color)
+void graphx_draw_vline(uint8_t x, uint8_t y0, uint8_t y1, uint8_t color)
 {
-	uint8_t delta = y_end - y_start;
+	uint8_t delta = y1 - y0;
 
 	for (uint8_t i = 0; i <= delta; i++) {
-		graphx_draw_pixel(x, y_start + i, color);
+		graphx_draw_pixel(x, y0 + i, color);
 	}
 }
 
