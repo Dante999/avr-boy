@@ -17,15 +17,18 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  *
  ******************************************************************************/
-#include <avr/io.h>
-
 #ifndef UART_H_
-#	define UART_H_
+#define UART_H_
 
-extern void uart_init();
-extern void uart_putc(char c);
-extern void uart_puts(char *s);
-extern void uart_putsln(char *s);
-extern void uart_putui(uint8_t i);
-extern void uart_puti(int8_t i);
+#include <stdint.h>
+
+void uart_init(void);
+void uart_putc(char c);
+void uart_puts(char *s);
+void uart_putsln(char *s);
+void uart_putui(uint8_t i);
+void uart_puti(int8_t i);
+void uart_putui16(uint16_t i);
+void uart_puti16(int8_t i);
+
 #endif

@@ -18,6 +18,8 @@
  *
  ******************************************************************************/
 #include "uart.h"
+
+#include <avr/io.h>
 #include <stdio.h>
 
 #ifndef F_CPU
@@ -88,6 +90,23 @@ void uart_putui(uint8_t i)
 }
 
 /*******************************************************************************
+ * @brief prints an 16-bit integer to the uart interface
+ *
+ * @param  i     the integer to print
+ *
+ * @return none
+ ******************************************************************************/
+void uart_putui16(uint16_t i)
+{
+
+	char buffer[6];
+
+	sprintf(buffer, "%d", i);
+
+	uart_puts(buffer);
+}
+
+/*******************************************************************************
  * @brief prints an 8-bit integer to the uart interface
  *
  * @param  i     the integer to print
@@ -98,6 +117,23 @@ void uart_puti(int8_t i)
 {
 
 	char buffer[5];
+
+	sprintf(buffer, "%d", i);
+
+	uart_puts(buffer);
+}
+
+/*******************************************************************************
+ * @brief prints an 8-bit integer to the uart interface
+ *
+ * @param  i     the integer to print
+ *
+ * @return none
+ ******************************************************************************/
+void uart_puti16(int8_t i)
+{
+
+	char buffer[7];
 
 	sprintf(buffer, "%d", i);
 
