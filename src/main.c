@@ -27,8 +27,10 @@
 #include "graphx.h"
 #include "lcd.h"
 #include "logger.h"
-//#include "menu-config.h"
+#include "menu-config.h"
 #include "screensaver.h"
+
+enum state { STATE_SCREENSAVER, STATE_CONFIGMENU };
 
 static void init(void)
 {
@@ -44,6 +46,7 @@ int main(void)
 {
 	init();
 
+	enum state    system_state = STATE_SCREENSAVER;
 	struct button buttons;
 
 	bootscreen_show();
@@ -53,7 +56,27 @@ int main(void)
 		button_read(&buttons);
 		button_debug(&buttons);
 
-		screensaver_run(0);
+		switch (system_state) {
+
+		case STATE_SCREENSAVER:
+			screensaver_run(0);
+
+			if (buttons.reg1 & BUTTON_REG1_CONFIG) {
+				system_state = STATE_CONFIGMENU;
+				graphx_fill_pattern(0x00);
+			}
+
+			break;
+		case STATE_CONFIGMENU:
+			menuconfig_refresh(&buttons);
+
+			if (buttons.reg1 & BUTTON_REG1_CONFIG) {
+				system_state = STATE_SCREENSAVER;
+				graphx_fill_pattern(0x00);
+			}
+
+			break;
+		}
 
 		lcd_drawbuffer(graphx_buffer());
 	}

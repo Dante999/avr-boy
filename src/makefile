@@ -24,13 +24,13 @@ SOURCES += pcf8574.c
 SOURCES += button.c
 SOURCES += ks0108.c
 SOURCES += graphx.c
-#SOURCES += menu-config.c
+SOURCES += menu-config.c
 SOURCES += bootscreen.c
 SOURCES += screensaver.c
 SOURCES += lcd.c
 SOURCES += drivers.c
 SOURCES += ssd1306.c
-
+SOURCES += font.c
 
 # Progammer
 PROGRAMMER=usbasp

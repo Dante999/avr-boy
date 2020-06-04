@@ -84,6 +84,7 @@ static void draw_cursor(uint8_t index)
 
 void menuconfig_refresh(struct button *buttons)
 {
+
 	static uint8_t current_index = 0;
 
 	graphx_puts(&font5x7, 16, 0, "configuration");

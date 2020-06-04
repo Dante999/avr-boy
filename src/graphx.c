@@ -19,6 +19,8 @@
  ******************************************************************************/
 #include "graphx.h"
 
+#include "logger.h"
+#include <avr/pgmspace.h>
 #include <stdint.h>
 #include <stdio.h>
 #include <stdlib.h>
@@ -144,19 +146,35 @@ uint8_t graphx_get_pixel(uint8_t x, uint8_t y)
 		return 0;
 }
 
-void graphx_putc(struct font *f, uint8_t x, uint8_t y, const char c)
+void graphx_putc(const struct font *f, uint8_t x, uint8_t y, const char c)
 {
-	uint8_t  offset = (uint8_t)c - 0x20;
-	uint16_t index  = offset * f->width;
-	uint8_t *data   = (uint8_t *)(&f->data[index]);
+	uint8_t font_width  = font_pgm_width(f);
+	uint8_t font_height = font_pgm_height(f);
 
-	graphx_draw_tile(x, y, data, f->width, f->height);
+	uint8_t  char_index  = (uint8_t)c - 0x20;
+	uint16_t start_index = char_index * font_width;
+
+	for (uint8_t row = 0; row < (font_height / 8); row++) {
+
+		uint16_t row_offset = row * font_width;
+
+		for (uint8_t col = 0; col < font_width; col++) {
+
+			uint16_t i_new = start_index + row_offset + col;
+			uint8_t  x_new = x + col;
+			uint8_t  y_new = y + (row * 8);
+
+			graphx_draw_byte(x_new, y_new, font_pgm_byte(f, i_new));
+		}
+	}
 }
 
-void graphx_puts(struct font *f, uint8_t x, uint8_t y, const char *s)
+void graphx_puts(const struct font *f, uint8_t x, uint8_t y, const char *s)
 {
+	uint8_t font_width = font_pgm_width(f);
+
 	for (uint8_t i = 0; i < strlen(s); i++) {
-		graphx_putc(f, x + (i * (f->width + 1)), y, s[i]);
+		graphx_putc(f, x + (i * (font_width + 1)), y, s[i]);
 	}
 }
 
