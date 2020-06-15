@@ -30,6 +30,9 @@
 #include "menu-config.h"
 #include "screensaver.h"
 
+#include "driver/spislave.h"
+#include "driver/uart.h"
+
 enum state { STATE_SCREENSAVER, STATE_CONFIGMENU };
 
 static void init(void)
@@ -39,7 +42,7 @@ static void init(void)
 	graphx_init();
 	screensaver_init();
 
-	LOG_INFO("initialization done!");
+	LOG_INFO_LINE("initialization done!");
 }
 
 int main(void)
@@ -52,6 +55,16 @@ int main(void)
 	bootscreen_show();
 
 	while (1) {
+
+		uart_puts("Wait SPI... ");
+		uint8_t d = spi_transceive(0x00);
+
+		uart_putui(d);
+		uart_putsln("");
+
+		//LOG_INFO_UI8(d);
+		//LOG_INFO_LINE("");
+
 		//_delay_ms(10);
 		button_read(&buttons);
 		button_debug(&buttons);
