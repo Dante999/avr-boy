@@ -14,9 +14,14 @@
 #endif
 
 #if (LOG_LEVEL <= LEVEL_INFO)
-#	define LOG_INFO(msg) uart_putsln(msg)
+#	define LOG_INFO_LINE(msg) uart_putsln(msg)
+#	define LOG_INFO(msg)      uart_puts(msg)
+#	define LOG_INFO_UI8(c)    uart_putui(c);
+
 #else
-#	define LOG_INFO(msg) // msg
+#	define LOG_INFO_LINE(msg)
+#	define LOG_INFO(msg)
+#	define LOG_INFO_UI8(c)
 #endif
 
 #endif // LOGGER_H

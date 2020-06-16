@@ -1,6 +1,7 @@
 #include "i2cmaster.h"
 #include "ks0108.h"
 #include "pcf8574.h"
+#include "spislave.h"
 #include "ssd1306.h"
 #include "uart.h"
 
@@ -31,5 +32,9 @@ void drivers_init(void)
 
 	INIT_START("   KS0108 ....")
 	ks0108_init();
+	INIT_DONE
+
+	INIT_START("   SPI .......")
+	spi_init();
 	INIT_DONE
 }

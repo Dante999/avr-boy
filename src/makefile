@@ -31,7 +31,7 @@ SOURCES += lcd.c
 SOURCES += drivers.c
 SOURCES += ssd1306.c
 SOURCES += font.c
-
+SOURCES += spislave.c
 # Progammer
 PROGRAMMER=usbasp
 #PORT=-P/dev/ttyUSB0

@@ -32,7 +32,10 @@ SRCS:=           \
 system.c       \
 test_graphx.c \
 testsuite.c \
+mock_font.c \
 ../graphx.c \
+
+
 
 # Objectfiles
 OBJS:=           \
@@ -40,6 +43,7 @@ system.obj     \
 test_graphx.obj \
 testsuite.obj \
 graphx.obj \
+mock_font.obj \
 
 #----------------------------------------------------
 # Build all
