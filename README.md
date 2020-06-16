@@ -1,3 +1,5 @@
+[![Build Status](https://travis-ci.org/Dante999/avr-boy.svg?branch=master)](https://travis-ci.org/Dante999/avr-boy)
+
 # AVR BOY
 This project is something I would like to do since my childhood: Creating my own
 handheld game console. Of course not as much powerful as the 'Game Boy' or even
