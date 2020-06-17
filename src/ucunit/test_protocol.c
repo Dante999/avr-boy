@@ -21,6 +21,7 @@
 
 #include "../protocol/avrboy-protocol.h"
 #include "../protocol/commands.h"
+#include "system.h"
 #include "uCUnit-v1.0.h"
 #include "util.h"
 

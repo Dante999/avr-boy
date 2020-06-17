@@ -16,7 +16,9 @@
  * You should have received a copy of the GNU General Public License
  * along with avr-boy.  If not, see <http://www.gnu.org/licenses/>.
  */
+#include "system.h"
 #include "uCUnit-v1.0.h"
+
 #include <stdint.h>
 #include <stdio.h>
 #include <string.h>
@@ -27,5 +29,5 @@ void CHECK_u8_equals(uint8_t expected, uint8_t actual, const char *msg)
 
 	sprintf(buffer, "[expected=%d|actual=%d]", expected, actual);
 
-	UCUNIT_Check(expected == actual, msg, buffer);
+	UCUNIT_Check(expected == actual, (char *)msg, buffer);
 }
