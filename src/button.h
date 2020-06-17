@@ -20,7 +20,7 @@
 #ifndef BUTTON_H
 #define BUTTON_H
 
-#include "core-buttons.h"
+#include "protocol/core-buttons.h"
 
 void button_debug(struct button *buttons);
 void button_read(struct button *button);

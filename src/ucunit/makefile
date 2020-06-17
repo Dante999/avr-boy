@@ -31,9 +31,12 @@ VPATH = ..
 SRCS:=           \
 system.c       \
 test_graphx.c \
+test_protocol.c \
 testsuite.c \
 mock_font.c \
 ../graphx.c \
+../protocol/avrboy-protocol.c \
+util.c \
 
 
 
@@ -41,9 +44,12 @@ mock_font.c \
 OBJS:=           \
 system.obj     \
 test_graphx.obj \
+test_protocol.obj \
 testsuite.obj \
 graphx.obj \
 mock_font.obj \
+../protocol/avrboy-protocol.obj \
+util.obj \
 
 #----------------------------------------------------
 # Build all

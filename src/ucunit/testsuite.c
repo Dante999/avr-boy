@@ -37,6 +37,7 @@
 #include "testsuite.h"
 #include "system.h"
 #include "test_graphx.h"
+#include "test_protocol.h"
 #include "uCUnit-v1.0.h"
 
 static void Test_BasicChecksDemo(void)
@@ -174,7 +175,7 @@ void Testsuite_RunTests(void)
 	//	Test_CheckTracepointsDemo();
 
 	test_graphx_run();
-
+	test_protocol_run();
 	//	UCUNIT_WriteSummary();
 }
 
