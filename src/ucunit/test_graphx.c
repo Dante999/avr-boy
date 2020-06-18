@@ -27,8 +27,8 @@ static void test_draw_pixel(void)
 			graphx_draw_pixel(x, y, PIXEL_ON);
 
 			UCUNIT_Check(graphx_get_pixel(x, y) == 1,
-				     "graphx_get_pixel(...) == 1",
-				     print_coordinates(x, y));
+			             "graphx_get_pixel(...) == 1",
+			             print_coordinates(x, y));
 		}
 	}
 
@@ -39,8 +39,8 @@ static void test_draw_pixel(void)
 			graphx_draw_pixel(x, y, PIXEL_OFF);
 
 			UCUNIT_Check(graphx_get_pixel(x, y) == 0,
-				     "graphx_get_pixel(...) == 0",
-				     print_coordinates(x, y));
+			             "graphx_get_pixel(...) == 0",
+			             print_coordinates(x, y));
 		}
 	}
 
@@ -278,12 +278,12 @@ static void test_draw_tile_128x64(void)
 		uint8_t y2 = height - 1;
 
 		UCUNIT_Check(graphx_get_pixel(x1, y1) == 1,
-			     "graphx_get_pixel(...) == 1",
-			     print_coordinates(x1, y1));
+		             "graphx_get_pixel(...) == 1",
+		             print_coordinates(x1, y1));
 
 		UCUNIT_Check(graphx_get_pixel(x2, y2) == 1,
-			     "graphx_get_pixel(...) == 1",
-			     print_coordinates(x2, y2));
+		             "graphx_get_pixel(...) == 1",
+		             print_coordinates(x2, y2));
 	}
 
 	for (uint8_t i = 0; i < height; i++) {
@@ -294,12 +294,12 @@ static void test_draw_tile_128x64(void)
 		uint8_t y2 = i;
 
 		UCUNIT_Check(graphx_get_pixel(x1, y1) == 1,
-			     "graphx_get_pixel(...) == 1",
-			     print_coordinates(x1, y1));
+		             "graphx_get_pixel(...) == 1",
+		             print_coordinates(x1, y1));
 
 		UCUNIT_Check(graphx_get_pixel(x2, y2) == 1,
-			     "graphx_get_pixel(...) == 1",
-			     print_coordinates(x2, y2));
+		             "graphx_get_pixel(...) == 1",
+		             print_coordinates(x2, y2));
 	}
 
 	UCUNIT_TestcaseEnd();
@@ -316,8 +316,8 @@ static void test_fill_pattern(void)
 	for (uint8_t x = 0; x < GRAPHX_WIDTH; x++) {
 		for (uint8_t y = 0; y < GRAPHX_HEIGHT; y++) {
 			UCUNIT_Check(graphx_get_pixel(x, y) == 1,
-				     "graphx_get_pixel(...) == 1",
-				     print_coordinates(x, y));
+			             "graphx_get_pixel(...) == 1",
+			             print_coordinates(x, y));
 		}
 	}
 
@@ -326,10 +326,12 @@ static void test_fill_pattern(void)
 	for (uint8_t x = 0; x < GRAPHX_WIDTH; x++) {
 		for (uint8_t y = 0; y < GRAPHX_HEIGHT; y++) {
 			UCUNIT_Check(graphx_get_pixel(x, y) == 0,
-				     "graphx_get_pixel(...) == 0",
-				     print_coordinates(x, y));
+			             "graphx_get_pixel(...) == 0",
+			             print_coordinates(x, y));
 		}
 	}
+
+	UCUNIT_TestcaseEnd();
 }
 
 void test_graphx_run(void)
