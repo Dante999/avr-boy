@@ -6,6 +6,8 @@
 *.includes
 *.config
 
+.vscode
+
 # QT Creator (used for QT projects)
 # keep the independent .pro file but delete user files
 *.pro.user
