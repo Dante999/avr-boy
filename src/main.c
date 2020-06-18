@@ -21,16 +21,16 @@
 #include <string.h> // memset(..)
 #include <util/delay.h>
 
-#include "bootscreen.h"
 #include "button.h"
 #include "display/graphx.h"
 #include "display/lcd.h"
 #include "driver/drivers.h"
 #include "driver/spislave.h"
 #include "driver/uart.h"
-#include "menu-config.h"
 #include "protocol/handheld.h"
-#include "screensaver.h"
+#include "screens/bootscreen.h"
+#include "screens/menu-config.h"
+#include "screens/screensaver.h"
 #include "util/logger.h"
 
 enum state { STATE_SCREENSAVER, STATE_CONFIGMENU };

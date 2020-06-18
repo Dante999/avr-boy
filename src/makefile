@@ -16,7 +16,11 @@ E_FUSE=0xFF
 # Target where the files should be placed
 BUILDPATH=./build
 
-VPATH = driver protocol display util
+VPATH  = driver
+VPATH += protocol
+VPATH += display
+VPATH += util
+VPATH += screens
 
 # List of all sources (only source-files)
 SOURCES  = main.c

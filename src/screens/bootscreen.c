@@ -3,7 +3,8 @@
 #include <avr/io.h>
 #include <util/delay.h>
 
-#include "display/lcd.h"
+#include "../display/graphx.h"
+#include "../display/lcd.h"
 
 #define Y_SCROLL              40
 #define SCROLL_DELAY_MS       30
