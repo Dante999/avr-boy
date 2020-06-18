@@ -35,8 +35,8 @@ SOURCES += ssd1306.c
 SOURCES += font.c
 SOURCES += spislave.c
 SOURCES += logger.c
-SOURCES += avrboy-protocol.c
-SOURCES += avrboy-handheld.c
+SOURCES += protocol.c
+SOURCES += handheld.c
 
 # Progammer
 PROGRAMMER=usbasp

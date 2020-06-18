@@ -3,7 +3,7 @@
 #include "../display/font5x7.h"
 #include "../display/graphx.h"
 #include "../driver/spislave.h"
-#include "../logger.h"
+#include "../util/logger.h"
 #include "protocol.h"
 
 static void answer_ping(void)

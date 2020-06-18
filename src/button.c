@@ -96,38 +96,38 @@ void button_read(struct button *button)
 void button_debug(struct button *buttons)
 {
 	if (buttons->reg0 & BUTTON_REG0_UP) {
-		LOG_INFO_LINE("BUTTON_UP ");
+		LOG_INFO("BUTTON_UP ");
 	}
 
 	if (buttons->reg0 & BUTTON_REG0_DOWN) {
-		LOG_INFO_LINE("BUTTON_DOWN ");
+		LOG_INFO("BUTTON_DOWN ");
 	}
 
 	if (buttons->reg0 & BUTTON_REG0_LEFT) {
-		LOG_INFO_LINE("BUTTON_LEFT ");
+		LOG_INFO("BUTTON_LEFT ");
 	}
 
 	if (buttons->reg0 & BUTTON_REG0_RIGHT) {
-		LOG_INFO_LINE("BUTTON_RIGHT ");
+		LOG_INFO("BUTTON_RIGHT ");
 	}
 
 	if (buttons->reg0 & BUTTON_REG0_A) {
-		LOG_INFO_LINE("BUTTON_A ");
+		LOG_INFO("BUTTON_A ");
 	}
 
 	if (buttons->reg0 & BUTTON_REG0_B) {
-		LOG_INFO_LINE("BUTTON_B ");
+		LOG_INFO("BUTTON_B ");
 	}
 
 	if (buttons->reg0 & BUTTON_REG0_START) {
-		LOG_INFO_LINE("BUTTON_START ");
+		LOG_INFO("BUTTON_START ");
 	}
 
 	if (buttons->reg0 & BUTTON_REG0_SELECT) {
-		LOG_INFO_LINE("BUTTON_SELECT ");
+		LOG_INFO("BUTTON_SELECT ");
 	}
 
 	if (buttons->reg1 & BUTTON_REG1_CONFIG) {
-		LOG_INFO_LINE("BUTTON_CONFIG ");
+		LOG_INFO("BUTTON_CONFIG ");
 	}
 }

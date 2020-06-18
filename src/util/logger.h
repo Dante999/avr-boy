@@ -19,9 +19,9 @@ void log_println(const char *prefix, const char *msg);
 #endif
 
 #if (LOG_LEVEL <= LEVEL_INFO)
-#	define LOG_INFO_LINE(msg) log_println("[I] ", msg);
+#	define LOG_INFO(msg) log_println("[I] ", msg);
 #else
-#	define LOG_INFO_LINE(msg)
+#	define LOG_INFO(msg)
 #endif
 
 #if (LOG_LEVEL <= LEVEL_WARNING)

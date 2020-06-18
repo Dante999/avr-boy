@@ -54,7 +54,7 @@ static void init(void)
 
 	handheld_init(cb_transmit, cb_receive);
 
-	LOG_INFO_LINE("initialization done!");
+	LOG_INFO("initialization done!");
 }
 
 int main(void)
@@ -70,16 +70,6 @@ int main(void)
 
 		handheld_wait_for_actions();
 
-		// uart_puts("Wait SPI... ");
-		// uint8_t d = spi_transceive(0x00);
-
-		// uart_putui(d);
-		// uart_putsln("");
-
-		// LOG_INFO_UI8(d);
-		// LOG_INFO_LINE("");
-
-		//_delay_ms(10);
 		button_read(&buttons);
 		button_debug(&buttons);
 
