@@ -16,6 +16,8 @@ E_FUSE=0xFF
 # Target where the files should be placed
 BUILDPATH=./build
 
+VPATH = driver protocol display
+
 # List of all sources (only source-files)
 SOURCES  = main.c
 SOURCES += uart.c
@@ -32,14 +34,18 @@ SOURCES += drivers.c
 SOURCES += ssd1306.c
 SOURCES += font.c
 SOURCES += spislave.c
+SOURCES += logger.c
+SOURCES += avrboy-protocol.c
+SOURCES += avrboy-handheld.c
+
 # Progammer
 PROGRAMMER=usbasp
 #PORT=-P/dev/ttyUSB0
 #BAUD=-B9600
 
-VPATH = driver protocol
 
 OBJECTS=$(SOURCES:%.c=$(BUILDPATH)/%.o)
+
 
 CFLAGS  = -c
 CFLAGS += -Os

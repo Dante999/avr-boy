@@ -36,7 +36,7 @@ testsuite.c \
 mock_font.c \
 ../graphx.c \
 ../protocol/avrboy-protocol.c \
-util.c \
+
 
 
 
@@ -49,7 +49,6 @@ testsuite.obj \
 graphx.obj \
 mock_font.obj \
 ../protocol/avrboy-protocol.obj \
-util.obj \
 
 #----------------------------------------------------
 # Build all

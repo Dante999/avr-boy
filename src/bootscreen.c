@@ -3,7 +3,7 @@
 #include <avr/io.h>
 #include <util/delay.h>
 
-#include "lcd.h"
+#include "display/lcd.h"
 
 #define Y_SCROLL              40
 #define SCROLL_DELAY_MS       30
@@ -34,7 +34,7 @@ void bootscreen_show(void)
 	graphx_fill_pattern(0x00);
 
 	graphx_draw_tile(X_OFFSET, Y_OFFSET, bmp_bootscreen, BOOTSCREEN_WIDTH,
-			 BOOTSCREEN_HEIGHT);
+	                 BOOTSCREEN_HEIGHT);
 
 	lcd_drawbuffer(graphx_buffer());
 

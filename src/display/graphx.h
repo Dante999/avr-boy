@@ -21,6 +21,8 @@
 #define GRAPHX_H
 
 #include "font.h"
+#include "font5x7.h"
+
 #include <stdint.h> // uint8_t
 
 #define PIXEL_OFF    0
@@ -32,7 +34,7 @@
 #define GRAPHX_SIZE   (GRAPHX_WIDTH * (GRAPHX_HEIGHT / 8))
 
 void graphx_draw_tile(uint8_t x, uint8_t y, const uint8_t *tile, uint8_t w,
-		      uint8_t h);
+                      uint8_t h);
 
 void graphx_putc(const struct font *f, uint8_t x, uint8_t y, const char c);
 void graphx_puts(const struct font *f, uint8_t x, uint8_t y, const char *s);
@@ -44,6 +46,7 @@ void graphx_draw_hline(uint8_t x0, uint8_t x1, uint8_t y, uint8_t color);
 void graphx_read_from(const uint8_t *data);
 void graphx_write_to(uint8_t *data);
 void graphx_fill_pattern(uint8_t pattern);
+void graphx_clear(void);
 
 uint8_t *graphx_buffer(void);
 

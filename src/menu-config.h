@@ -21,7 +21,7 @@
 #define MENUCONFIG_H
 
 #include "button.h"
-#include "graphx.h"
+#include "display/graphx.h"
 
 void menuconfig_refresh(struct button *buttons);
 

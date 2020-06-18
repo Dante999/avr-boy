@@ -22,19 +22,37 @@
 #include <stdbool.h>
 #include <stdint.h>
 
-#define MAX_DATA_LENGTH 16
+#define PROTOCOL_MAX_LENGTH 16
+#define PROTOCOL_VERSION    1
 
-typedef void (*protocol_transmit)(char byte);
-typedef void (*protocol_receive)(void);
+enum commands {
+	CMD_SYNC,
+	CMD_ACK,
+	CMD_NACK,
+	CMD_REQ_PING,
+	CMD_RES_PING,
+	CMD_REQ_VERSION,
+	CMD_RES_VERSION,
+	CMD_GET_BUTTONS,
+};
+
+typedef void (*protocol_callback_transmit)(char byte);
+typedef char (*protocol_callback_receive)(void);
 
 struct protocol_package {
 	uint8_t cmd;
 	uint8_t length;
-	char    data[MAX_DATA_LENGTH];
+	char    data[PROTOCOL_MAX_LENGTH];
 };
 
-void protocol_init(protocol_transmit callback);
-void protocol_send(uint8_t cmd, uint8_t length, const char *data);
-bool protocol_receive_finished(void);
+void protocol_init(protocol_callback_transmit cb_transmit,
+                   protocol_callback_receive  cb_receive);
+
+void protocol_package_send(uint8_t cmd, uint8_t length, const char *data);
+void protocol_package_receive(struct protocol_package *package);
+bool protocol_parse_received(char c);
+bool protocol_receive_complete(void);
+void protocol_copy_received(struct protocol_package *package);
+void protocol_reset(void);
 
 #endif /* AVRBOY_PROTOCOL_H */

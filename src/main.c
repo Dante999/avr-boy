@@ -23,17 +23,27 @@
 
 #include "bootscreen.h"
 #include "button.h"
+#include "display/graphx.h"
+#include "display/lcd.h"
 #include "driver/drivers.h"
-#include "graphx.h"
-#include "lcd.h"
-#include "logger.h"
-#include "menu-config.h"
-#include "screensaver.h"
-
 #include "driver/spislave.h"
 #include "driver/uart.h"
+#include "logger.h"
+#include "menu-config.h"
+#include "protocol/handheld.h"
+#include "screensaver.h"
 
 enum state { STATE_SCREENSAVER, STATE_CONFIGMENU };
+
+static void cb_transmit(char c)
+{
+	spi_transceive(c);
+}
+
+static char cb_receive(void)
+{
+	return spi_transceive(CMD_ACK);
+}
 
 static void init(void)
 {
@@ -41,6 +51,8 @@ static void init(void)
 	button_init();
 	graphx_init();
 	screensaver_init();
+
+	handheld_init(cb_transmit, cb_receive);
 
 	LOG_INFO_LINE("initialization done!");
 }
@@ -56,14 +68,16 @@ int main(void)
 
 	while (1) {
 
-		uart_puts("Wait SPI... ");
-		uint8_t d = spi_transceive(0x00);
+		handheld_wait_for_actions();
 
-		uart_putui(d);
-		uart_putsln("");
+		// uart_puts("Wait SPI... ");
+		// uint8_t d = spi_transceive(0x00);
 
-		//LOG_INFO_UI8(d);
-		//LOG_INFO_LINE("");
+		// uart_putui(d);
+		// uart_putsln("");
+
+		// LOG_INFO_UI8(d);
+		// LOG_INFO_LINE("");
 
 		//_delay_ms(10);
 		button_read(&buttons);

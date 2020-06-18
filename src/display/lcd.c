@@ -1,5 +1,5 @@
-#include "driver/ks0108.h"
-#include "driver/ssd1306.h"
+#include "../driver/ks0108.h"
+#include "../driver/ssd1306.h"
 
 void lcd_draw_pixel(uint8_t x, uint8_t y, uint8_t color)
 {
