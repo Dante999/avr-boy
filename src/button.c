@@ -22,7 +22,7 @@
 #include "driver/pcf8574.h"
 #include <stdint.h>
 
-#include "logger.h"
+#include "util/logger.h"
 
 #define ROW0 (1 << 7)
 #define ROW1 (1 << 6)

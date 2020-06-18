@@ -28,10 +28,10 @@
 #include "driver/drivers.h"
 #include "driver/spislave.h"
 #include "driver/uart.h"
-#include "logger.h"
 #include "menu-config.h"
 #include "protocol/handheld.h"
 #include "screensaver.h"
+#include "util/logger.h"
 
 enum state { STATE_SCREENSAVER, STATE_CONFIGMENU };
 

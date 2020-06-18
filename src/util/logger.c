@@ -1,7 +1,7 @@
 #include "logger.h"
 
 #if LOG_LEVEL > LEVEL_OFF
-#	include "driver/uart.h"
+#	include "../driver/uart.h"
 #endif
 
 void log_print(const char *msg)
