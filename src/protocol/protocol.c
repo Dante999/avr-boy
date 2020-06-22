@@ -53,7 +53,16 @@ static void parse_byte(char byte)
 
 	case WAITFOR_LENGTH:
 		m_package.length = byte;
-		m_state          = WAITFOR_DATA;
+
+		if (m_package.length == 0) {
+			i          = 0;
+			m_state    = WAITFOR_SYNC;
+			m_finished = true;
+		}
+		else {
+			m_state = WAITFOR_DATA;
+		}
+
 		break;
 
 	case WAITFOR_DATA:
@@ -127,6 +136,7 @@ void protocol_package_receive(struct protocol_package *package)
 	}
 
 	protocol_copy_received(package);
+	protocol_reset();
 }
 
 /** ****************************************************************************

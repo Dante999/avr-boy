@@ -132,9 +132,6 @@ void test_protocol_min_data_length(void)
 	uint8_t cmd    = PRTCL_CMD_PING;
 	uint8_t length = 0;
 
-	// char data[length];
-	// memset(data, 0xFF, length);
-
 	m_receive_buffer[0] = sync;
 	m_receive_buffer[1] = cmd;
 	m_receive_buffer[2] = length;
@@ -144,6 +141,19 @@ void test_protocol_min_data_length(void)
 	protocol_package_receive(&received);
 
 	TEST_ASSERT_EQUAL(3, m_receive_index);
+
+	// double check
+	m_receive_index     = 0;
+	m_receive_buffer[2] = 2; // new length
+	m_receive_buffer[3] = 3; // data[0]
+	m_receive_buffer[4] = 4; // data[1]
+
+	protocol_package_receive(&received);
+
+	TEST_ASSERT_EQUAL(5, m_receive_index);
+	TEST_ASSERT_EQUAL(2, received.length);
+	TEST_ASSERT_EQUAL(3, received.data[0]);
+	TEST_ASSERT_EQUAL(4, received.data[1]);
 }
 
 void test_protocol_max_data_length(void)
