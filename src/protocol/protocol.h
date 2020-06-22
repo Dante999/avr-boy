@@ -47,8 +47,8 @@ struct protocol_package {
 void protocol_init(protocol_callback_transmit cb_transmit,
                    protocol_callback_receive  cb_receive);
 
-void protocol_package_send(uint8_t cmd, uint8_t length, const char *data);
-void protocol_package_receive(struct protocol_package *package);
+void protocol_send_package(uint8_t cmd, uint8_t length, const char *data);
+void protocol_waitfor_package(struct protocol_package *package);
 bool protocol_parse_received(char c);
 bool protocol_receive_complete(void);
 void protocol_copy_received(struct protocol_package *package);

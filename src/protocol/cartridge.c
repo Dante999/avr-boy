@@ -43,7 +43,7 @@ static struct protocol_package m_received;
 
 // uint8_t avrboy_request_version(uint8_t own_version)
 // {
-// 	protocol_package_send(PRTCL_CMD_CHECK_VERSION, own_version, 0);
+// 	protocol_send_package(PRTCL_CMD_CHECK_VERSION, own_version, 0);
 
 // 	wait_for_completion(&m_received);
 // 	expected_cmd(&m_received, CMD_RES_VERSION);
@@ -53,12 +53,12 @@ static struct protocol_package m_received;
 
 // uint8_t avrboy_response_version(uint8_t version)
 // {
-// 	protocol_package_send(CMD_RES_VERSION, 1, version);
+// 	protocol_send_package(CMD_RES_VERSION, 1, version);
 // }
 
 // uint8_t avrboy_request_ping(void)
 // {
-// 	protocol_package_send(PRTCL_CMD_PING, 0, 0);
+// 	protocol_send_package(PRTCL_CMD_PING, 0, 0);
 
 // 	wait_for_completion(&m_received);
 // 	expected_cmd(&m_received, CMD_RES_PING);
@@ -68,13 +68,13 @@ static struct protocol_package m_received;
 
 // uint8_t avrboy_response_ping(void)
 // {
-// 	protocol_package_send(PRTCL_CMD_PING, 0, 0);
+// 	protocol_send_package(PRTCL_CMD_PING, 0, 0);
 // }
 
 uint8_t cartridge_ping(void)
 {
-	protocol_package_send(PRTCL_CMD_PING, 0, 0);
-	protocol_package_receive(&m_received);
+	protocol_send_package(PRTCL_CMD_PING, 0, 0);
+	protocol_waitfor_package(&m_received);
 
 	if (m_received.cmd == PRTCL_CMD_ACK)
 		return CRTRDG_STATUS_OK;
@@ -84,8 +84,8 @@ uint8_t cartridge_ping(void)
 
 // uint8_t cartridge_check_version(uint8_t *handheld_version)
 // {
-// 	protocol_package_send(PRTCL_CMD_CHECK_VERSION, 1, COM_VERSION);
-// 	protocol_package_receive(&m_received);
+// 	protocol_send_package(PRTCL_CMD_CHECK_VERSION, 1, COM_VERSION);
+// 	protocol_waitfor_package(&m_received);
 
 // 	if (COM_VERSION == m_received.data[0])
 // 		return CRTRDG_STATUS_OK;

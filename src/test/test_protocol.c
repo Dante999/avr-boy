@@ -69,7 +69,7 @@ static void test_protocol_receiver_callback(void)
 	struct protocol_package received;
 	memset(&received, 0x00, sizeof(received));
 
-	protocol_package_receive(&received);
+	protocol_waitfor_package(&received);
 
 	TEST_ASSERT_EQUAL(m_receive_index, 4);
 
@@ -83,7 +83,7 @@ static void test_protocol_transmitter_callback(void)
 	reset_all();
 
 	char data[4] = {1, 2, 3, 4};
-	protocol_package_send(data[0], data[1], &data[2]);
+	protocol_send_package(data[0], data[1], &data[2]);
 
 	TEST_ASSERT_EQUAL(m_transmit_index, 5);
 	TEST_ASSERT_EQUAL(m_transmit_buffer[0], PRTCL_START_BYTE);
@@ -138,7 +138,7 @@ void test_protocol_min_data_length(void)
 
 	// check received data
 	struct protocol_package received;
-	protocol_package_receive(&received);
+	protocol_waitfor_package(&received);
 
 	TEST_ASSERT_EQUAL(3, m_receive_index);
 
@@ -148,7 +148,7 @@ void test_protocol_min_data_length(void)
 	m_receive_buffer[3] = 3; // data[0]
 	m_receive_buffer[4] = 4; // data[1]
 
-	protocol_package_receive(&received);
+	protocol_waitfor_package(&received);
 
 	TEST_ASSERT_EQUAL(5, m_receive_index);
 	TEST_ASSERT_EQUAL(2, received.length);
@@ -173,7 +173,7 @@ void test_protocol_max_data_length(void)
 
 	// check received data
 	struct protocol_package received;
-	protocol_package_receive(&received);
+	protocol_waitfor_package(&received);
 
 	TEST_ASSERT_EQUAL(PROTOCOL_MAX_LENGTH, received.length);
 }

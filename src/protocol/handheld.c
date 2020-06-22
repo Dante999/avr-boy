@@ -8,7 +8,7 @@
 
 static void answer_ping(void)
 {
-	protocol_package_send(PRTCL_CMD_ACK, 0, 0);
+	protocol_send_package(PRTCL_CMD_ACK, 0, 0);
 }
 
 static void answer_version(uint8_t cartridge_version)
@@ -34,7 +34,7 @@ static void answer_version(uint8_t cartridge_version)
 		graphx_puts(&font5x7, 0, 16, buffer);
 	}
 
-	protocol_package_send(PRTCL_CMD_ACK, 1, PROTOCOL_VERSION);
+	protocol_send_package(PRTCL_CMD_ACK, 1, PROTOCOL_VERSION);
 }
 
 static void execute_command(struct protocol_package *received)
@@ -69,7 +69,7 @@ void handheld_wait_for_actions(void)
 	struct protocol_package received;
 
 	LOG_DEBUG("waiting for commands...");
-	protocol_package_receive(&received);
+	protocol_waitfor_package(&received);
 
 	char buffer[10];
 

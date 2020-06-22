@@ -121,7 +121,7 @@ bool protocol_parse_received(char c)
  * @param length the length of the following data
  * @param data   the data or payload itself
  **************************************************************************** */
-void protocol_package_send(uint8_t cmd, uint8_t length, const char *data)
+void protocol_send_package(uint8_t cmd, uint8_t length, const char *data)
 {
 	m_callback_transmit(PRTCL_START_BYTE);
 	m_callback_transmit(cmd);
@@ -132,7 +132,7 @@ void protocol_package_send(uint8_t cmd, uint8_t length, const char *data)
 	}
 }
 
-void protocol_package_receive(struct protocol_package *package)
+void protocol_waitfor_package(struct protocol_package *package)
 {
 	while (!m_finished) {
 		char c = m_callback_receive();
