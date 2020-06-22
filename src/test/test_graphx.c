@@ -1,8 +1,6 @@
-#include "system.h"
-#include "testsuite.h"
-#include "uCUnit-v1.0.h"
+#include "unity.h"
 
-#include "../graphx.h"
+#include "../display/graphx.h"
 
 #include <stdio.h>
 
@@ -14,10 +12,8 @@ char *print_coordinates(uint8_t x, uint8_t y)
 	return buffer;
 }
 
-static void test_draw_pixel(void)
+static void test_graphx_draw_pixel(void)
 {
-	UCUNIT_TestcaseBegin("graphx.c : draw pixel");
-
 	graphx_init();
 
 	for (uint8_t x = 0; x < GRAPHX_WIDTH; x++) {
@@ -26,9 +22,8 @@ static void test_draw_pixel(void)
 
 			graphx_draw_pixel(x, y, PIXEL_ON);
 
-			UCUNIT_Check(graphx_get_pixel(x, y) == 1,
-				     "graphx_get_pixel(...) == 1",
-				     print_coordinates(x, y));
+			TEST_ASSERT_MESSAGE(graphx_get_pixel(x, y) == 1,
+			                    print_coordinates(x, y));
 		}
 	}
 
@@ -38,19 +33,14 @@ static void test_draw_pixel(void)
 
 			graphx_draw_pixel(x, y, PIXEL_OFF);
 
-			UCUNIT_Check(graphx_get_pixel(x, y) == 0,
-				     "graphx_get_pixel(...) == 0",
-				     print_coordinates(x, y));
+			TEST_ASSERT_MESSAGE(graphx_get_pixel(x, y) == 0,
+			                    print_coordinates(x, y));
 		}
 	}
-
-	UCUNIT_TestcaseEnd();
 }
 
-static void test_draw_hline(void)
+static void test_graphx_draw_hline(void)
 {
-
-	UCUNIT_TestcaseBegin("graphx.c : draw hline");
 
 	graphx_init();
 
@@ -61,15 +51,13 @@ static void test_draw_hline(void)
 	graphx_draw_hline(x_start, x_end, y, PIXEL_ON);
 
 	for (uint8_t i = x_start; i <= x_end; i++) {
-		UCUNIT_CheckIsEqual(graphx_get_pixel(i, y), 1);
+		TEST_ASSERT_MESSAGE(graphx_get_pixel(i, y) == 1,
+		                    print_coordinates(i, y));
 	}
-
-	UCUNIT_TestcaseEnd();
 }
 
-static void test_draw_vline(void)
+static void test_graphx_draw_vline(void)
 {
-	UCUNIT_TestcaseBegin("graphx.c : draw vline");
 
 	graphx_init();
 
@@ -80,16 +68,13 @@ static void test_draw_vline(void)
 	graphx_draw_vline(x, y_start, y_end, PIXEL_ON);
 
 	for (uint8_t i = y_start; i <= y_end; i++) {
-		UCUNIT_CheckIsEqual(graphx_get_pixel(x, i), 1);
+		TEST_ASSERT_MESSAGE(graphx_get_pixel(x, i) == 1,
+		                    print_coordinates(x, i));
 	}
-
-	UCUNIT_TestcaseEnd();
 }
 
-static void test_draw_tile_4x16(void)
+static void test_graphx_draw_tile_4x16(void)
 {
-	UCUNIT_TestcaseBegin("graphx.c : draw tile 4x16");
-
 	graphx_init();
 
 	const uint8_t width  = 4;
@@ -99,22 +84,18 @@ static void test_draw_tile_4x16(void)
 	graphx_draw_tile(0, 0, tile, width, height);
 
 	for (uint8_t i = 0; i < width; i++) {
-		UCUNIT_CheckIsEqual(graphx_get_pixel(i, 0), 1);
-		UCUNIT_CheckIsEqual(graphx_get_pixel(i, height - 1), 1);
+		TEST_ASSERT_EQUAL(graphx_get_pixel(i, 0), 1);
+		TEST_ASSERT_EQUAL(graphx_get_pixel(i, height - 1), 1);
 	}
 
 	for (uint8_t i = 0; i < height; i++) {
-		UCUNIT_CheckIsEqual(graphx_get_pixel(0, i), 1);
-		UCUNIT_CheckIsEqual(graphx_get_pixel(width - 1, i), 1);
+		TEST_ASSERT_EQUAL(graphx_get_pixel(0, i), 1);
+		TEST_ASSERT_EQUAL(graphx_get_pixel(width - 1, i), 1);
 	}
-
-	UCUNIT_TestcaseEnd();
 }
 
-static void test_draw_tile_1x64(void)
+static void test_graphx_draw_tile_1x64(void)
 {
-	UCUNIT_TestcaseBegin("graphx.c : draw tile 1x64");
-
 	graphx_init();
 
 	const uint8_t width  = 1;
@@ -124,16 +105,12 @@ static void test_draw_tile_1x64(void)
 	graphx_draw_tile(0, 0, tile, width, height);
 
 	for (uint8_t i = 0; i < height; i++) {
-		UCUNIT_CheckIsEqual(graphx_get_pixel(0, i), 1);
+		TEST_ASSERT_EQUAL(graphx_get_pixel(0, i), 1);
 	}
-
-	UCUNIT_TestcaseEnd();
 }
 
-static void test_draw_tile_128x8(void)
+static void test_graphx_draw_tile_128x8(void)
 {
-	UCUNIT_TestcaseBegin("graphx.c : draw tile 8x128");
-
 	graphx_init();
 
 	const uint8_t width  = 128;
@@ -155,16 +132,12 @@ static void test_draw_tile_128x8(void)
 	graphx_draw_tile(0, 0, tile, width, height);
 
 	for (uint8_t i = 0; i < width; i++) {
-		UCUNIT_CheckIsEqual(graphx_get_pixel(i, 0), 1);
+		TEST_ASSERT_EQUAL(graphx_get_pixel(i, 0), 1);
 	}
-
-	UCUNIT_TestcaseEnd();
 }
 
-static void test_draw_tile_128x64(void)
+static void test_graphx_draw_tile_128x64(void)
 {
-
-	UCUNIT_TestcaseBegin("graphx.c : draw tile 128x64");
 
 	graphx_init();
 
@@ -277,13 +250,11 @@ static void test_draw_tile_128x64(void)
 		uint8_t y1 = 0;
 		uint8_t y2 = height - 1;
 
-		UCUNIT_Check(graphx_get_pixel(x1, y1) == 1,
-			     "graphx_get_pixel(...) == 1",
-			     print_coordinates(x1, y1));
+		TEST_ASSERT_MESSAGE(graphx_get_pixel(x1, y1) == 1,
+		                    print_coordinates(x1, y1));
 
-		UCUNIT_Check(graphx_get_pixel(x2, y2) == 1,
-			     "graphx_get_pixel(...) == 1",
-			     print_coordinates(x2, y2));
+		TEST_ASSERT_MESSAGE(graphx_get_pixel(x2, y2) == 1,
+		                    print_coordinates(x2, y2));
 	}
 
 	for (uint8_t i = 0; i < height; i++) {
@@ -293,31 +264,24 @@ static void test_draw_tile_128x64(void)
 		uint8_t y1 = i;
 		uint8_t y2 = i;
 
-		UCUNIT_Check(graphx_get_pixel(x1, y1) == 1,
-			     "graphx_get_pixel(...) == 1",
-			     print_coordinates(x1, y1));
+		TEST_ASSERT_MESSAGE(graphx_get_pixel(x1, y1) == 1,
+		                    print_coordinates(x1, y1));
 
-		UCUNIT_Check(graphx_get_pixel(x2, y2) == 1,
-			     "graphx_get_pixel(...) == 1",
-			     print_coordinates(x2, y2));
+		TEST_ASSERT_MESSAGE(graphx_get_pixel(x2, y2) == 1,
+		                    print_coordinates(x2, y2));
 	}
-
-	UCUNIT_TestcaseEnd();
 }
 
-static void test_fill_pattern(void)
+static void test_graphx_fill_pattern(void)
 {
-	UCUNIT_TestcaseBegin("graphx.c : fill pattern");
-
 	graphx_init();
 
 	graphx_fill_pattern((char)0xFF);
 
 	for (uint8_t x = 0; x < GRAPHX_WIDTH; x++) {
 		for (uint8_t y = 0; y < GRAPHX_HEIGHT; y++) {
-			UCUNIT_Check(graphx_get_pixel(x, y) == 1,
-				     "graphx_get_pixel(...) == 1",
-				     print_coordinates(x, y));
+			TEST_ASSERT_MESSAGE(graphx_get_pixel(x, y) == 1,
+			                    print_coordinates(x, y));
 		}
 	}
 
@@ -325,23 +289,20 @@ static void test_fill_pattern(void)
 
 	for (uint8_t x = 0; x < GRAPHX_WIDTH; x++) {
 		for (uint8_t y = 0; y < GRAPHX_HEIGHT; y++) {
-			UCUNIT_Check(graphx_get_pixel(x, y) == 0,
-				     "graphx_get_pixel(...) == 0",
-				     print_coordinates(x, y));
+			TEST_ASSERT_MESSAGE(graphx_get_pixel(x, y) == 0,
+			                    print_coordinates(x, y));
 		}
 	}
 }
 
 void test_graphx_run(void)
 {
-	test_draw_pixel();
-	test_draw_hline();
-	test_draw_vline();
-	test_draw_tile_4x16();
-	test_draw_tile_1x64();
-	test_draw_tile_128x8();
-	test_draw_tile_128x64();
-	test_fill_pattern();
-
-	UCUNIT_WriteSummary();
+	RUN_TEST(test_graphx_draw_pixel);
+	RUN_TEST(test_graphx_draw_hline);
+	RUN_TEST(test_graphx_draw_vline);
+	RUN_TEST(test_graphx_draw_tile_4x16);
+	RUN_TEST(test_graphx_draw_tile_1x64);
+	RUN_TEST(test_graphx_draw_tile_128x8);
+	RUN_TEST(test_graphx_draw_tile_128x64);
+	RUN_TEST(test_graphx_fill_pattern);
 }

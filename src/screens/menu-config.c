@@ -21,7 +21,8 @@
 
 #include <stdint.h>
 
-#include "font5x7.h"
+#include "../display/font5x7.h"
+#include "../display/graphx.h"
 
 #define X_LEFT_PADDING 10
 
@@ -33,7 +34,7 @@
 #define INDEX_MAX
 
 static uint8_t cursor[2][5] = {{0x00, 0xfE, 0x7C, 0x38, 0x10},
-			       {0x00, 0x7F, 0x3E, 0x1C, 0x08}};
+                               {0x00, 0x7F, 0x3E, 0x1C, 0x08}};
 
 static void draw_keyvalue(uint8_t index, const char *key, const char *value)
 {
@@ -76,7 +77,7 @@ static void draw_cursor(uint8_t index)
 	graphx_puts(&font5x7, 0, Y_KEYVALUE_START + (Y_DELTA * old_index), " ");
 
 	graphx_draw_tile(0, Y_KEYVALUE_START + (Y_DELTA * index), cursor_tile(),
-			 5, 8);
+	                 5, 8);
 
 	old_index = index;
 	//	}

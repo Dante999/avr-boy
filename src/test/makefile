@@ -7,11 +7,23 @@
 #----------------------------------------------------
 # Compiler
 CC:=gcc
-CFLAGS:=-g
+
+CFLAGS  = -c
+CFLAGS += -g
+CFLAGS += -Os
+CFLAGS += -Wall
+CFLAGS += -fpack-struct
+CFLAGS += -fshort-enums
+CFLAGS += -ffunction-sections
+CFLAGS += -fdata-sections
+CFLAGS += -std=gnu99
+CFLAGS += -funsigned-char
+CFLAGS += -funsigned-bitfields
+
 
 #Linker
 LD:=gcc
-LDFLAGS:=-g
+LDFLAGS=-g
 
 # Simulator/Emulator
 RUN:=./
@@ -24,27 +36,27 @@ RM:=rm
 #----------------------------------------------------
 # Name of target file
 TARGET:=Testsuite.exe
-VPATH = ..
+BUILDPATH=./build
 
+
+VPATH = ..
+VPATH += ../protocol
+VPATH += ../display
+VPATH += ../util
 
 # Sourcefiles
-SRCS:=           \
-system.c       \
-test_graphx.c \
-testsuite.c \
-mock_font.c \
-../graphx.c \
+SOURCES  = testsuite.c
+SOURCES += graphx.c
+SOURCES += test_graphx.c
+SOURCES += test_protocol.c
+SOURCES += mock_font.c
+SOURCES += protocol.c
+SOURCES += mock_logger.c
+SOURCES += unity.c
 
+OBJECTS=$(SOURCES:%.c=$(BUILDPATH)/%.o)
 
-
-# Objectfiles
-OBJS:=           \
-system.obj     \
-test_graphx.obj \
-testsuite.obj \
-graphx.obj \
-mock_font.obj \
-
+MKDIR=mkdir -p
 #----------------------------------------------------
 # Build all
 #----------------------------------------------------
@@ -52,28 +64,30 @@ all: clean $(TARGET) run
 
 run: $(TARGET)
 	echo 'Running $(TARGET)...'
-	$(RUN)$(TARGET)
+	$(RUN)/$(BUILDPATH)/$(TARGET)
 	
 #----------------------------------------------------
 # Linker stage
 #----------------------------------------------------
-$(TARGET):	$(OBJS)
+$(TARGET): $(OBJECTS)
 	echo 'Linking...'
-	$(LD) $(LDFLAGS) -o $(notdir $@) $(notdir $(OBJS))
+	$(LD) $(LDFLAGS) -o  $(BUILDPATH)/$@ $(OBJECTS)
+#	$(LD) $(LDFLAGS) -o $(notdir $@) $(notdir $(OBJECTS))
 
 #----------------------------------------------------
 # Compiler
 #----------------------------------------------------
-%.obj: %.c
+$(BUILDPATH)/%.o: %.c
 	echo 'Compiling...'
-	$(CC) $(CFLAGS) -o $(notdir $@) -c $<
+	$(MKDIR) $(BUILDPATH)
+	$(CC) $(CFLAGS) $< -o $@
+	#$(CC) $(CFLAGS) -o $(notdir $@) -c $<
 	
 #----------------------------------------------------
 # Clean Project
 #----------------------------------------------------
 clean:
 	echo 'Running clean...'
-	$(RM) -f $(TARGET)
-	$(RM) -f *.obj
+	$(RM) -f build/*
 	echo 'Clean finished.'
 	

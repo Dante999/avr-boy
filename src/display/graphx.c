@@ -1,25 +1,24 @@
-/*******************************************************************************
+/**
+ * Copyright (C) 2020 Matthias Escher
  *
- * 8boy emulator - an emulation software for the 8boy hardware
- * Copyright (C) 2019 Matthias Escher
+ * This file is part of avr-boy.
  *
- * This program is free software: you can redistribute it and/or modify
+ * avr-boy is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation, either version 3 of the License, or
  * (at your option) any later version.
  *
- * This program is distributed in the hope that it will be useful,
+ * avr-boy is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU General Public License for more details.
  *
  * You should have received a copy of the GNU General Public License
- * along with this program.  If not, see <https://www.gnu.org/licenses/>.
- *
- ******************************************************************************/
+ * along with avr-boy.  If not, see <http://www.gnu.org/licenses/>.
+ */
+
 #include "graphx.h"
 
-#include "logger.h"
 #include <stdint.h>
 #include <stdio.h>
 #include <stdlib.h>
@@ -36,6 +35,14 @@ static uint16_t calculate_index(uint8_t x, uint8_t y)
 	return x + ((y / 8) * graphx_width());
 }
 
+/** ****************************************************************************
+ * @brief initializes the graphx module
+ *
+ * Sets the graphx width and height like defined in #GRAPHX_WIDTH and
+ * #GRAPHX_HEIGHT. Also clears the whole buffer which means that a blank screen
+ * would normally be displayed
+ *
+ **************************************************************************** */
 void graphx_init(void)
 {
 	g_graphxdata.width  = GRAPHX_WIDTH;
@@ -98,7 +105,7 @@ void graphx_draw_byte(uint8_t x, uint8_t y, uint8_t byte)
 }
 
 void graphx_draw_tile(uint8_t x, uint8_t y, const uint8_t *tile,
-		      uint8_t tile_width, uint8_t tile_height)
+                      uint8_t tile_width, uint8_t tile_height)
 {
 
 	for (uint8_t row = 0; row < (tile_height / 8); row++) {
@@ -185,4 +192,9 @@ void graphx_fill_pattern(uint8_t pattern)
 uint8_t *graphx_buffer(void)
 {
 	return g_graphxdata.buffer;
+}
+
+void graphx_clear(void)
+{
+	graphx_fill_pattern(0x00);
 }

@@ -19,8 +19,8 @@
  ******************************************************************************/
 #include "screensaver.h"
 
-#include "graphx.h"
-#include "lcd.h"
+#include "../display/graphx.h"
+#include "../display/lcd.h"
 
 #define TILE_BALL_WIDTH  2
 #define TILE_BALL_HEIGHT 8

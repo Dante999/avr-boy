@@ -20,8 +20,7 @@
 #ifndef MENUCONFIG_H
 #define MENUCONFIG_H
 
-#include "core-buttons.h"
-#include "graphx.h"
+#include "../button.h"
 
 void menuconfig_refresh(struct button *buttons);
 
