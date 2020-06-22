@@ -7,11 +7,6 @@
 void tearDown(void) {}
 void setUp(void) {}
 
-void test_simple_basics(void)
-{
-	TEST_ASSERT_EQUAL_UINT8(5, 5);
-}
-
 int main(void)
 {
 	UNITY_BEGIN();
