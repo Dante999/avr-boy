@@ -43,8 +43,12 @@ static void parse_byte(char byte)
 		break;
 
 	case WAITFOR_CMD:
-		m_package.cmd = byte;
-		m_state       = WAITFOR_LENGTH;
+
+		if (byte != CMD_SYNC) {
+			m_package.cmd = byte;
+			m_state       = WAITFOR_LENGTH;
+		}
+
 		break;
 
 	case WAITFOR_LENGTH:
