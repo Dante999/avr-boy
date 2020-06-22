@@ -8,7 +8,7 @@
 
 static void answer_ping(void)
 {
-	protocol_package_send(CMD_RES_PING, 0, 0);
+	protocol_package_send(PRTCL_CMD_ACK, 0, 0);
 }
 
 static void answer_version(uint8_t cartridge_version)
@@ -34,7 +34,7 @@ static void answer_version(uint8_t cartridge_version)
 		graphx_puts(&font5x7, 0, 16, buffer);
 	}
 
-	protocol_package_send(CMD_RES_VERSION, 1, PROTOCOL_VERSION);
+	protocol_package_send(PRTCL_CMD_ACK, 1, PROTOCOL_VERSION);
 }
 
 static void execute_command(struct protocol_package *received)
@@ -42,12 +42,12 @@ static void execute_command(struct protocol_package *received)
 
 	switch (received->cmd) {
 
-	case CMD_REQ_PING:
+	case PRTCL_CMD_PING:
 		LOG_DEBUG("-> ping request");
 		answer_ping();
 		break;
 
-	case CMD_REQ_VERSION:
+	case PRTCL_CMD_CHECK_VERSION:
 		LOG_DEBUG("-> version request");
 		answer_version(received->data[0]);
 		break;

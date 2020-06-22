@@ -34,7 +34,7 @@ static void parse_byte(char byte)
 	switch (m_state) {
 	case WAITFOR_SYNC:
 
-		if (byte == CMD_SYNC) {
+		if (byte == PRTCL_START_BYTE) {
 			i          = 0;
 			m_state    = WAITFOR_CMD;
 			m_finished = false;
@@ -44,7 +44,7 @@ static void parse_byte(char byte)
 
 	case WAITFOR_CMD:
 
-		if (byte != CMD_SYNC) {
+		if (byte != PRTCL_START_BYTE) {
 			m_package.cmd = byte;
 			m_state       = WAITFOR_LENGTH;
 		}
@@ -110,7 +110,7 @@ bool protocol_parse_received(char c)
  **************************************************************************** */
 void protocol_package_send(uint8_t cmd, uint8_t length, const char *data)
 {
-	m_callback_transmit(CMD_SYNC);
+	m_callback_transmit(PRTCL_START_BYTE);
 	m_callback_transmit(cmd);
 	m_callback_transmit(length);
 

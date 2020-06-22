@@ -42,7 +42,7 @@ static void cb_transmit(char c)
 
 static char cb_receive(void)
 {
-	return spi_transceive(CMD_ACK);
+	return spi_transceive(PRTCL_CMD_ACK);
 }
 
 static void init(void)

@@ -22,7 +22,7 @@
 
 #include "../protocol/protocol.h"
 
-#define BUFFER_SIZE 20
+#define BUFFER_SIZE 255
 
 static char m_transmit_buffer[BUFFER_SIZE] = {0x00};
 static char m_receive_buffer[BUFFER_SIZE]  = {0x00};
@@ -59,8 +59,8 @@ static void test_protocol_receiver_callback(void)
 {
 	reset_all();
 
-	m_receive_buffer[0] = CMD_SYNC;
-	m_receive_buffer[1] = CMD_REQ_VERSION;
+	m_receive_buffer[0] = PRTCL_START_BYTE;
+	m_receive_buffer[1] = PRTCL_CMD_CHECK_VERSION;
 	m_receive_buffer[2] = 1;
 	m_receive_buffer[3] = 2;
 
@@ -73,7 +73,7 @@ static void test_protocol_receiver_callback(void)
 
 	TEST_ASSERT_EQUAL(m_receive_index, 4);
 
-	TEST_ASSERT_EQUAL(received.cmd, CMD_REQ_VERSION);
+	TEST_ASSERT_EQUAL(received.cmd, PRTCL_CMD_CHECK_VERSION);
 	TEST_ASSERT_EQUAL(received.length, 1);
 	TEST_ASSERT_EQUAL(received.data[0], 2);
 }
@@ -86,7 +86,7 @@ static void test_protocol_transmitter_callback(void)
 	protocol_package_send(data[0], data[1], &data[2]);
 
 	TEST_ASSERT_EQUAL(m_transmit_index, 5);
-	TEST_ASSERT_EQUAL(m_transmit_buffer[0], CMD_SYNC);
+	TEST_ASSERT_EQUAL(m_transmit_buffer[0], PRTCL_START_BYTE);
 	TEST_ASSERT_EQUAL(m_transmit_buffer[1], data[0]);
 	TEST_ASSERT_EQUAL(m_transmit_buffer[2], data[1]);
 	TEST_ASSERT_EQUAL(m_transmit_buffer[3], data[2]);
@@ -98,8 +98,8 @@ static void test_protocol_receiver_parse_byte(void)
 
 	reset_all();
 
-	uint8_t sync    = CMD_SYNC;
-	uint8_t cmd     = CMD_REQ_VERSION;
+	uint8_t sync    = PRTCL_START_BYTE;
+	uint8_t cmd     = PRTCL_CMD_CHECK_VERSION;
 	uint8_t length  = 2;
 	char    data[2] = {1, 1};
 
@@ -124,6 +124,50 @@ static void test_protocol_receiver_parse_byte(void)
 	TEST_ASSERT_EQUAL(data[1], received.data[1]);
 }
 
+void test_protocol_min_data_length(void)
+{
+	reset_all();
+
+	uint8_t sync   = PRTCL_START_BYTE;
+	uint8_t cmd    = PRTCL_CMD_PING;
+	uint8_t length = 0;
+
+	// char data[length];
+	// memset(data, 0xFF, length);
+
+	m_receive_buffer[0] = sync;
+	m_receive_buffer[1] = cmd;
+	m_receive_buffer[2] = length;
+
+	// check received data
+	struct protocol_package received;
+	protocol_package_receive(&received);
+
+	TEST_ASSERT_EQUAL(3, m_receive_index);
+}
+
+void test_protocol_max_data_length(void)
+{
+	reset_all();
+
+	uint8_t sync   = PRTCL_START_BYTE;
+	uint8_t cmd    = PRTCL_CMD_PING;
+	uint8_t length = PROTOCOL_MAX_LENGTH + 1;
+
+	// char data[length];
+	// memset(data, 0xFF, length);
+
+	m_receive_buffer[0] = sync;
+	m_receive_buffer[1] = cmd;
+	m_receive_buffer[2] = length;
+
+	// check received data
+	struct protocol_package received;
+	protocol_package_receive(&received);
+
+	TEST_ASSERT_EQUAL(PROTOCOL_MAX_LENGTH, received.length);
+}
+
 void test_protocol_run(void)
 {
 	protocol_init(cb_transmit_byte, cb_receive_byte);
@@ -131,4 +175,6 @@ void test_protocol_run(void)
 	RUN_TEST(test_protocol_receiver_parse_byte);
 	RUN_TEST(test_protocol_receiver_callback);
 	RUN_TEST(test_protocol_transmitter_callback);
+	RUN_TEST(test_protocol_min_data_length);
+	RUN_TEST(test_protocol_max_data_length);
 }
