@@ -16,12 +16,11 @@
  * You should have received a copy of the GNU General Public License
  * along with avr-boy.  If not, see <http://www.gnu.org/licenses/>.
  */
+#include "unity.h"
 
 #include <string.h>
 
 #include "../protocol/protocol.h"
-#include "system.h"
-#include "uCUnit-v1.0.h"
 
 #define BUFFER_SIZE 20
 
@@ -56,9 +55,8 @@ static void reset_all(void)
 	m_receive_index  = 0;
 }
 
-static void test_receiver_callback(void)
+static void test_protocol_receiver_callback(void)
 {
-	UCUNIT_TestcaseBegin("avrboy-protocol.c : receive");
 	reset_all();
 
 	m_receive_buffer[0] = CMD_SYNC;
@@ -66,44 +64,38 @@ static void test_receiver_callback(void)
 	m_receive_buffer[2] = 1;
 	m_receive_buffer[3] = 2;
 
-	UCUNIT_CheckIsEqual(m_receive_index, 0);
+	TEST_ASSERT_EQUAL(m_receive_index, 0);
 
 	struct protocol_package received;
 	memset(&received, 0x00, sizeof(received));
 
 	protocol_package_receive(&received);
 
-	UCUNIT_CheckIsEqual(m_receive_index, 4);
+	TEST_ASSERT_EQUAL(m_receive_index, 4);
 
-	UCUNIT_CheckIsEqual(received.cmd, CMD_REQ_VERSION);
-	UCUNIT_CheckIsEqual(received.length, 1);
-	UCUNIT_CheckIsEqual(received.data[0], 2);
-
-	UCUNIT_TestcaseEnd();
+	TEST_ASSERT_EQUAL(received.cmd, CMD_REQ_VERSION);
+	TEST_ASSERT_EQUAL(received.length, 1);
+	TEST_ASSERT_EQUAL(received.data[0], 2);
 }
 
-static void test_transmitter_callback(void)
+static void test_protocol_transmitter_callback(void)
 {
-	UCUNIT_TestcaseBegin("avrboy-protocol.c : protocol_package_send");
 	reset_all();
 
 	char data[4] = {1, 2, 3, 4};
 	protocol_package_send(data[0], data[1], &data[2]);
 
-	UCUNIT_CheckIsEqual(m_transmit_index, 5);
-	UCUNIT_CheckIsEqual(m_transmit_buffer[0], CMD_SYNC);
-	UCUNIT_CheckIsEqual(m_transmit_buffer[1], data[0]);
-	UCUNIT_CheckIsEqual(m_transmit_buffer[2], data[1]);
-	UCUNIT_CheckIsEqual(m_transmit_buffer[3], data[2]);
-	UCUNIT_CheckIsEqual(m_transmit_buffer[4], data[3]);
-
-	UCUNIT_TestcaseEnd();
+	TEST_ASSERT_EQUAL(m_transmit_index, 5);
+	TEST_ASSERT_EQUAL(m_transmit_buffer[0], CMD_SYNC);
+	TEST_ASSERT_EQUAL(m_transmit_buffer[1], data[0]);
+	TEST_ASSERT_EQUAL(m_transmit_buffer[2], data[1]);
+	TEST_ASSERT_EQUAL(m_transmit_buffer[3], data[2]);
+	TEST_ASSERT_EQUAL(m_transmit_buffer[4], data[3]);
 }
 
-static void test_receiver_parse_byte(void)
+static void test_protocol_receiver_parse_byte(void)
 {
 
-	UCUNIT_TestcaseBegin("avrboy-protocol.c : protocol_package_receive");
 	reset_all();
 
 	uint8_t sync    = CMD_SYNC;
@@ -112,7 +104,7 @@ static void test_receiver_parse_byte(void)
 	char    data[2] = {1, 1};
 
 	// should initially set to false
-	UCUNIT_CheckIsEqual(protocol_receive_complete(), false);
+	TEST_ASSERT_EQUAL(protocol_receive_complete(), false);
 
 	protocol_parse_received(sync);
 	protocol_parse_received(cmd);
@@ -120,27 +112,23 @@ static void test_receiver_parse_byte(void)
 	protocol_parse_received(data[0]);
 	protocol_parse_received(data[1]);
 
-	UCUNIT_CheckIsEqual(protocol_receive_complete(), true);
+	TEST_ASSERT_EQUAL(protocol_receive_complete(), true);
 
 	// check received data
 	struct protocol_package received;
 	protocol_copy_received(&received);
 
-	UCUNIT_CheckIsEqual(cmd, received.cmd);
-	UCUNIT_CheckIsEqual(length, received.length);
-	UCUNIT_CheckIsEqual(data[0], received.data[0]);
-	UCUNIT_CheckIsEqual(data[1], received.data[1]);
-
-	UCUNIT_TestcaseEnd();
+	TEST_ASSERT_EQUAL(cmd, received.cmd);
+	TEST_ASSERT_EQUAL(length, received.length);
+	TEST_ASSERT_EQUAL(data[0], received.data[0]);
+	TEST_ASSERT_EQUAL(data[1], received.data[1]);
 }
 
 void test_protocol_run(void)
 {
 	protocol_init(cb_transmit_byte, cb_receive_byte);
 
-	test_receiver_parse_byte();
-	test_receiver_callback();
-	test_transmitter_callback();
-
-	UCUNIT_WriteSummary();
+	RUN_TEST(test_protocol_receiver_parse_byte);
+	RUN_TEST(test_protocol_receiver_callback);
+	RUN_TEST(test_protocol_transmitter_callback);
 }

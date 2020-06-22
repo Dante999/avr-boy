@@ -47,12 +47,12 @@ VPATH += ../util
 # Sourcefiles
 SOURCES  = testsuite.c
 SOURCES += graphx.c
-SOURCES += system.c
 SOURCES += test_graphx.c
 SOURCES += test_protocol.c
 SOURCES += mock_font.c
 SOURCES += protocol.c
 SOURCES += mock_logger.c
+SOURCES += unity.c
 
 OBJECTS=$(SOURCES:%.c=$(BUILDPATH)/%.o)
 
