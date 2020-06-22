@@ -21,6 +21,9 @@
 
 #include <stdint.h>
 
+#include "../display/font5x7.h"
+#include "../display/graphx.h"
+
 #define X_LEFT_PADDING 10
 
 #define X_KEY_START      8
