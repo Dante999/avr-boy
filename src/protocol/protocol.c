@@ -52,7 +52,11 @@ static void parse_byte(char byte)
 		break;
 
 	case WAITFOR_LENGTH:
+
 		m_package.length = byte;
+
+		if (m_package.length > PROTOCOL_MAX_LENGTH)
+			m_package.length = PROTOCOL_MAX_LENGTH;
 
 		if (m_package.length == 0) {
 			i          = 0;
