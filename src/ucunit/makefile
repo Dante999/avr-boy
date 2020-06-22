@@ -7,7 +7,9 @@
 #----------------------------------------------------
 # Compiler
 CC:=gcc
+
 CFLAGS  = -c
+CFLAGS += -g
 CFLAGS += -Os
 CFLAGS += -Wall
 CFLAGS += -fpack-struct
@@ -21,7 +23,7 @@ CFLAGS += -funsigned-bitfields
 
 #Linker
 LD:=gcc
-LDFLAGS=
+LDFLAGS=-g
 
 # Simulator/Emulator
 RUN:=./
