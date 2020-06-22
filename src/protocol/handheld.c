@@ -74,5 +74,7 @@ void handheld_wait_for_actions(void)
 	char buffer[10];
 
 	sprintf(buffer, "c=%d", received.cmd);
+	LOG_DEBUG(buffer);
+
 	execute_command(&received);
 }

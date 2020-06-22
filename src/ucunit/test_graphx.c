@@ -2,7 +2,7 @@
 #include "testsuite.h"
 #include "uCUnit-v1.0.h"
 
-#include "../graphx.h"
+#include "../display/graphx.h"
 
 #include <stdio.h>
 

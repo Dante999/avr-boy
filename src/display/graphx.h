@@ -21,7 +21,6 @@
 #define GRAPHX_H
 
 #include "font.h"
-#include "font5x7.h"
 
 #include <stdint.h> // uint8_t
 
