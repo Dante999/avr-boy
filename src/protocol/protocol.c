@@ -143,6 +143,15 @@ void protocol_waitfor_package(struct protocol_package *package)
 	protocol_reset();
 }
 
+void protocol_sync(void)
+{
+	for (uint8_t i = 0; i <= PROTOCOL_MAX_LENGTH; i++) {
+		m_callback_transmit(PRTCL_START_BYTE);
+	}
+
+	protocol_reset();
+}
+
 /** ****************************************************************************
  * @brief initialises the module and sets the transmit callback
  *
