@@ -17,20 +17,11 @@
  * along with avr-boy.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef CARTRIDGE_H
-#define CARTRIDGE_H
+#ifndef CARTRIDGE_ACTIONS_H
+#define CARTRIDGE_ACTIONS_H
 
 #include <stdint.h>
 
-#include "protocol.h"
-
-#define CRTRDG_STATUS_OK            0
-#define CRTRDG_STATUS_NOK           1
-#define CRTRDG_STATUS_WRONG_COMMAND 2
-#define CRTRDG_STATUS_WRONG_DATA    3
-
-void cartridge_sync_with_handheld(void);
-
-uint8_t cartridge_ping(void);
-uint8_t cartridge_check_version(uint8_t *handheld_version);
-#endif /* CARTRIDGE_H */
+uint8_t action_cmd_received_ping(void);
+uint8_t action_cmd_received_version(uint8_t version_cartridge);
+#endif /* CARTRIDGE_ACTIONS_H */

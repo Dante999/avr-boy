@@ -1,40 +1,23 @@
+#include "handheld.h"
+
 #include <stdio.h>
 
-#include "../display/font5x7.h"
-#include "../display/graphx.h"
-#include "../driver/spislave.h"
 #include "../util/logger.h"
-#include "protocol.h"
+#include "handheld_actions.h"
 
 static void answer_ping(void)
 {
-	protocol_send_package(PRTCL_CMD_ACK, 0, 0);
+	uint8_t response = action_cmd_received_ping();
+	protocol_send_package(response, 0, NULL);
 }
 
 static void answer_version(uint8_t cartridge_version)
 {
-	if (PROTOCOL_VERSION != cartridge_version) {
-		char buffer[80];
+	uint8_t response = action_cmd_received_version(cartridge_version);
 
-		sprintf(buffer,
-		        "different communication versions detected!"
-		        "[handheld=%d|cartridge=%d]",
-		        PROTOCOL_VERSION, cartridge_version);
+	char data[1] = {(char)PROTOCOL_VERSION};
 
-		LOG_ERROR(buffer);
-
-		graphx_clear();
-		graphx_puts(&font5x7, 0, 0,
-		            "handheld and cartridge version do not match!");
-
-		sprintf(buffer, "handheld  : %d", PROTOCOL_VERSION);
-		graphx_puts(&font5x7, 0, 8, buffer);
-
-		sprintf(buffer, "cartridge : %d", cartridge_version);
-		graphx_puts(&font5x7, 0, 16, buffer);
-	}
-
-	protocol_send_package(PRTCL_CMD_ACK, 1, PROTOCOL_VERSION);
+	protocol_send_package(response, 1, data);
 }
 
 static void execute_command(struct protocol_package *received)

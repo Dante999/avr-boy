@@ -16,6 +16,7 @@
  * You should have received a copy of the GNU General Public License
  * along with avr-boy.  If not, see <http://www.gnu.org/licenses/>.
  */
+
 #ifndef COREBUTTONS_H
 #define COREBUTTONS_H
 

@@ -1,5 +1,5 @@
 /**
- * Copyright (C) 2020 dante999
+ * Copyright (C) 2020 Matthias Escher
  *
  * This file is part of avr-boy.
  *
@@ -16,6 +16,7 @@
  * You should have received a copy of the GNU General Public License
  * along with avr-boy.  If not, see <http://www.gnu.org/licenses/>.
  */
+
 #ifndef AVRBOY_PROTOCOL_H
 #define AVRBOY_PROTOCOL_H
 

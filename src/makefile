@@ -41,6 +41,7 @@ SOURCES += spislave.c
 SOURCES += logger.c
 SOURCES += protocol.c
 SOURCES += handheld.c
+SOURCES += handheld_actions.c
 
 # Progammer
 PROGRAMMER=usbasp
