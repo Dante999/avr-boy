@@ -26,10 +26,9 @@
 #include "display/lcd.h"
 #include "driver/drivers.h"
 #include "driver/spislave.h"
-#include "driver/uart.h"
 #include "protocol/handheld.h"
 #include "screens/bootscreen.h"
-#include "screens/menu-config.h"
+#include "screens/configscreen.h"
 #include "screens/screensaver.h"
 #include "util/logger.h"
 
