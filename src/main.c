@@ -26,6 +26,7 @@
 #include "display/lcd.h"
 #include "driver/drivers.h"
 #include "driver/spislave.h"
+#include "protocol/core.h"
 #include "protocol/handheld.h"
 #include "screens/bootscreen.h"
 #include "screens/configscreen.h"
@@ -60,8 +61,8 @@ int main(void)
 {
 	init();
 
-	enum state    system_state = STATE_SCREENSAVER;
-	struct button buttons;
+	enum state         system_state = STATE_SCREENSAVER;
+	struct button_stat buttons;
 
 	bootscreen_show();
 
@@ -77,7 +78,7 @@ int main(void)
 		case STATE_SCREENSAVER:
 			screensaver_run(0);
 
-			if (buttons.reg1 & BUTTON_REG1_CONFIG) {
+			if (core_button_get(&buttons, BUTTON_CONFIG)) {
 				system_state = STATE_CONFIGMENU;
 				graphx_fill_pattern(0x00);
 			}
@@ -86,7 +87,7 @@ int main(void)
 		case STATE_CONFIGMENU:
 			menuconfig_refresh(&buttons);
 
-			if (buttons.reg1 & BUTTON_REG1_CONFIG) {
+			if (core_button_get(&buttons, BUTTON_CONFIG)) {
 				system_state = STATE_SCREENSAVER;
 				graphx_fill_pattern(0x00);
 			}

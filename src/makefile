@@ -40,6 +40,7 @@ SOURCES += font.c
 SOURCES += spislave.c
 SOURCES += logger.c
 SOURCES += protocol.c
+SOURCES += core.c
 SOURCES += handheld.c
 SOURCES += handheld_actions.c
 

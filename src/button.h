@@ -20,9 +20,9 @@
 #ifndef BUTTON_H
 #define BUTTON_H
 
-#include "protocol/core-buttons.h"
+#include "protocol/core.h"
 
-void button_debug(struct button *buttons);
-void button_read(struct button *button);
+void button_debug(struct button_stat *button);
+void button_read(struct button_stat *button);
 void button_init(void);
 #endif // BUTTON_H

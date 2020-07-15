@@ -17,11 +17,10 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  *
  ******************************************************************************/
-#include "button.h"
-
-#include "driver/pcf8574.h"
 #include <stdint.h>
 
+#include "driver/pcf8574.h"
+#include "protocol/core.h"
 #include "util/logger.h"
 
 #define ROW0 (1 << 7)
@@ -33,40 +32,40 @@
 
 static uint8_t reg = 0xFF;
 
-static void read_col0(struct button *button, uint8_t col0)
+static void read_col0(struct button_stat *button, uint8_t col0)
 {
 	if (col0 & ROW0)
-		button->reg0 |= BUTTON_REG0_UP;
+		core_button_set(button, BUTTON_UP);
 
 	if (col0 & ROW1)
-		button->reg0 |= BUTTON_REG0_DOWN;
+		core_button_set(button, BUTTON_DOWN);
 
 	if (col0 & ROW2)
-		button->reg0 |= BUTTON_REG0_START;
+		core_button_set(button, BUTTON_START);
 }
 
-static void read_col1(struct button *button, uint8_t col1)
+static void read_col1(struct button_stat *button, uint8_t col1)
 {
 	if (col1 & ROW0)
-		button->reg0 |= BUTTON_REG0_RIGHT;
+		core_button_set(button, BUTTON_RIGHT);
 
 	if (col1 & ROW1)
-		button->reg0 |= BUTTON_REG0_B;
+		core_button_set(button, BUTTON_B);
 
 	if (col1 & ROW2)
-		button->reg0 |= BUTTON_REG0_SELECT;
+		core_button_set(button, BUTTON_SELECT);
 }
 
 static void read_col2(struct button *button, uint8_t col2)
 {
 	if (col2 & ROW0)
-		button->reg0 |= BUTTON_REG0_LEFT;
+		core_button_set(button, BUTTON_LEFT);
 
 	if (col2 & ROW1)
-		button->reg0 |= BUTTON_REG0_A;
+		core_button_set(button, BUTTON_A);
 
 	if (col2 & ROW2)
-		button->reg1 |= BUTTON_REG1_CONFIG;
+		core_button_set(button, BUTTON_CONFIG);
 }
 
 void button_init()
@@ -74,10 +73,10 @@ void button_init()
 	pcf8574_set(reg);
 }
 
-void button_read(struct button *button)
+void button_read(struct button_stat *button)
 {
-	button->reg0 = 0x00;
-	button->reg1 = 0x00;
+
+	core_button_clear(button);
 
 	pcf8574_set(reg & ~COL0);
 	uint8_t col0 = ~pcf8574_get();
@@ -93,41 +92,41 @@ void button_read(struct button *button)
 	read_col2(button, col2);
 }
 
-void button_debug(struct button *buttons)
+void button_debug(struct button_stat *button)
 {
-	if (buttons->reg0 & BUTTON_REG0_UP) {
+	if (core_button_get(button, BUTTON_UP)) {
 		LOG_INFO("BUTTON_UP ");
 	}
 
-	if (buttons->reg0 & BUTTON_REG0_DOWN) {
+	if (core_button_get(button, BUTTON_DOWN)) {
 		LOG_INFO("BUTTON_DOWN ");
 	}
 
-	if (buttons->reg0 & BUTTON_REG0_LEFT) {
+	if (core_button_get(button, BUTTON_LEFT)) {
 		LOG_INFO("BUTTON_LEFT ");
 	}
 
-	if (buttons->reg0 & BUTTON_REG0_RIGHT) {
+	if (core_button_get(button, BUTTON_RIGHT)) {
 		LOG_INFO("BUTTON_RIGHT ");
 	}
 
-	if (buttons->reg0 & BUTTON_REG0_A) {
+	if (core_button_get(button, BUTTON_A)) {
 		LOG_INFO("BUTTON_A ");
 	}
 
-	if (buttons->reg0 & BUTTON_REG0_B) {
+	if (core_button_get(button, BUTTON_B)) {
 		LOG_INFO("BUTTON_B ");
 	}
 
-	if (buttons->reg0 & BUTTON_REG0_START) {
+	if (core_button_get(button, BUTTON_START)) {
 		LOG_INFO("BUTTON_START ");
 	}
 
-	if (buttons->reg0 & BUTTON_REG0_SELECT) {
+	if (core_button_get(button, BUTTON_SELECT)) {
 		LOG_INFO("BUTTON_SELECT ");
 	}
 
-	if (buttons->reg1 & BUTTON_REG1_CONFIG) {
+	if (core_button_get(button, BUTTON_CONFIG)) {
 		LOG_INFO("BUTTON_CONFIG ");
 	}
 }

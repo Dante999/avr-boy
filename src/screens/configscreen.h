@@ -20,8 +20,8 @@
 #ifndef MENUCONFIG_H
 #define MENUCONFIG_H
 
-#include "../button.h"
+#include "../protocol/core.h"
 
-void menuconfig_refresh(struct button *buttons);
+void menuconfig_refresh(struct button_stat *buttons);
 
 #endif // MENUCONFIG_H
