@@ -33,7 +33,7 @@
 #include "screens/screensaver.h"
 #include "util/logger.h"
 
-enum state { STATE_SCREENSAVER, STATE_CONFIGMENU };
+enum state { STATE_SCREENSAVER, STATE_CONFIGMENU, STATE_CARTRIDGE };
 
 static void cb_transmit(char c)
 {
@@ -61,7 +61,7 @@ int main(void)
 {
 	init();
 
-	enum state         system_state = STATE_SCREENSAVER;
+	enum state         system_state = STATE_CARTRIDGE;
 	struct button_stat buttons;
 
 	bootscreen_show();
@@ -74,6 +74,9 @@ int main(void)
 		button_debug(&buttons);
 
 		switch (system_state) {
+
+		case STATE_CARTRIDGE:
+			break;
 
 		case STATE_SCREENSAVER:
 			screensaver_run(0);

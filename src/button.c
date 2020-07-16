@@ -17,6 +17,8 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  *
  ******************************************************************************/
+#include "button.h"
+
 #include <stdint.h>
 
 #include "driver/pcf8574.h"
@@ -56,7 +58,7 @@ static void read_col1(struct button_stat *button, uint8_t col1)
 		core_button_set(button, BUTTON_SELECT);
 }
 
-static void read_col2(struct button *button, uint8_t col2)
+static void read_col2(struct button_stat *button, uint8_t col2)
 {
 	if (col2 & ROW0)
 		core_button_set(button, BUTTON_LEFT);

@@ -2,13 +2,14 @@
 
 #include <stdint.h>
 #include <stdio.h>
+#include <string.h>
 
 #include "protocol.h"
 
 #define LOG_COMMUNICATION
 
-#ifdef LOG_COMMUICATION
-#	include "../logger.h"
+#ifdef LOG_COMMUNICATION
+#	include "../util/logger.h"
 #endif
 
 static struct protocol_package m_received;
@@ -20,7 +21,7 @@ void cartridge_sync_with_handheld(void)
 
 uint8_t cartridge_ping(void)
 {
-	protocol_send_package(PRTCL_CMD_PING, 0, 0);
+	protocol_send_package(PRTCL_CMD_PING, 0, NULL);
 	protocol_waitfor_package(&m_received);
 
 	if (m_received.cmd == PRTCL_CMD_ACK)
@@ -36,10 +37,46 @@ uint8_t cartridge_check_version(uint8_t *handheld_version)
 	protocol_send_package(PRTCL_CMD_CHECK_VERSION, 1, data);
 	protocol_waitfor_package(&m_received);
 
-	*handheld_version = m_received.data[0];
+	*handheld_version = (uint8_t)m_received.data[0];
 
-	if (PROTOCOL_VERSION == handheld_version)
+	if (PROTOCOL_VERSION == *handheld_version)
 		return CRTRDG_STATUS_OK;
 	else
 		return CRTRDG_STATUS_NOK;
+}
+
+uint8_t cartridge_draw_text(uint8_t x, uint8_t y, const char *text)
+{
+	struct draw_text tmp;
+
+	tmp.x = x;
+	tmp.y = y;
+
+	strcpy(tmp.text, text);
+	// tmp.text = (char *)text;
+
+	protocol_send_package(PRTCL_CMD_DRAW_TEXT, sizeof(tmp), (char *)&tmp);
+	protocol_waitfor_package(&m_received);
+
+	return CRTRDG_STATUS_OK;
+}
+
+uint8_t cartridge_get_buttons(struct button_stat *btn)
+{
+	protocol_send_package(PRTCL_CMD_GET_BUTTONS, 0, NULL);
+	protocol_waitfor_package(&m_received);
+
+	if (sizeof(struct button_stat) != m_received.length) {
+		return CRTRDG_STATUS_WRONG_DATA;
+	}
+	else {
+		memcpy(btn, m_received.data, m_received.length);
+		return CRTRDG_STATUS_OK;
+	}
+}
+
+void cartridge_init(protocol_callback_transmit cb_transmit,
+                    protocol_callback_receive  cb_receive)
+{
+	protocol_init(cb_transmit, cb_receive);
 }

@@ -13,25 +13,25 @@ void log_print(const char *msg);
 void log_println(const char *prefix, const char *msg);
 
 #if (LOG_LEVEL <= LEVEL_DEBUG)
-#	define LOG_DEBUG(msg) log_println("[D] ", msg);
+#	define LOG_DEBUG(msg) log_println("[D] ", msg)
 #else
 #	define LOG_DEBUG(msg)
 #endif
 
 #if (LOG_LEVEL <= LEVEL_INFO)
-#	define LOG_INFO(msg) log_println("[I] ", msg);
+#	define LOG_INFO(msg) log_println("[I] ", msg)
 #else
 #	define LOG_INFO(msg)
 #endif
 
 #if (LOG_LEVEL <= LEVEL_WARNING)
-#	define LOG_WARNING(msg) log_println("[W] ", msg);
+#	define LOG_WARNING(msg) log_println("[W] ", msg)
 #else
 #	define LOG_WARNING(msg)
 #endif
 
 #if (LOG_LEVEL <= LEVEL_ERROR)
-#	define LOG_ERROR(msg) log_println("[E] ", msg);
+#	define LOG_ERROR(msg) log_println("[E] ", msg)
 #else
 #	define LOG_ERROR(msg)
 #endif

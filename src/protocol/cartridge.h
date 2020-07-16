@@ -22,6 +22,7 @@
 
 #include <stdint.h>
 
+#include "core.h"
 #include "protocol.h"
 
 #define CRTRDG_STATUS_OK            0
@@ -34,4 +35,8 @@ void cartridge_sync_with_handheld(void);
 uint8_t cartridge_ping(void);
 uint8_t cartridge_check_version(uint8_t *handheld_version);
 uint8_t cartridge_draw_text(uint8_t x, uint8_t y, const char *text);
+uint8_t cartridge_get_buttons(struct button_stat *btn);
+void    cartridge_init(protocol_callback_transmit cb_transmit,
+                       protocol_callback_receive  cb_receive);
+
 #endif /* CARTRIDGE_H */
