@@ -6,9 +6,9 @@
 
 #include "protocol.h"
 
-#define LOG_COMMUNICATION
+#define LOG_COMMUNICATION 0
 
-#ifdef LOG_COMMUNICATION
+#if LOG_COMMUNICATION
 #	include "../util/logger.h"
 #endif
 
@@ -52,13 +52,18 @@ uint8_t cartridge_draw_text(uint8_t x, uint8_t y, const char *text)
 	tmp.x = x;
 	tmp.y = y;
 
-	strcpy(tmp.text, text);
-	// tmp.text = (char *)text;
+	size_t maxlen = sizeof(tmp.text);
+
+	strncpy(tmp.text, text, maxlen);
+	tmp.text[maxlen - 1] = '\0'; // extra string terminator
 
 	protocol_send_package(PRTCL_CMD_DRAW_TEXT, sizeof(tmp), (char *)&tmp);
 	protocol_waitfor_package(&m_received);
 
-	return CRTRDG_STATUS_OK;
+	if (m_received.cmd == PRTCL_CMD_ACK)
+		return CRTRDG_STATUS_OK;
+	else
+		return CRTRDG_STATUS_WRONG_COMMAND;
 }
 
 uint8_t cartridge_get_buttons(struct button_stat *btn)

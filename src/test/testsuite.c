@@ -1,6 +1,7 @@
 
 #include "unity.h"
 
+#include "test_cartridge.h"
 #include "test_graphx.h"
 #include "test_protocol.h"
 
@@ -13,6 +14,7 @@ int main(void)
 
 	test_graphx_run();
 	test_protocol_run();
+	test_cartridge_run();
 
 	return UNITY_END();
 }

@@ -24,8 +24,7 @@ struct button_stat {
 struct draw_text {
 	uint8_t x;
 	uint8_t y;
-
-	char *text;
+	char    text[20];
 };
 
 bool core_button_get(struct button_stat *stat, enum button_id id);

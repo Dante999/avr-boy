@@ -16,7 +16,7 @@ CFLAGS += -fpack-struct
 CFLAGS += -fshort-enums
 CFLAGS += -ffunction-sections
 CFLAGS += -fdata-sections
-CFLAGS += -std=gnu99
+CFLAGS += -std=c11
 CFLAGS += -funsigned-char
 CFLAGS += -funsigned-bitfields
 
@@ -47,12 +47,15 @@ VPATH += ../util
 # Sourcefiles
 SOURCES  = testsuite.c
 SOURCES += graphx.c
+SOURCES += protocol.c
+SOURCES += cartridge.c
+SOURCES += unity.c
+SOURCES += mock_font.c
+SOURCES += mock_transceiver
+SOURCES += mock_logger.c
 SOURCES += test_graphx.c
 SOURCES += test_protocol.c
-SOURCES += mock_font.c
-SOURCES += protocol.c
-SOURCES += mock_logger.c
-SOURCES += unity.c
+SOURCES += test_cartridge.c
 
 OBJECTS=$(SOURCES:%.c=$(BUILDPATH)/%.o)
 
