@@ -1,10 +1,11 @@
+#include "mock_transceiver.h"
 
 #include <stdint.h>
 #include <string.h> // memset
 
 #include "../protocol/protocol.h"
 
-#define BUFFER_SIZE 255
+#define BUFFER_SIZE MOCK_BUFFER_SIZE
 
 static char m_transmit_buffer[BUFFER_SIZE] = {0x00};
 static char m_receive_buffer[BUFFER_SIZE]  = {0x00};

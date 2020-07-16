@@ -3,6 +3,10 @@
 
 #include <stdint.h>
 
+#include "../protocol/protocol.h"
+
+#define MOCK_BUFFER_SIZE 255
+
 char *  mock_transceiver_receivebuffer(void);
 void    mock_transceiver_reset(void);
 char *  mock_transceiver_transmitbuffer(void);
