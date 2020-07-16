@@ -21,9 +21,9 @@ static void answer_version(uint8_t cartridge_version)
 {
 	uint8_t response = action_cmd_received_version(cartridge_version);
 
-	char data[1] = {(char)PROTOCOL_VERSION};
+	char data = {(char)PROTOCOL_VERSION};
 
-	protocol_send_package(response, 1, data);
+	protocol_send_package(response, 1, &data);
 }
 
 static void answer_get_buttons(void)
@@ -47,7 +47,7 @@ static void execute_command(struct protocol_package *received)
 
 	case PRTCL_CMD_CHECK_VERSION:
 		LOG_DEBUG("-> version request");
-		answer_version(received->data[0]);
+		answer_version((uint8_t)received->data[0]);
 		break;
 
 	case PRTCL_CMD_DRAW_TEXT:
@@ -62,6 +62,8 @@ static void execute_command(struct protocol_package *received)
 		LOG_DEBUG(msg);
 
 		answer_draw_text((struct draw_text *)&received->data[0]);
+
+		break;
 
 	case PRTCL_CMD_GET_BUTTONS:
 		LOG_DEBUG("-> get buttons");
