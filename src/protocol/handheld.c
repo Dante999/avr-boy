@@ -19,13 +19,14 @@ static void answer_draw_text(struct draw_text *dt)
 
 static void answer_ping(void)
 {
-	uint8_t response = action_cmd_received_ping();
-	protocol_send_package(response, 0, NULL);
+	protocol_send_package(PRTCL_CMD_PONG, 0, NULL);
 }
 
 static void answer_version(uint8_t cartridge_version)
 {
-	uint8_t response = action_cmd_received_version(cartridge_version);
+	uint8_t response = (cartridge_version == PROTOCOL_VERSION)
+	                       ? PRTCL_CMD_ACK
+	                       : PRTCL_CMD_NACK;
 
 	char data = {(char)PROTOCOL_VERSION};
 
