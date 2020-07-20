@@ -24,6 +24,17 @@ uint8_t cartridge_ping(void)
 	protocol_send_package(PRTCL_CMD_PING, 0, NULL);
 	protocol_waitfor_package(&m_received);
 
+	if (m_received.cmd == PRTCL_CMD_PONG)
+		return CRTRDG_STATUS_OK;
+	else
+		return CRTRDG_STATUS_WRONG_COMMAND;
+}
+
+uint8_t cartridge_clear_screen(void)
+{
+	protocol_send_package(PRTCL_CMD_CLEAR_SCREEN, 0, NULL);
+	protocol_waitfor_package(&m_received);
+
 	if (m_received.cmd == PRTCL_CMD_ACK)
 		return CRTRDG_STATUS_OK;
 	else

@@ -5,6 +5,12 @@
 #include "../util/logger.h"
 #include "handheld_actions.h"
 
+static void answer_clear_screen()
+{
+	uint8_t response = action_cmd_received_clear_screen();
+	protocol_send_package(response, 0, NULL);
+}
+
 static void answer_draw_text(struct draw_text *dt)
 {
 	uint8_t response = action_cmd_received_draw_text(dt);
@@ -53,16 +59,13 @@ static void execute_command(struct protocol_package *received)
 	case PRTCL_CMD_DRAW_TEXT:
 		LOG_DEBUG("-> draw text");
 
-		char msg[50];
-
-		sprintf(msg, "l=%d|x=%d|y=%d|msg=%s", received->length,
-		        (uint8_t)received->data[0], (uint8_t)received->data[1],
-		        (char *)&received->data[2]);
-
-		LOG_DEBUG(msg);
-
 		answer_draw_text((struct draw_text *)&received->data[0]);
 
+		break;
+
+	case PRTCL_CMD_CLEAR_SCREEN:
+		LOG_DEBUG("-> clear screen");
+		answer_clear_screen();
 		break;
 
 	case PRTCL_CMD_GET_BUTTONS:

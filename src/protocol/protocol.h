@@ -32,9 +32,11 @@ enum commands {
 	PRTCL_CMD_ACK,
 	PRTCL_CMD_NACK,
 	PRTCL_CMD_PING,
+	PRTCL_CMD_PONG,
 	PRTCL_CMD_CHECK_VERSION,
 	PRTCL_CMD_GET_BUTTONS,
-	PRTCL_CMD_DRAW_TEXT
+	PRTCL_CMD_DRAW_TEXT,
+	PRTCL_CMD_CLEAR_SCREEN
 };
 
 typedef void (*protocol_callback_transmit)(char byte);

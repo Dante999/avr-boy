@@ -28,5 +28,6 @@ uint8_t action_cmd_received_ping(void);
 uint8_t action_cmd_received_version(uint8_t version_cartridge);
 uint8_t action_cmd_received_draw_text(struct draw_text *dt);
 uint8_t action_cmd_received_get_buttons(struct button_stat *b);
+uint8_t action_cmd_received_clear_screen();
 
 #endif /* CARTRIDGE_ACTIONS_H */

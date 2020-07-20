@@ -8,7 +8,7 @@
 
 uint8_t action_cmd_received_ping(void)
 {
-	return PRTCL_CMD_ACK;
+	return PRTCL_CMD_PONG;
 }
 
 uint8_t action_cmd_received_version(uint8_t cartridge_version)
@@ -28,5 +28,11 @@ uint8_t action_cmd_received_get_buttons(struct button_stat *b)
 {
 	button_read(b);
 
+	return PRTCL_CMD_ACK;
+}
+
+uint8_t action_cmd_received_clear_screen()
+{
+	graphx_clear();
 	return PRTCL_CMD_ACK;
 }
