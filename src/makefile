@@ -65,6 +65,7 @@ CFLAGS += -ffunction-sections      # Place each function their own section
 CFLAGS += -fdata-sections          # Place data items into their own section
 CFLAGS += -funsigned-char          # Make any unqualfied char type an unsigned char
 CFLAGS += -funsigned-bitfields     # Make any unqualified bitfield type unsigned
+CFLAGS += -Werror                  # Treat all warnings as errors
 
 CFLAGS += -DF_CPU=$(F_CPU)UL       
 

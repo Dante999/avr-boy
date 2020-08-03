@@ -56,8 +56,7 @@ static uint8_t get_index(uint8_t current_index, struct button_stat *buttons)
 
 uint8_t *cursor_tile()
 {
-	static uint8_t toggle  = 0;
-	static uint8_t counter = 0;
+	static uint8_t toggle = 0;
 
 	if (toggle) {
 		toggle = 0;
