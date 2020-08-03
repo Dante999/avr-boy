@@ -53,17 +53,21 @@ PROGRAMMER=usbasp
 OBJECTS=$(SOURCES:%.c=$(BUILDPATH)/%.o)
 
 
-CFLAGS  = -c
-CFLAGS += -Os
-CFLAGS += -Wall
-CFLAGS += -fpack-struct
-CFLAGS += -fshort-enums
-CFLAGS += -ffunction-sections
-CFLAGS += -fdata-sections
-CFLAGS += -std=gnu99
-CFLAGS += -funsigned-char
-CFLAGS += -funsigned-bitfields
-CFLAGS += -DF_CPU=$(F_CPU)UL
+CFLAGS  = -c                       # Compile and assemble, but do not link
+#CFLAGS += -g                       # Generate debug information in default format
+CFLAGS += -Os                      # Optimize for space rather than speed
+CFLAGS += -std=c11                 # Use this C standard
+CFLAGS += -Wextra                  # Print extra (possibly unwanted) warnings
+CFLAGS += -Wunused                 # Enable all -Wunused- warnings
+CFLAGS += -fpack-struct            # Pack all structure members together without holes
+CFLAGS += -fshort-enums            # Use the smallest needed integer for enum values
+CFLAGS += -ffunction-sections      # Place each function their own section
+CFLAGS += -fdata-sections          # Place data items into their own section
+CFLAGS += -funsigned-char          # Make any unqualfied char type an unsigned char
+CFLAGS += -funsigned-bitfields     # Make any unqualified bitfield type unsigned
+
+CFLAGS += -DF_CPU=$(F_CPU)UL       
+
 LDFLAGS=
 
 
