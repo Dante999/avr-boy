@@ -86,9 +86,9 @@ void graphx_draw_pixel(uint8_t x, uint8_t y, uint8_t color)
 
 	uint16_t index = calculate_index(x, y);
 
-	if (color == PIXEL_ON)
+	if (color == GRAPHX_PIXEL_ON)
 		g_graphxdata.buffer[index] |= (1 << y_bit);
-	else if (color == PIXEL_TOGGLE)
+	else if (color == GRAPHX_PIXEL_TOGGLE)
 		g_graphxdata.buffer[index] ^= (1 << y_bit);
 	else
 		g_graphxdata.buffer[index] &= ~(1 << y_bit);
@@ -98,7 +98,8 @@ void graphx_draw_byte(uint8_t x, uint8_t y, uint8_t byte)
 {
 	for (uint8_t j = 0; j < 8; j++) {
 
-		uint8_t color = (byte & (1 << j)) ? PIXEL_ON : PIXEL_OFF;
+		uint8_t color =
+		    (byte & (1 << j)) ? GRAPHX_PIXEL_ON : GRAPHX_PIXEL_OFF;
 
 		graphx_draw_pixel(x, y + j, color);
 	}

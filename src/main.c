@@ -35,6 +35,18 @@
 
 enum state { STATE_SCREENSAVER, STATE_CONFIGMENU, STATE_CARTRIDGE };
 
+#define DDRX_READY  DDRD
+#define PORTX_READY PORTD
+#define BIT_READY   (1 << PD5)
+
+static void cb_set_statusready(bool rdy)
+{
+	if (rdy)
+		PORTX_READY |= BIT_READY;
+	else
+		PORTX_READY &= ~BIT_READY;
+}
+
 static void cb_transmit(char c)
 {
 	spi_transceive(c);
@@ -52,7 +64,11 @@ static void init(void)
 	graphx_init();
 	screensaver_init();
 
+	// set as output
+	DDRX_READY |= BIT_READY;
+
 	handheld_init(cb_transmit, cb_receive);
+	handheld_set_cb_set_statusready(cb_set_statusready);
 
 	LOG_INFO("initialization done!");
 }

@@ -5,21 +5,42 @@
 #include "../util/logger.h"
 #include "handheld_actions.h"
 
+static handheld_cb_set_statusready m_callback_set_statusready = NULL;
+
+inline static void set_status_ready(bool ready)
+{
+	if (m_callback_set_statusready != NULL)
+		m_callback_set_statusready(ready);
+}
+static void send_to_cartridge(uint8_t cmd, uint8_t length, const char *data)
+{
+	set_status_ready(true);
+	protocol_send_package(cmd, length, data);
+	set_status_ready(false);
+	protocol_reset();
+}
+
 static void answer_clear_screen()
 {
 	uint8_t response = action_cmd_received_clear_screen();
-	protocol_send_package(response, 0, NULL);
+	send_to_cartridge(response, 0, NULL);
 }
 
 static void answer_draw_text(struct draw_text *dt)
 {
 	uint8_t response = action_cmd_received_draw_text(dt);
-	protocol_send_package(response, 0, NULL);
+	send_to_cartridge(response, 0, NULL);
+}
+
+static void answer_draw_pixel(struct pixel *pixel)
+{
+	uint8_t response = action_cmd_received_draw_pixel(pixel);
+	send_to_cartridge(response, 0, NULL);
 }
 
 static void answer_ping(void)
 {
-	protocol_send_package(PRTCL_CMD_PONG, 0, NULL);
+	send_to_cartridge(PRTCL_CMD_PONG, 0, 0);
 }
 
 static void answer_version(uint8_t cartridge_version)
@@ -30,7 +51,7 @@ static void answer_version(uint8_t cartridge_version)
 
 	char data = {(char)PROTOCOL_VERSION};
 
-	protocol_send_package(response, 1, &data);
+	send_to_cartridge(response, 1, &data);
 }
 
 static void answer_get_buttons(void)
@@ -39,12 +60,11 @@ static void answer_get_buttons(void)
 
 	uint8_t response = action_cmd_received_get_buttons(&btn);
 
-	protocol_send_package(response, sizeof(btn), (const char *)&btn);
+	send_to_cartridge(response, sizeof(btn), (const char *)&btn);
 }
 
 static void execute_command(struct protocol_package *received)
 {
-
 	switch (received->cmd) {
 
 	case PRTCL_CMD_PING:
@@ -59,9 +79,12 @@ static void execute_command(struct protocol_package *received)
 
 	case PRTCL_CMD_DRAW_TEXT:
 		LOG_DEBUG("-> draw text");
-
 		answer_draw_text((struct draw_text *)&received->data[0]);
+		break;
 
+	case PRTCL_CMD_DRAW_PIXEL:
+		LOG_DEBUG("-> draw pixel");
+		answer_draw_pixel((struct pixel *)&received->data[0]);
 		break;
 
 	case PRTCL_CMD_CLEAR_SCREEN:
@@ -76,6 +99,7 @@ static void execute_command(struct protocol_package *received)
 
 	default:
 		LOG_WARNING("-> unkown command!");
+		send_to_cartridge(PRTCL_CMD_NACK, 0, NULL);
 		break;
 	}
 }
@@ -91,12 +115,15 @@ void handheld_wait_for_actions(void)
 	struct protocol_package received;
 
 	LOG_DEBUG("waiting for commands...");
+
+	set_status_ready(true);
 	protocol_waitfor_package(&received);
-
-	char buffer[10];
-
-	sprintf(buffer, "c=%d", received.cmd);
-	LOG_DEBUG(buffer);
+	set_status_ready(false);
 
 	execute_command(&received);
+}
+
+void handheld_set_cb_set_statusready(handheld_cb_set_statusready cb)
+{
+	m_callback_set_statusready = cb;
 }

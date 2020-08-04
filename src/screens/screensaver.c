@@ -187,7 +187,7 @@ void screensaver_run(uint8_t speed)
 		i = 0;
 	}
 
-	// graphx_draw_pixel(x, y, PIXEL_OFF);
+	// graphx_draw_pixel(x, y, GRAPHX_PIXEL_OFF);
 
 	switch (ball_direction) {
 	case DIR_UP:
@@ -223,5 +223,5 @@ void screensaver_run(uint8_t speed)
 		break;
 	}
 
-	graphx_draw_pixel(x, y, PIXEL_TOGGLE);
+	graphx_draw_pixel(x, y, GRAPHX_PIXEL_TOGGLE);
 }

@@ -20,7 +20,7 @@ static void test_graphx_draw_pixel(void)
 
 		for (uint8_t y = 0; y < GRAPHX_HEIGHT; y++) {
 
-			graphx_draw_pixel(x, y, PIXEL_ON);
+			graphx_draw_pixel(x, y, GRAPHX_PIXEL_ON);
 
 			TEST_ASSERT_MESSAGE(graphx_get_pixel(x, y) == 1,
 			                    print_coordinates(x, y));
@@ -31,7 +31,7 @@ static void test_graphx_draw_pixel(void)
 
 		for (uint8_t y = 0; y < GRAPHX_HEIGHT; y++) {
 
-			graphx_draw_pixel(x, y, PIXEL_OFF);
+			graphx_draw_pixel(x, y, GRAPHX_PIXEL_OFF);
 
 			TEST_ASSERT_MESSAGE(graphx_get_pixel(x, y) == 0,
 			                    print_coordinates(x, y));
@@ -48,7 +48,7 @@ static void test_graphx_draw_hline(void)
 	uint8_t x_end   = 10;
 	uint8_t y       = 20;
 
-	graphx_draw_hline(x_start, x_end, y, PIXEL_ON);
+	graphx_draw_hline(x_start, x_end, y, GRAPHX_PIXEL_ON);
 
 	for (uint8_t i = x_start; i <= x_end; i++) {
 		TEST_ASSERT_MESSAGE(graphx_get_pixel(i, y) == 1,
@@ -65,7 +65,7 @@ static void test_graphx_draw_vline(void)
 	uint8_t y_end   = 10;
 	uint8_t x       = 20;
 
-	graphx_draw_vline(x, y_start, y_end, PIXEL_ON);
+	graphx_draw_vline(x, y_start, y_end, GRAPHX_PIXEL_ON);
 
 	for (uint8_t i = y_start; i <= y_end; i++) {
 		TEST_ASSERT_MESSAGE(graphx_get_pixel(x, i) == 1,

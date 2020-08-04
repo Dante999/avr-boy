@@ -24,6 +24,7 @@
 
 #include "core.h"
 
+uint8_t action_cmd_received_draw_pixel(struct pixel *pixel);
 uint8_t action_cmd_received_draw_text(struct draw_text *dt);
 uint8_t action_cmd_received_get_buttons(struct button_stat *b);
 uint8_t action_cmd_received_clear_screen();

@@ -120,6 +120,10 @@ void test_protocol_min_data_length(void)
 
 void test_protocol_max_data_length(void)
 {
+	TEST_ASSERT_MESSAGE(
+	    PROTOCOL_MAX_LENGTH < 255,
+	    "Protocol length already exceed 8bit limit! Cannot test");
+
 	mock_transceiver_reset();
 
 	uint8_t sync   = PRTCL_START_BYTE;
@@ -152,8 +156,9 @@ void test_protocol_reset_by_multible_start_bytes(void)
 	receive_buffer[4] = PRTCL_START_BYTE;
 	receive_buffer[5] = PRTCL_START_BYTE;
 	receive_buffer[6] = PRTCL_START_BYTE;
-	receive_buffer[7] = PRTCL_CMD_PING;
-	receive_buffer[8] = 0;
+	receive_buffer[7] = PRTCL_START_BYTE;
+	receive_buffer[8] = PRTCL_CMD_PING;
+	receive_buffer[9] = 0;
 
 	// check received data
 	struct protocol_package received;

@@ -36,9 +36,11 @@ enum commands {
 	PRTCL_CMD_CHECK_VERSION,
 	PRTCL_CMD_GET_BUTTONS,
 	PRTCL_CMD_DRAW_TEXT,
+	PRTCL_CMD_DRAW_PIXEL,
 	PRTCL_CMD_CLEAR_SCREEN
 };
 
+typedef void (*protocol_callback_reset)(void);
 typedef void (*protocol_callback_transmit)(char byte);
 typedef char (*protocol_callback_receive)(void);
 
@@ -58,5 +60,7 @@ bool protocol_parse_received(char c);
 bool protocol_receive_complete(void);
 void protocol_copy_received(struct protocol_package *package);
 void protocol_reset(void);
+
+void protocol_set_cb_reset(protocol_callback_reset cb_reset);
 
 #endif /* AVRBOY_PROTOCOL_H */

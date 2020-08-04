@@ -24,9 +24,9 @@
 
 #include <stdint.h> // uint8_t
 
-#define PIXEL_OFF    0
-#define PIXEL_ON     1
-#define PIXEL_TOGGLE 2
+#define GRAPHX_PIXEL_OFF    0
+#define GRAPHX_PIXEL_ON     1
+#define GRAPHX_PIXEL_TOGGLE 2
 
 #define GRAPHX_WIDTH  128
 #define GRAPHX_HEIGHT 64

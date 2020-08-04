@@ -88,7 +88,7 @@ void menuconfig_refresh(struct button_stat *buttons)
 	static uint8_t current_index = 0;
 
 	graphx_puts(&font5x7, 16, 0, "configuration");
-	graphx_draw_hline(5, 127 - 5, 10, PIXEL_ON);
+	graphx_draw_hline(5, 127 - 5, 10, GRAPHX_PIXEL_ON);
 
 	current_index = get_index(current_index, buttons);
 	draw_cursor(current_index);

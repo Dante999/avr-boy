@@ -4,6 +4,10 @@
 #include <stdbool.h>
 #include <stdint.h>
 
+#define CORE_PIXEL_OFF    0
+#define CORE_PIXEL_ON     1
+#define CORE_PIXEL_TOGGLE 2
+
 enum button_id {
 	BUTTON_UP,
 	BUTTON_DOWN,
@@ -25,6 +29,12 @@ struct draw_text {
 	uint8_t x;
 	uint8_t y;
 	char    text[20];
+};
+
+struct pixel {
+	uint8_t x;
+	uint8_t y;
+	uint8_t color;
 };
 
 bool core_button_get(struct button_stat *stat, enum button_id id);

@@ -18,14 +18,24 @@
  */
 #include "protocol.h"
 
+#include <stdio.h>
+
+#define PROTOCOL_LOG 1
+
+#if PROTOCOL_LOG
+#	include "../util/logger.h"
+#endif
+
 enum state { WAITFOR_SYNC, WAITFOR_CMD, WAITFOR_LENGTH, WAITFOR_DATA };
 
 static enum state              m_state = WAITFOR_SYNC;
 static struct protocol_package m_package;
 
-static protocol_callback_transmit m_callback_transmit;
-static protocol_callback_receive  m_callback_receive;
-static volatile bool              m_finished = false;
+static volatile bool m_finished = false;
+
+static protocol_callback_transmit m_callback_transmit = NULL;
+static protocol_callback_receive  m_callback_receive  = NULL;
+static protocol_callback_reset    m_callback_reset    = NULL;
 
 static void parse_byte(char byte)
 {
@@ -127,6 +137,12 @@ void protocol_send_package(uint8_t cmd, uint8_t length, const char *data)
 	m_callback_transmit(cmd);
 	m_callback_transmit(length);
 
+#if PROTOCOL_LOG
+	char msg[35];
+	snprintf(msg, 35, "send     : [c=%d|l=%d]", cmd, length);
+	LOG_DEBUG(msg);
+#endif
+
 	for (uint8_t i = 0; i < length; i++) {
 		m_callback_transmit(data[i]);
 	}
@@ -134,10 +150,18 @@ void protocol_send_package(uint8_t cmd, uint8_t length, const char *data)
 
 void protocol_waitfor_package(struct protocol_package *package)
 {
+
 	while (!m_finished) {
 		char c = m_callback_receive();
 		protocol_parse_received(c);
 	}
+
+#if PROTOCOL_LOG
+	char msg[35];
+	snprintf(msg, 35, "received : [c=%d|l=%d]", m_package.cmd,
+	         m_package.length);
+	LOG_DEBUG(msg);
+#endif
 
 	protocol_copy_received(package);
 	protocol_reset();
@@ -172,6 +196,9 @@ void protocol_init(protocol_callback_transmit cb_transmit,
  **************************************************************************** */
 void protocol_reset(void)
 {
+	if (m_callback_reset != NULL)
+		m_callback_reset();
+
 	m_state    = WAITFOR_SYNC;
 	m_finished = false;
 }
@@ -190,4 +217,9 @@ void protocol_copy_received(struct protocol_package *dest_package)
 	for (uint8_t i = 0; i < m_package.length; i++) {
 		dest_package->data[i] = m_package.data[i];
 	}
+}
+
+void protocol_set_cb_reset(protocol_callback_reset cb_reset)
+{
+	m_callback_reset = cb_reset;
 }
