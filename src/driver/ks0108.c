@@ -43,9 +43,11 @@
 
 static uint8_t ks0108_readstatus(uint8_t chip);
 
-static void ks0108_delay(void)
+inline static void ks0108_delay(void)
 {
-	_delay_us(1);
+	__asm("nop");
+	__asm("nop");
+	__asm("nop");
 }
 
 /*******************************************************************************
@@ -406,17 +408,19 @@ void ks0108_init(void)
 
 void ks0108_drawbuffer(uint8_t *buffer)
 {
-	for (uint8_t page = 0; page < 8; page++) {
+	uint8_t page;
+	uint8_t addr;
+	uint8_t csel;
 
-		for (uint8_t addr = 0; addr < 128; addr++) {
+	for (page = 0; page < 8; page++) {
 
-			uint8_t data = *buffer;
+		for (addr = 0; addr < 128; addr++) {
 
-			uint8_t csel = (addr < 64) ? CSEL_1 : CSEL_2;
+			csel = (addr < 64) ? CSEL_1 : CSEL_2;
 
 			ks0108_setpage(page, csel);
 			ks0108_setaddr(addr, csel);
-			ks0108_writedata(data, csel);
+			ks0108_writedata(*buffer, csel);
 
 			buffer++;
 		}
