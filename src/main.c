@@ -31,6 +31,7 @@
 #include "screens/bootscreen.h"
 #include "screens/configscreen.h"
 #include "screens/screensaver.h"
+#include "userport.h"
 #include "util/logger.h"
 
 enum state { STATE_SCREENSAVER, STATE_CONFIGMENU, STATE_CARTRIDGE };
@@ -63,6 +64,8 @@ static void init(void)
 	button_init();
 	graphx_init();
 	screensaver_init();
+	lcd_init();
+	userport_init();
 
 	// set as output
 	DDRX_READY |= BIT_READY;

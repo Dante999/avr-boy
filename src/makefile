@@ -43,6 +43,7 @@ SOURCES += protocol.c
 SOURCES += core.c
 SOURCES += handheld.c
 SOURCES += handheld_actions.c
+SOURCES += userport.c
 
 # Progammer
 PROGRAMMER=usbasp
