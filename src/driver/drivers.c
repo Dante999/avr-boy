@@ -1,8 +1,6 @@
 #include "i2cmaster.h"
-#include "ks0108.h"
 #include "pcf8574.h"
 #include "spislave.h"
-#include "ssd1306.h"
 #include "uart.h"
 
 #define INIT_START(name) uart_puts(name);
@@ -24,14 +22,6 @@ void drivers_init(void)
 
 	INIT_START("   PCF8574 ...")
 	pcf8574_init();
-	INIT_DONE
-
-	INIT_START("   SSD1306 ...")
-	ssd1306_init();
-	INIT_DONE
-
-	INIT_START("   KS0108 ....")
-	ks0108_init();
 	INIT_DONE
 
 	INIT_START("   SPI .......")
