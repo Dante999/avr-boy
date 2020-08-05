@@ -123,11 +123,15 @@ uint8_t cartridge_draw_text(uint8_t x, uint8_t y, const char *text)
 		return CRTRDG_STATUS_WRONG_COMMAND;
 }
 
-uint8_t cartridge_draw_pixel(uint8_t x, uint8_t y)
+uint8_t cartridge_draw_pixel(uint8_t x, uint8_t y, uint8_t color)
 {
-	uint8_t coords[2] = {x, y};
+	struct pixel tmp;
+	tmp.x     = x;
+	tmp.y     = y;
+	tmp.color = color;
 
-	send_to_handheld(PRTCL_CMD_DRAW_PIXEL, 2, (char *)&coords[0]);
+	send_to_handheld(PRTCL_CMD_DRAW_PIXEL, sizeof(struct pixel),
+	                 (char *)&tmp);
 	waitfor_handheld_response(&m_received);
 
 	return command_equals(PRTCL_CMD_ACK, m_received.cmd);
