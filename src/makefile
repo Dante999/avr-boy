@@ -44,6 +44,7 @@ SOURCES += core.c
 SOURCES += handheld.c
 SOURCES += handheld_actions.c
 SOURCES += userport.c
+SOURCES += sprite.c
 
 # Progammer
 PROGRAMMER=usbasp
@@ -58,6 +59,7 @@ CFLAGS  = -c                       # Compile and assemble, but do not link
 #CFLAGS += -g                       # Generate debug information in default format
 CFLAGS += -Os                      # Optimize for space rather than speed
 CFLAGS += -std=c11                 # Use this C standard
+CFLAGS += -Wall                    # Print all warnings
 CFLAGS += -Wextra                  # Print extra (possibly unwanted) warnings
 CFLAGS += -Wunused                 # Enable all -Wunused- warnings
 CFLAGS += -fpack-struct            # Pack all structure members together without holes

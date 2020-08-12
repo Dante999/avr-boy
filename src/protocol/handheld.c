@@ -63,6 +63,24 @@ static void answer_get_buttons(void)
 	send_to_cartridge(response, sizeof(btn), (const char *)&btn);
 }
 
+static void answer_sprite(c_sprite_t *sprite)
+{
+	uint8_t response = action_cmd_received_sprite(sprite);
+	send_to_cartridge(response, 0, NULL);
+}
+
+static void answer_display_buffer(void)
+{
+	uint8_t response = action_cmd_received_display_buffer();
+	send_to_cartridge(response, 0, NULL);
+}
+
+static void answer_display_sprites(void)
+{
+	uint8_t response = action_cmd_received_display_sprites();
+	send_to_cartridge(response, 0, NULL);
+}
+
 static void execute_command(struct protocol_package *received)
 {
 	switch (received->cmd) {
@@ -95,6 +113,21 @@ static void execute_command(struct protocol_package *received)
 	case PRTCL_CMD_GET_BUTTONS:
 		LOG_DEBUG("-> get buttons");
 		answer_get_buttons();
+		break;
+
+	case PRTCL_CMD_SPRITE:
+		LOG_DEBUG("-> sprite");
+		answer_sprite((c_sprite_t *)&received->data[0]);
+		break;
+
+	case PRTCL_CMD_DISPLAY_BUFFER:
+		LOG_DEBUG("-> display buffer");
+		answer_display_buffer();
+		break;
+
+	case PRTCL_CMD_DISPLAY_SPRITES:
+		LOG_DEBUG("-> display sprites");
+		answer_display_sprites();
 		break;
 
 	default:

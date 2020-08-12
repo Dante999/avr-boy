@@ -24,6 +24,7 @@
 #include "button.h"
 #include "display/graphx.h"
 #include "display/lcd.h"
+#include "display/sprite.h"
 #include "driver/drivers.h"
 #include "driver/spislave.h"
 #include "protocol/core.h"
@@ -116,7 +117,5 @@ int main(void)
 
 			break;
 		}
-
-		lcd_drawbuffer(graphx_buffer());
 	}
 }

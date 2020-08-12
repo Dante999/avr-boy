@@ -161,3 +161,28 @@ void cartridge_set_cb_is_handheld_ready(cartridge_cb_is_handheld_ready cb)
 {
 	m_callback_is_cartridge_ready = cb;
 }
+
+uint8_t cartridge_sprite(const c_sprite_t *sprite)
+{
+	send_to_handheld(PRTCL_CMD_SPRITE, sizeof(c_sprite_t),
+	                 (const char *)sprite);
+	waitfor_handheld_response(&m_received);
+
+	return command_equals(PRTCL_CMD_ACK, m_received.cmd);
+}
+
+uint8_t cartridge_display_buffer()
+{
+	send_to_handheld(PRTCL_CMD_DISPLAY_BUFFER, 0, NULL);
+	waitfor_handheld_response(&m_received);
+
+	return command_equals(PRTCL_CMD_ACK, m_received.cmd);
+}
+
+uint8_t cartridge_display_sprites()
+{
+	send_to_handheld(PRTCL_CMD_DISPLAY_SPRITES, 0, NULL);
+	waitfor_handheld_response(&m_received);
+
+	return command_equals(PRTCL_CMD_ACK, m_received.cmd);
+}
