@@ -20,7 +20,7 @@ void test_cartridge_draw_text(void)
 
 	TEST_ASSERT_EQUAL(PRTCL_START_BYTE, tb[0]);
 	TEST_ASSERT_EQUAL(PRTCL_CMD_DRAW_TEXT, tb[1]);
-	TEST_ASSERT_EQUAL(sizeof(struct draw_text), tb[2]);
+	TEST_ASSERT_EQUAL(sizeof(c_text_t), tb[2]);
 	TEST_ASSERT_EQUAL(7, tb[3]);
 	TEST_ASSERT_EQUAL(11, tb[4]);
 	TEST_ASSERT_EQUAL('A', tb[5]);

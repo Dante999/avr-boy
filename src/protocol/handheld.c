@@ -26,13 +26,13 @@ static void answer_clear_screen()
 	send_to_cartridge(response, 0, NULL);
 }
 
-static void answer_draw_text(struct draw_text *dt)
+static void answer_draw_text(c_text_t *dt)
 {
 	uint8_t response = action_cmd_received_draw_text(dt);
 	send_to_cartridge(response, 0, NULL);
 }
 
-static void answer_draw_pixel(struct pixel *pixel)
+static void answer_draw_pixel(c_pixel_t *pixel)
 {
 	uint8_t response = action_cmd_received_draw_pixel(pixel);
 	send_to_cartridge(response, 0, NULL);
@@ -56,7 +56,7 @@ static void answer_version(uint8_t cartridge_version)
 
 static void answer_get_buttons(void)
 {
-	struct button_stat btn;
+	c_buttonstat_t btn;
 
 	uint8_t response = action_cmd_received_get_buttons(&btn);
 
@@ -97,12 +97,12 @@ static void execute_command(struct protocol_package *received)
 
 	case PRTCL_CMD_DRAW_TEXT:
 		LOG_DEBUG("-> draw text");
-		answer_draw_text((struct draw_text *)&received->data[0]);
+		answer_draw_text((c_text_t *)&received->data[0]);
 		break;
 
 	case PRTCL_CMD_DRAW_PIXEL:
 		LOG_DEBUG("-> draw pixel");
-		answer_draw_pixel((struct pixel *)&received->data[0]);
+		answer_draw_pixel((c_pixel_t *)&received->data[0]);
 		break;
 
 	case PRTCL_CMD_CLEAR_SCREEN:

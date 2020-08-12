@@ -22,6 +22,6 @@
 
 #include "../protocol/core.h"
 
-void menuconfig_refresh(struct button_stat *buttons);
+void menuconfig_refresh(c_buttonstat_t *buttons);
 
 #endif // MENUCONFIG_H

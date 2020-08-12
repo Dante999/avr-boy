@@ -40,7 +40,7 @@ uint8_t cartridge_ping(void);
 uint8_t cartridge_check_version(uint8_t *handheld_version);
 uint8_t cartridge_draw_text(uint8_t x, uint8_t y, const char *text);
 uint8_t cartridge_draw_pixel(uint8_t x, uint8_t y, uint8_t color);
-uint8_t cartridge_get_buttons(struct button_stat *btn);
+uint8_t cartridge_get_buttons(c_buttonstat_t *btn);
 uint8_t cartridge_clear_screen();
 uint8_t cartridge_display_buffer();
 uint8_t cartridge_display_sprites();

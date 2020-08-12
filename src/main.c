@@ -81,8 +81,8 @@ int main(void)
 {
 	init();
 
-	enum state         system_state = STATE_CARTRIDGE;
-	struct button_stat buttons;
+	enum state     system_state = STATE_CARTRIDGE;
+	c_buttonstat_t buttons;
 
 	bootscreen_show();
 

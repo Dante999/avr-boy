@@ -8,13 +8,13 @@
 #include "protocol/core.h"
 #include "protocol/protocol.h"
 
-uint8_t action_cmd_received_draw_text(struct draw_text *dt)
+uint8_t action_cmd_received_draw_text(c_text_t *t)
 {
-	graphx_puts(&font5x7, dt->x, dt->y, dt->text);
+	graphx_puts(&font5x7, t->coord.x, t->coord.y, t->text);
 	return PRTCL_CMD_ACK;
 }
 
-uint8_t action_cmd_received_get_buttons(struct button_stat *b)
+uint8_t action_cmd_received_get_buttons(c_buttonstat_t *b)
 {
 	button_read(b);
 	return PRTCL_CMD_ACK;
@@ -26,9 +26,9 @@ uint8_t action_cmd_received_clear_screen()
 	return PRTCL_CMD_ACK;
 }
 
-uint8_t action_cmd_received_draw_pixel(struct pixel *p)
+uint8_t action_cmd_received_draw_pixel(c_pixel_t *p)
 {
-	graphx_draw_pixel(p->x, p->y, p->color);
+	graphx_draw_pixel(p->coord.x, p->coord.y, p->color);
 	return PRTCL_CMD_ACK;
 }
 

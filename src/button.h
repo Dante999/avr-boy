@@ -22,7 +22,7 @@
 
 #include "protocol/core.h"
 
-void button_debug(struct button_stat *button);
-void button_read(struct button_stat *button);
+void button_debug(c_buttonstat_t *button);
+void button_read(c_buttonstat_t *button);
 void button_init(void);
 #endif // BUTTON_H

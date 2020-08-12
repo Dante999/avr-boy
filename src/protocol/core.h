@@ -12,7 +12,7 @@
 #define CORE_SPRITE_MAX_SIZE  8
 #define CORE_SPRITE_MAX_INDEX 5
 
-enum button_id {
+typedef enum {
 	BUTTON_UP,
 	BUTTON_DOWN,
 	BUTTON_LEFT,
@@ -22,24 +22,12 @@ enum button_id {
 	BUTTON_START,
 	BUTTON_SELECT,
 	BUTTON_CONFIG
-};
+} c_buttonid_t;
 
-struct button_stat {
+typedef struct {
 	uint8_t reg0;
 	uint8_t reg1;
-};
-
-struct draw_text {
-	uint8_t x;
-	uint8_t y;
-	char    text[20];
-};
-
-struct pixel {
-	uint8_t x;
-	uint8_t y;
-	uint8_t color;
-};
+} c_buttonstat_t;
 
 typedef struct {
 	uint8_t x;
@@ -63,8 +51,8 @@ typedef struct {
 	uint8_t   data[CORE_SPRITE_MAX_SIZE];
 } c_sprite_t;
 
-bool core_button_get(struct button_stat *stat, enum button_id id);
-void core_button_set(struct button_stat *stat, enum button_id id);
-void core_button_clear(struct button_stat *stat);
+bool core_button_get(c_buttonstat_t *stat, c_buttonid_t id);
+void core_button_set(c_buttonstat_t *stat, c_buttonid_t id);
+void core_button_clear(c_buttonstat_t *stat);
 
 #endif /* PERIPHERALS_H */

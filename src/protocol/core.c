@@ -10,7 +10,7 @@
 #define BUTTON_REG0_SELECT (1 << 7)
 #define BUTTON_REG1_CONFIG (1 << 0)
 
-bool core_button_get(struct button_stat *stat, enum button_id id)
+bool core_button_get(c_buttonstat_t *stat, c_buttonid_t id)
 {
 	bool retval = false;
 
@@ -51,7 +51,7 @@ bool core_button_get(struct button_stat *stat, enum button_id id)
 	return retval;
 }
 
-void core_button_set(struct button_stat *stat, enum button_id id)
+void core_button_set(c_buttonstat_t *stat, c_buttonid_t id)
 {
 	switch (id) {
 
@@ -88,7 +88,7 @@ void core_button_set(struct button_stat *stat, enum button_id id)
 	}
 }
 
-void core_button_clear(struct button_stat *stat)
+void core_button_clear(c_buttonstat_t *stat)
 {
 	stat->reg0 = 0x00;
 	stat->reg1 = 0x00;

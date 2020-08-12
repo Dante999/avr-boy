@@ -68,10 +68,7 @@ uint8_t cartridge_ping(void)
 	send_to_handheld(PRTCL_CMD_PING, 0, NULL);
 	waitfor_handheld_response(&m_received);
 
-	if (m_received.cmd == PRTCL_CMD_PONG)
-		return CRTRDG_STATUS_OK;
-	else
-		return CRTRDG_STATUS_WRONG_COMMAND;
+	return command_equals(PRTCL_CMD_PONG, m_received.cmd);
 }
 
 uint8_t cartridge_clear_screen(void)
@@ -79,10 +76,7 @@ uint8_t cartridge_clear_screen(void)
 	send_to_handheld(PRTCL_CMD_CLEAR_SCREEN, 0, NULL);
 	waitfor_handheld_response(&m_received);
 
-	if (m_received.cmd == PRTCL_CMD_ACK)
-		return CRTRDG_STATUS_OK;
-	else
-		return CRTRDG_STATUS_WRONG_COMMAND;
+	return command_equals(PRTCL_CMD_ACK, m_received.cmd);
 }
 
 uint8_t cartridge_check_version(uint8_t *handheld_version)
@@ -103,46 +97,40 @@ uint8_t cartridge_check_version(uint8_t *handheld_version)
 
 uint8_t cartridge_draw_text(uint8_t x, uint8_t y, const char *text)
 {
+	c_text_t t;
 
-	struct draw_text tmp;
+	t.coord.x = x;
+	t.coord.y = y;
 
-	tmp.x = x;
-	tmp.y = y;
+	strncpy(t.text, text, CORE_TEXT_MAX_SIZE);
 
-	size_t maxlen = sizeof(tmp.text);
+	t.text[CORE_TEXT_MAX_SIZE - 1] = '\0'; // extra string terminator
 
-	strncpy(tmp.text, text, maxlen);
-	tmp.text[maxlen - 1] = '\0'; // extra string terminator
-
-	send_to_handheld(PRTCL_CMD_DRAW_TEXT, sizeof(tmp), (char *)&tmp);
-	waitfor_handheld_response(&m_received);
-
-	if (m_received.cmd == PRTCL_CMD_ACK)
-		return CRTRDG_STATUS_OK;
-	else
-		return CRTRDG_STATUS_WRONG_COMMAND;
-}
-
-uint8_t cartridge_draw_pixel(uint8_t x, uint8_t y, uint8_t color)
-{
-	struct pixel tmp;
-	tmp.x     = x;
-	tmp.y     = y;
-	tmp.color = color;
-
-	send_to_handheld(PRTCL_CMD_DRAW_PIXEL, sizeof(struct pixel),
-	                 (char *)&tmp);
+	send_to_handheld(PRTCL_CMD_DRAW_TEXT, sizeof(c_text_t), (char *)&t);
 	waitfor_handheld_response(&m_received);
 
 	return command_equals(PRTCL_CMD_ACK, m_received.cmd);
 }
 
-uint8_t cartridge_get_buttons(struct button_stat *btn)
+uint8_t cartridge_draw_pixel(uint8_t x, uint8_t y, uint8_t color)
+{
+	c_pixel_t p;
+	p.coord.x = x;
+	p.coord.y = y;
+	p.color   = color;
+
+	send_to_handheld(PRTCL_CMD_DRAW_PIXEL, sizeof(c_pixel_t), (char *)&p);
+	waitfor_handheld_response(&m_received);
+
+	return command_equals(PRTCL_CMD_ACK, m_received.cmd);
+}
+
+uint8_t cartridge_get_buttons(c_buttonstat_t *btn)
 {
 	send_to_handheld(PRTCL_CMD_GET_BUTTONS, 0, NULL);
 	waitfor_handheld_response(&m_received);
 
-	if (sizeof(struct button_stat) != m_received.length) {
+	if (sizeof(c_buttonstat_t) != m_received.length) {
 		return CRTRDG_STATUS_WRONG_DATA;
 	}
 	else {

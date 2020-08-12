@@ -44,7 +44,7 @@ static void draw_keyvalue(uint8_t index, const char *key, const char *value)
 	graphx_puts(&font5x7, X_VALUE_START, y, value);
 }
 
-static uint8_t get_index(uint8_t current_index, struct button_stat *buttons)
+static uint8_t get_index(uint8_t current_index, c_buttonstat_t *buttons)
 {
 	if (core_button_get(buttons, BUTTON_UP))
 		current_index--;
@@ -82,7 +82,7 @@ static void draw_cursor(uint8_t index)
 	//	}
 }
 
-void menuconfig_refresh(struct button_stat *buttons)
+void menuconfig_refresh(c_buttonstat_t *buttons)
 {
 
 	static uint8_t current_index = 0;
