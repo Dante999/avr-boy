@@ -8,7 +8,8 @@
 # Compiler
 CC:=gcc
 
-CFLAGS  = -c                       # Compile and assemble, but do not link
+CFLAGS = -I..
+CFLAGS += -c                      # Compile and assemble, but do not link
 CFLAGS += -g                       # Generate debug information in default format
 CFLAGS += -Os                      # Optimize for space rather than speed
 CFLAGS += -std=c11                 # Use this C standard
