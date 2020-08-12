@@ -1,4 +1,10 @@
-[![Build Status](https://travis-ci.org/Dante999/avr-boy.svg?branch=master)](https://travis-ci.org/Dante999/avr-boy)
+
+[![master branch](https://travis-ci.org/Dante999/avr-boy.svg?branch=master)](https://travis-ci.org/Dante999/avr-boy)
+master
+
+
+[![dev branch](https://travis-ci.org/Dante999/avr-boy.svg?branch=dev)](https://travis-ci.org/Dante999/avr-boy)
+dev
 
 # AVR BOY
 This project is something I would like to do since my childhood: Creating my own
