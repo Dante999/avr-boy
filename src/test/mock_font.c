@@ -1,4 +1,4 @@
-#include "../display/font.h"
+#include "display/font.h"
 
 uint8_t font_pgm_width(const struct font *f)
 {

@@ -1,7 +1,7 @@
 #include "lcd.h"
 
-#include "../driver/ks0108.h"
-#include "../driver/ssd1306.h"
+#include "driver/ks0108.h"
+#include "driver/ssd1306.h"
 #include "graphx.h"
 
 static void lcd_draw_byte(uint8_t x, uint8_t y, uint8_t byte)

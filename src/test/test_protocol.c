@@ -20,8 +20,8 @@
 
 #include <string.h>
 
-#include "../protocol/protocol.h"
 #include "mock_transceiver.h"
+#include "protocol/protocol.h"
 
 static void test_protocol_receiver_callback(void)
 {

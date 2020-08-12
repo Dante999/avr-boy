@@ -1,4 +1,4 @@
-#include "../util/logger.h"
+#include "util/logger.h"
 
 void log_print(const char *msg)
 {

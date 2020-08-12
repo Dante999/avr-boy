@@ -2,8 +2,8 @@
 
 #include <stdio.h>
 
-#include "../util/logger.h"
 #include "handheld_actions.h"
+#include "util/logger.h"
 
 static handheld_cb_set_statusready m_callback_set_statusready = NULL;
 

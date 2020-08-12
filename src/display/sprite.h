@@ -1,7 +1,7 @@
 #include <stdbool.h>
 #include <stdio.h>
 
-#include "../protocol/core.h"
+#include "protocol/core.h"
 
 #define SPRITE_MAX_INDEX CORE_SPRITE_MAX_INDEX
 #define SPRITE_MAX_DATA  CORE_SPRITE_MAX_SIZE

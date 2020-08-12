@@ -54,8 +54,8 @@ PROGRAMMER=usbasp
 
 OBJECTS=$(SOURCES:%.c=$(BUILDPATH)/%.o)
 
-
-CFLAGS  = -c                       # Compile and assemble, but do not link
+CFLAGS = -I.                       # Include current file location to search path
+CFLAGS += -c                       # Compile and assemble, but do not link
 #CFLAGS += -g                       # Generate debug information in default format
 CFLAGS += -Os                      # Optimize for space rather than speed
 CFLAGS += -std=c11                 # Use this C standard

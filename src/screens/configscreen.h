@@ -20,7 +20,7 @@
 #ifndef MENUCONFIG_H
 #define MENUCONFIG_H
 
-#include "../protocol/core.h"
+#include "protocol/core.h"
 
 void menuconfig_refresh(c_buttonstat_t *buttons);
 

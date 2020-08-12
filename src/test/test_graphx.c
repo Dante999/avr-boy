@@ -1,6 +1,6 @@
 #include "unity.h"
 
-#include "../display/graphx.h"
+#include "display/graphx.h"
 
 #include <stdio.h>
 

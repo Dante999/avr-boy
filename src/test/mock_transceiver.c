@@ -3,7 +3,7 @@
 #include <stdint.h>
 #include <string.h> // memset
 
-#include "../protocol/protocol.h"
+#include "protocol/protocol.h"
 
 #define BUFFER_SIZE MOCK_BUFFER_SIZE
 
