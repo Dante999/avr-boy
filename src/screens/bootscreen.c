@@ -1,6 +1,7 @@
 #include "bootscreen.h"
 
 #include <avr/io.h>
+#include <avr/pgmspace.h>
 #include <util/delay.h>
 
 #include "display/graphx.h"
@@ -16,7 +17,7 @@
 #define BOOTSCREEN_WIDTH  72
 #define BOOTSCREEN_HEIGHT 16
 
-static uint8_t bmp_bootscreen[] = {
+static const PROGMEM uint8_t bmp_bootscreen[] = {
     0x00, 0x00, 0x00, 0x00, 0x80, 0xc0, 0x38, 0x0e, 0x0e, 0xf8, 0x80, 0x00,
     0x00, 0x06, 0x7c, 0xc0, 0x00, 0x00, 0xc0, 0x7c, 0x02, 0x00, 0x00, 0xfe,
     0x82, 0x82, 0x82, 0x82, 0x44, 0x38, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
@@ -34,8 +35,8 @@ void bootscreen_show(void)
 {
 	graphx_fill_pattern(0x00);
 
-	graphx_draw_tile(X_OFFSET, Y_OFFSET, bmp_bootscreen, BOOTSCREEN_WIDTH,
-	                 BOOTSCREEN_HEIGHT);
+	graphx_draw_tile_P(X_OFFSET, Y_OFFSET, bmp_bootscreen, BOOTSCREEN_WIDTH,
+	                   BOOTSCREEN_HEIGHT);
 
 	lcd_drawbuffer(graphx_buffer());
 

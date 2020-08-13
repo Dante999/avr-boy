@@ -24,6 +24,14 @@
 #include <stdlib.h>
 #include <string.h> // memset
 
+#ifdef __AVR_DEVICE_NAME__
+#	define IS_AVR_DEVICE
+#endif
+
+#ifdef IS_AVR_DEVICE
+#	include <avr/pgmspace.h>
+#endif
+
 static struct graphxdata {
 	uint8_t width;
 	uint8_t height;
@@ -105,15 +113,37 @@ void graphx_draw_byte(uint8_t x, uint8_t y, uint8_t byte)
 	}
 }
 
-void graphx_draw_tile(uint8_t x, uint8_t y, const uint8_t *tile,
-                      uint8_t tile_width, uint8_t tile_height)
+void graphx_draw_tile_P(uint8_t x, uint8_t y, const uint8_t *tile, uint8_t w,
+                        uint8_t h)
+{
+	for (uint8_t row = 0; row < (h / 8); row++) {
+
+		for (uint8_t col = 0; col < w; col++) {
+
+			uint16_t offset = row * w;
+
+#ifdef IS_AVR_DEVICE
+			uint8_t data = pgm_read_byte(&(tile[offset + col]));
+#elif
+			uint8_t data = tile[offset + col];
+#endif
+			uint8_t x_new = x + col;
+			uint8_t y_new = y + (row * 8);
+
+			graphx_draw_byte(x_new, y_new, data);
+		}
+	}
+}
+
+void graphx_draw_tile(uint8_t x, uint8_t y, const uint8_t *tile, uint8_t w,
+                      uint8_t h)
 {
 
-	for (uint8_t row = 0; row < (tile_height / 8); row++) {
+	for (uint8_t row = 0; row < (h / 8); row++) {
 
-		for (uint8_t col = 0; col < tile_width; col++) {
+		for (uint8_t col = 0; col < w; col++) {
 
-			uint16_t offset = row * tile_width;
+			uint16_t offset = row * w;
 
 			uint8_t data  = tile[offset + col];
 			uint8_t x_new = x + col;

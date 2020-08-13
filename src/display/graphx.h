@@ -32,6 +32,8 @@
 #define GRAPHX_HEIGHT 64
 #define GRAPHX_SIZE   (GRAPHX_WIDTH * (GRAPHX_HEIGHT / 8))
 
+void graphx_draw_tile_P(uint8_t x, uint8_t y, const uint8_t *tile, uint8_t w,
+                        uint8_t h);
 void graphx_draw_tile(uint8_t x, uint8_t y, const uint8_t *tile, uint8_t w,
                       uint8_t h);
 
