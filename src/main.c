@@ -67,6 +67,7 @@ static void init(void)
 	screensaver_init();
 	lcd_init();
 	userport_init();
+	sprite_init();
 
 	// set as output
 	DDRX_READY |= BIT_READY;

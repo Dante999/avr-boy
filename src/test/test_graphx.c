@@ -3,6 +3,7 @@
 #include "display/graphx.h"
 
 #include <stdio.h>
+#include <string.h>
 
 char *print_coordinates(uint8_t x, uint8_t y)
 {
@@ -295,6 +296,33 @@ static void test_graphx_fill_pattern(void)
 	}
 }
 
+void test_graphx_get_tile_8x8(void)
+{
+	graphx_init();
+
+	const uint8_t width  = 8;
+	const uint8_t height = 8;
+
+	const uint8_t tile[] = {0xFF, 0x81, 0x81, 0x81, 0x81, 0x81, 0x81, 0xFF};
+	uint8_t target[]     = {0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00};
+
+	graphx_draw_tile(0, 0, tile, width, height);
+
+	for (uint8_t i = 0; i < width; i++) {
+		TEST_ASSERT_EQUAL(graphx_get_pixel(i, 0), 1);
+		TEST_ASSERT_EQUAL(graphx_get_pixel(i, height - 1), 1);
+	}
+
+	for (uint8_t i = 0; i < height; i++) {
+		TEST_ASSERT_EQUAL(graphx_get_pixel(0, i), 1);
+		TEST_ASSERT_EQUAL(graphx_get_pixel(width - 1, i), 1);
+	}
+
+	graphx_get_tile(0, 0, target, width, height);
+
+	TEST_ASSERT_EQUAL(memcmp(tile, target, 8), 0);
+}
+
 void test_graphx_run(void)
 {
 	RUN_TEST(test_graphx_draw_pixel);
@@ -305,4 +333,5 @@ void test_graphx_run(void)
 	RUN_TEST(test_graphx_draw_tile_128x8);
 	RUN_TEST(test_graphx_draw_tile_128x64);
 	RUN_TEST(test_graphx_fill_pattern);
+	RUN_TEST(test_graphx_get_tile_8x8);
 }

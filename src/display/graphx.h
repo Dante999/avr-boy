@@ -20,9 +20,10 @@
 #ifndef GRAPHX_H
 #define GRAPHX_H
 
-#include "font.h"
-
 #include <stdint.h> // uint8_t
+
+#include "font.h"
+#include "sprite.h"
 
 #define GRAPHX_PIXEL_OFF    0
 #define GRAPHX_PIXEL_ON     1
@@ -32,10 +33,15 @@
 #define GRAPHX_HEIGHT 64
 #define GRAPHX_SIZE   (GRAPHX_WIDTH * (GRAPHX_HEIGHT / 8))
 
+void graphx_get_tile(uint8_t x, uint8_t y, uint8_t *target, uint8_t w,
+                     uint8_t h);
 void graphx_draw_tile_P(uint8_t x, uint8_t y, const uint8_t *tile, uint8_t w,
                         uint8_t h);
 void graphx_draw_tile(uint8_t x, uint8_t y, const uint8_t *tile, uint8_t w,
                       uint8_t h);
+
+void graphx_draw_sprite(sprite_t *sprite);
+void graphx_clear_sprite(const sprite_t *sprite);
 
 void graphx_putc(const struct font *f, uint8_t x, uint8_t y, const char c);
 void graphx_puts(const struct font *f, uint8_t x, uint8_t y, const char *s);

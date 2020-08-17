@@ -34,9 +34,18 @@ uint8_t action_cmd_received_draw_pixel(c_pixel_t *p)
 
 uint8_t action_cmd_received_sprite(c_sprite_t *sprite)
 {
+	const sprite_t *old_sprite = sprite_get(sprite->index);
+
+	if (old_sprite->x != sprite->coord.x ||
+	    old_sprite->y != sprite->coord.y) {
+		graphx_clear_sprite(old_sprite);
+	}
+
 	sprite_set_coord(sprite->index, sprite->coord.x, sprite->coord.y);
-	sprite_set_data(sprite->index, sprite->data);
+	sprite_set_fgdata(sprite->index, sprite->data);
 	sprite_set_show(sprite->index, sprite->show);
+
+	graphx_draw_sprite((sprite_t *)sprite_get(sprite->index));
 
 	return PRTCL_CMD_ACK;
 }
@@ -49,11 +58,15 @@ uint8_t action_cmd_received_display_buffer(void)
 
 uint8_t action_cmd_received_display_sprites(void)
 {
-	const sprite_t *tmp_sprite = sprite_get(0);
 
-	if (tmp_sprite->show) {
-		lcd_draw_sprite8x8(tmp_sprite->x, tmp_sprite->y,
-		                   tmp_sprite->data);
+	for (uint8_t i = 0; i < SPRITE_MAX_INDEX; i++) {
+
+		const sprite_t *tmp_sprite = sprite_get(i);
+
+		if (tmp_sprite->show) {
+			lcd_draw_sprite8x8(tmp_sprite->x, tmp_sprite->y,
+			                   tmp_sprite->fgdata);
+		}
 	}
 
 	return PRTCL_CMD_ACK;

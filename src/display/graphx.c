@@ -102,7 +102,7 @@ void graphx_draw_pixel(uint8_t x, uint8_t y, uint8_t color)
 		g_graphxdata.buffer[index] &= ~(1 << y_bit);
 }
 
-void graphx_draw_byte(uint8_t x, uint8_t y, uint8_t byte)
+static void graphx_draw_byte(uint8_t x, uint8_t y, uint8_t byte)
 {
 	for (uint8_t j = 0; j < 8; j++) {
 
@@ -111,6 +111,17 @@ void graphx_draw_byte(uint8_t x, uint8_t y, uint8_t byte)
 
 		graphx_draw_pixel(x, y + j, color);
 	}
+}
+
+static uint8_t graphx_get_byte(uint8_t x, uint8_t y)
+{
+	uint8_t result = 0;
+
+	for (uint8_t j = 0; j < 8; j++) {
+		result |= graphx_get_pixel(x, y + j) ? (1 << j) : 0;
+	}
+
+	return result;
 }
 
 void graphx_draw_tile_P(uint8_t x, uint8_t y, const uint8_t *tile, uint8_t w,
@@ -150,6 +161,24 @@ void graphx_draw_tile(uint8_t x, uint8_t y, const uint8_t *tile, uint8_t w,
 			uint8_t y_new = y + (row * 8);
 
 			graphx_draw_byte(x_new, y_new, data);
+		}
+	}
+}
+
+void graphx_get_tile(uint8_t x, uint8_t y, uint8_t *target, uint8_t w,
+                     uint8_t h)
+{
+
+	for (uint8_t row = 0; row < (h / 8); row++) {
+
+		for (uint8_t col = 0; col < w; col++) {
+
+			uint16_t offset = row * w;
+
+			uint8_t x_new = x + col;
+			uint8_t y_new = y + (row * 8);
+
+			target[offset + col] = graphx_get_byte(x_new, y_new);
 		}
 	}
 }
@@ -228,4 +257,20 @@ uint8_t *graphx_buffer(void)
 void graphx_clear(void)
 {
 	graphx_fill_pattern(0x00);
+}
+
+void graphx_draw_sprite(sprite_t *sprite)
+{
+	uint8_t tmp[SPRITE_MAX_DATA];
+
+	graphx_get_tile(sprite->x, sprite->y, tmp, 8, 8);
+
+	memcpy(sprite->bgdata, tmp, SPRITE_MAX_DATA);
+
+	graphx_draw_tile(sprite->x, sprite->y, sprite->fgdata, 8, 8);
+}
+
+void graphx_clear_sprite(const sprite_t *sprite)
+{
+	graphx_draw_tile(sprite->x, sprite->y, sprite->bgdata, 8, 8);
 }
