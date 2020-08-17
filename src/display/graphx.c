@@ -124,7 +124,7 @@ void graphx_draw_tile_P(uint8_t x, uint8_t y, const uint8_t *tile, uint8_t w,
 
 #ifdef IS_AVR_DEVICE
 			uint8_t data = pgm_read_byte(&(tile[offset + col]));
-#elif
+#else
 			uint8_t data = tile[offset + col];
 #endif
 			uint8_t x_new = x + col;
