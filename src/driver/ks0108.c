@@ -408,15 +408,11 @@ void ks0108_init(void)
 
 void ks0108_drawbuffer(uint8_t *buffer)
 {
-	uint8_t page;
-	uint8_t addr;
-	uint8_t csel;
+	for (uint8_t page = 0; page < 8; page++) {
 
-	for (page = 0; page < 8; page++) {
+		for (uint8_t addr = 0; addr < 128; addr++) {
 
-		for (addr = 0; addr < 128; addr++) {
-
-			csel = (addr < 64) ? CSEL_1 : CSEL_2;
+			const uint8_t csel = (addr < 64) ? CSEL_1 : CSEL_2;
 
 			ks0108_setpage(page, csel);
 			ks0108_setaddr(addr, csel);
