@@ -5,7 +5,8 @@
 *.files
 *.includes
 *.config
-
+*.cflags
+*.cxxflags
 .vscode
 
 # QT Creator (used for QT projects)
