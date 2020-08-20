@@ -62,6 +62,7 @@ CFLAGS += -std=c11                 # Use this C standard
 CFLAGS += -Wall                    # Print all warnings
 CFLAGS += -Wextra                  # Print extra (possibly unwanted) warnings
 CFLAGS += -Wunused                 # Enable all -Wunused- warnings
+CFLAGS += -Wshadow                 # Warn if a variable declaration shadows one from the parent context
 CFLAGS += -fpack-struct            # Pack all structure members together without holes
 CFLAGS += -fshort-enums            # Use the smallest needed integer for enum values
 CFLAGS += -ffunction-sections      # Place each function their own section
