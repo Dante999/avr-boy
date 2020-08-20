@@ -41,14 +41,6 @@ enum state { STATE_SCREENSAVER, STATE_CONFIGMENU, STATE_CARTRIDGE };
 #define PORTX_READY PORTD
 #define BIT_READY   (1 << PD5)
 
-static void cb_set_statusready(bool rdy)
-{
-	if (rdy)
-		PORTX_READY |= BIT_READY;
-	else
-		PORTX_READY &= ~BIT_READY;
-}
-
 static void cb_transmit(char c)
 {
 	spi_transceive(c);
@@ -57,6 +49,16 @@ static void cb_transmit(char c)
 static char cb_receive(void)
 {
 	return spi_transceive(PRTCL_CMD_ACK);
+}
+
+static void cb_before_communicate(void)
+{
+	PORTX_READY |= BIT_READY;
+}
+
+static void cb_after_communicate(void)
+{
+	PORTX_READY &= ~BIT_READY;
 }
 
 static void init(void)
@@ -73,7 +75,9 @@ static void init(void)
 	DDRX_READY |= BIT_READY;
 
 	handheld_init(cb_transmit, cb_receive);
-	handheld_set_cb_set_statusready(cb_set_statusready);
+	handheld_set_cb_before_communicate(cb_before_communicate);
+	handheld_set_cb_after_communicate(cb_after_communicate);
+
 
 	LOG_INFO("initialization done!");
 }
@@ -88,7 +92,6 @@ int main(void)
 	bootscreen_show();
 
 	while (1) {
-
 		handheld_wait_for_actions();
 
 		button_read(&buttons);

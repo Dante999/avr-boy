@@ -14,29 +14,40 @@
 
 static struct protocol_package m_received;
 
-static cartridge_cb_is_handheld_ready m_callback_is_cartridge_ready = NULL;
 
-static void wait_until_handheld_ready(void)
+static cartridge_cb_before_communicate m_callback_before_communicate = NULL;
+static cartridge_cb_after_communicate  m_callback_after_communicate = NULL;
+
+
+
+static void emit_before_communicate(void)
 {
+	if (m_callback_before_communicate != NULL)
+		m_callback_before_communicate();
+}
 
-	if (m_callback_is_cartridge_ready != NULL) {
-		while (!m_callback_is_cartridge_ready()) {
-			// waiting....
-		}
-	}
+static void emit_after_communicate(void)
+{
+	if (m_callback_after_communicate != NULL)
+		m_callback_after_communicate();
 }
 
 static void send_to_handheld(uint8_t cmd, uint8_t length, const char *data)
 {
-	wait_until_handheld_ready();
+	emit_before_communicate();
 	protocol_send_package(cmd, length, data);
+	emit_after_communicate();
+
 	protocol_reset();
 }
 
 static void waitfor_handheld_response(struct protocol_package *package)
 {
-	wait_until_handheld_ready();
+	emit_before_communicate();
 	protocol_waitfor_package(package);
+	emit_after_communicate();
+
+	protocol_reset();
 }
 
 static uint8_t command_equals(uint8_t expected, uint8_t actual)
@@ -57,9 +68,11 @@ static uint8_t command_equals(uint8_t expected, uint8_t actual)
 
 void cartridge_sync_with_handheld(void)
 {
-	wait_until_handheld_ready();
-
+	emit_before_communicate();
 	protocol_sync();
+	emit_after_communicate();
+
+	protocol_reset();
 }
 
 uint8_t cartridge_ping(void)
@@ -145,11 +158,6 @@ void cartridge_init(protocol_callback_transmit cb_transmit,
 	protocol_init(cb_transmit, cb_receive);
 }
 
-void cartridge_set_cb_is_handheld_ready(cartridge_cb_is_handheld_ready cb)
-{
-	m_callback_is_cartridge_ready = cb;
-}
-
 uint8_t cartridge_sprite(const c_sprite_t *sprite)
 {
 	send_to_handheld(PRTCL_CMD_SPRITE, sizeof(c_sprite_t),
@@ -173,4 +181,13 @@ uint8_t cartridge_display_sprites()
 	waitfor_handheld_response(&m_received);
 
 	return command_equals(PRTCL_CMD_ACK, m_received.cmd);
+}
+void cartridge_set_cb_before_communicate(cartridge_cb_before_communicate cb)
+{
+	m_callback_before_communicate = cb;
+}
+
+void cartridge_set_cb_after_communicate(cartridge_cb_after_communicate cb)
+{
+	m_callback_after_communicate = cb;
 }

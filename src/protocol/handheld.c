@@ -4,19 +4,40 @@
 
 #include "handheld_actions.h"
 #include "util/logger.h"
+#include "userport.h"
 
-static handheld_cb_set_statusready m_callback_set_statusready = NULL;
+static handheld_cb_before_communicate m_callback_before_communicate = NULL;
+static handheld_cb_after_communicate m_callback_after_communicate = NULL;
 
-inline static void set_status_ready(bool ready)
+
+static void emit_before_communicate(void)
 {
-	if (m_callback_set_statusready != NULL)
-		m_callback_set_statusready(ready);
+	if (m_callback_before_communicate != NULL)
+		m_callback_before_communicate();
 }
+
+static void emit_after_communicate(void)
+{
+	if (m_callback_after_communicate != NULL)
+		m_callback_after_communicate();
+}
+
+
+static void receive_from_cartridge(struct protocol_package *package)
+{
+	emit_before_communicate();
+	protocol_waitfor_package(package);
+	emit_after_communicate();
+
+	protocol_reset();
+}
+
 static void send_to_cartridge(uint8_t cmd, uint8_t length, const char *data)
 {
-	set_status_ready(true);
+	emit_before_communicate();
 	protocol_send_package(cmd, length, data);
-	set_status_ready(false);
+	emit_after_communicate();
+
 	protocol_reset();
 }
 
@@ -149,14 +170,22 @@ void handheld_wait_for_actions(void)
 
 	LOG_DEBUG("waiting for commands...");
 
-	set_status_ready(true);
-	protocol_waitfor_package(&received);
-	set_status_ready(false);
+	userport_11(USERPORT_HIGH);
+	receive_from_cartridge(&received);
+	userport_11(USERPORT_LOW);
 
+	userport_12(USERPORT_HIGH);
 	execute_command(&received);
+	userport_12(USERPORT_LOW);
 }
 
-void handheld_set_cb_set_statusready(handheld_cb_set_statusready cb)
+
+void handheld_set_cb_before_communicate(handheld_cb_before_communicate cb)
 {
-	m_callback_set_statusready = cb;
+	m_callback_before_communicate = cb;
+}
+
+void handheld_set_cb_after_communicate(handheld_cb_after_communicate cb)
+{
+	m_callback_after_communicate = cb;
 }

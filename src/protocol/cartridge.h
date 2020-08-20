@@ -30,7 +30,8 @@
 #define CRTRDG_STATUS_WRONG_COMMAND 2
 #define CRTRDG_STATUS_WRONG_DATA    3
 
-typedef bool (*cartridge_cb_is_handheld_ready)(void);
+typedef void (*cartridge_cb_before_communicate)(void);
+typedef void (*cartridge_cb_after_communicate)(void);
 
 void cartridge_sync_with_handheld(void);
 void cartridge_init(protocol_callback_transmit cb_transmit,
@@ -46,5 +47,7 @@ uint8_t cartridge_display_buffer();
 uint8_t cartridge_display_sprites();
 uint8_t cartridge_sprite(const c_sprite_t *sprite);
 
-void cartridge_set_cb_is_handheld_ready(cartridge_cb_is_handheld_ready cb);
+void cartridge_set_cb_before_communicate(cartridge_cb_before_communicate cb);
+void cartridge_set_cb_after_communicate(cartridge_cb_after_communicate cb);
+
 #endif /* CARTRIDGE_H */

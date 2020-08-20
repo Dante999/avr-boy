@@ -20,16 +20,19 @@
 #ifndef AVRBOY_HANDHELD_H
 #define AVRBOY_HANDHELD_H
 
-#include <stdbool.h>
-
 #include "protocol.h"
 
-typedef void (*handheld_cb_set_statusready)(bool);
+
+typedef void (*handheld_cb_before_communicate)(void);
+typedef void (*handheld_cb_after_communicate)(void);
+
 
 void handheld_wait_for_actions(void);
 void handheld_init(protocol_callback_transmit cb_transmit,
                    protocol_callback_receive  cb_receive);
 
-void handheld_set_cb_set_statusready(handheld_cb_set_statusready cb);
+void handheld_set_cb_before_communicate(handheld_cb_before_communicate cb);
+void handheld_set_cb_after_communicate(handheld_cb_after_communicate cb);
+
 
 #endif /* AVRBOY_HANDHELD_H */

@@ -35,7 +35,6 @@ static volatile bool m_finished = false;
 
 static protocol_callback_transmit m_callback_transmit = NULL;
 static protocol_callback_receive  m_callback_receive  = NULL;
-static protocol_callback_reset    m_callback_reset    = NULL;
 
 static void parse_byte(char byte)
 {
@@ -196,9 +195,6 @@ void protocol_init(protocol_callback_transmit cb_transmit,
  **************************************************************************** */
 void protocol_reset(void)
 {
-	if (m_callback_reset != NULL)
-		m_callback_reset();
-
 	m_state    = WAITFOR_SYNC;
 	m_finished = false;
 }
@@ -219,7 +215,3 @@ void protocol_copy_received(struct protocol_package *dest_package)
 	}
 }
 
-void protocol_set_cb_reset(protocol_callback_reset cb_reset)
-{
-	m_callback_reset = cb_reset;
-}
