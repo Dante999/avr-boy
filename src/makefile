@@ -72,6 +72,8 @@ CFLAGS += -funsigned-bitfields     # Make any unqualified bitfield type unsigned
 CFLAGS += -Werror                  # Treat all warnings as errors
 
 CFLAGS += -DF_CPU=$(F_CPU)UL       
+CFLAGS += -DLOG_LEVEL=LEVEL_INFO
+
 
 LDFLAGS=
 

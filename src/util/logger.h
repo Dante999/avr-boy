@@ -7,7 +7,9 @@
 #define LEVEL_WARNING 3
 #define LEVEL_ERROR   4
 
-#define LOG_LEVEL LEVEL_DEBUG
+#ifndef LOG_LEVEL
+#	define LOG_LEVEL LEVEL_INFO
+#endif
 
 void log_print(const char *msg);
 void log_println(const char *prefix, const char *msg);
