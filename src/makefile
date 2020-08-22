@@ -1,5 +1,12 @@
+################################################################################
+# General project settings
+################################################################################
+
 # Name of the target (files will be named like that)
-TARGET=avr-boy
+TARGET = avr-boy
+
+# Path where objects files and binaries will be located after creation
+BUILDPATH = ./build
 
 # Name of the Microcontroller
 MCU=atmega32
@@ -13,8 +20,19 @@ L_FUSE=0xFF
 H_FUSE=0xD9
 E_FUSE=0xFF
 
-# Target where the files should be placed
-BUILDPATH=./build
+# Progammer
+# [usbasp|arduino]
+PROGRAMMER=usbasp
+#PORT=-P/dev/ttyUSB0
+#BAUD=-B9600
+
+EXTRA_FLAGS  = -DF_CPU=$(F_CPU)UL
+EXTRA_FLAGS += -DLOG_LEVEL=LEVEL_INFO
+
+
+################################################################################
+# Project files
+################################################################################
 
 VPATH  = driver
 VPATH += protocol
@@ -46,40 +64,69 @@ SOURCES += handheld_actions.c
 SOURCES += userport.c
 SOURCES += sprite.c
 
-# Progammer
-PROGRAMMER=usbasp
-#PORT=-P/dev/ttyUSB0
-#BAUD=-B9600
 
 
-OBJECTS=$(SOURCES:%.c=$(BUILDPATH)/%.o)
+################################################################################
+# Building Object files 
+################################################################################
+
+# Pattern of the objects files 
+OBJ_PATTERN = $(BUILDPATH)/%.o
+
+# Change file extension from .c to .o
+TMP1 =  $(SOURCES:%.c=$(OBJ_PATTERN))
+
+# Change file extension from .cpp to .o
+TMP2 = $(TMP1:%.cpp=$(OBJ_PATTERN))
+
+# Final list ob object files to generate
+OBJECTS = $(TMP2)
+
+
+################################################################################
+# Compiler
+################################################################################
+CC = avr-gcc
 
 CFLAGS = -I.                       # Include current file location to search path
 CFLAGS += -c                       # Compile and assemble, but do not link
 #CFLAGS += -g                       # Generate debug information in default format
 CFLAGS += -Os                      # Optimize for space rather than speed
 CFLAGS += -std=c11                 # Use this C standard
+
+CFLAGS += -Werror                  # Treat all warnings as errors
 CFLAGS += -Wall                    # Print all warnings
 CFLAGS += -Wextra                  # Print extra (possibly unwanted) warnings
 CFLAGS += -Wunused                 # Enable all -Wunused- warnings
 CFLAGS += -Wshadow                 # Warn if a variable declaration shadows one from the parent context
+
 CFLAGS += -fpack-struct            # Pack all structure members together without holes
 CFLAGS += -fshort-enums            # Use the smallest needed integer for enum values
 CFLAGS += -ffunction-sections      # Place each function their own section
 CFLAGS += -fdata-sections          # Place data items into their own section
 CFLAGS += -funsigned-char          # Make any unqualfied char type an unsigned char
 CFLAGS += -funsigned-bitfields     # Make any unqualified bitfield type unsigned
-CFLAGS += -Werror                  # Treat all warnings as errors
 
-CFLAGS += -DF_CPU=$(F_CPU)UL       
-CFLAGS += -DLOG_LEVEL=LEVEL_INFO
+CFLAGS += $(EXTRA_FLAGS)
 
 
-LDFLAGS=
+################################################################################
+# Linker
+################################################################################
+LD = avr-g++
+
+LDFLAGS = 
 
 
+################################################################################
+# Makefile targets
+################################################################################
 
-all: clean hex eeprom flash_hex
+all: prepare clean hex eeprom flash_hex
+
+prepare:
+	mkdir -p $(BUILDPATH)
+	@echo "object files: $(OBJECTS)"
 
 list_targets:
 	avr-gcc --target-help
@@ -89,19 +136,24 @@ hex: $(TARGET).hex size
 eeprom: $(TARGET)_eeprom.hex
 
 $(TARGET).hex: $(TARGET).elf
+	@echo "\n\n-----\n building .hex file\n-----"
 	avr-objcopy -O ihex -j .data -j .text $(BUILDPATH)/$(TARGET).elf $(BUILDPATH)/$(TARGET).hex
 
 $(TARGET)_eeprom.hex: $(TARGET).elf
 	avr-objcopy -O ihex -j .eeprom --change-section-lma .eeprom=1 $(BUILDPATH)/$(TARGET).elf $(BUILDPATH)/$(TARGET)_eeprom.hex
 
 $(TARGET).elf: $(OBJECTS)
-	avr-gcc $(LDFLAGS) -mmcu=$(MCU) $(OBJECTS) -o $(BUILDPATH)/$(TARGET).elf
+	@echo "\n\n-----\n building .elf file\n-----"
+	$(LD) $(LDFLAGS) -mmcu=$(MCU) $(OBJECTS) -o $(BUILDPATH)/$(TARGET).elf
 
 
-$(BUILDPATH)/%.o: %.c
-	mkdir -p $(BUILDPATH)
-	avr-gcc $(CFLAGS) -mmcu=$(MCU) $< -o $@
+$(OBJ_PATTERN): %.c
+	@echo "\n\n-----\n compiling c file '$<' -> '$@'\n-----"
+	$(CC) $(CFLAGS) -mmcu=$(MCU) $< -o $@
 
+$(OBJ_PATTERN): %.cpp
+	@echo "\n\n-----\n compiling c++ file '$<' -> '$@'\n-----"
+	$(CC) $(CFLAGS) -mmcu=$(MCU) $< -o $@
 
 size:
 	avr-size --mcu=$(MCU) -C $(BUILDPATH)/$(TARGET).elf
