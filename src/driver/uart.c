@@ -147,7 +147,7 @@ void uart_puti16(int8_t i)
  *
  * @return none
  ******************************************************************************/
-void uart_puts(char *s)
+void uart_puts(const char *s)
 {
 	while (*s != '\0') {
 		uart_putc(*s);
@@ -162,7 +162,7 @@ void uart_puts(char *s)
  *
  * @return none
  ******************************************************************************/
-void uart_putsln(char *s)
+void uart_putsln(const char *s)
 {
 	uart_puts(s);
 	uart_puts("\r\n");

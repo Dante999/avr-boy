@@ -24,8 +24,8 @@
 
 void uart_init(void);
 void uart_putc(char c);
-void uart_puts(char *s);
-void uart_putsln(char *s);
+void uart_puts(const char *s);
+void uart_putsln(const char *s);
 void uart_putui(uint8_t i);
 void uart_puti(int8_t i);
 void uart_putui16(uint16_t i);
