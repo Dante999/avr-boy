@@ -1,4 +1,4 @@
-language: c$                                                                     
-compiler: gcc$                                                                   
+language: c++
+compiler: gcc
 install: make get-deps
-script: make -C ucunit
+script: make -C test
