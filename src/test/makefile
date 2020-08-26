@@ -1,31 +1,12 @@
-#
-# Sample Makefile for uCUnit
-#
+################################################################################
+# General project settings
+################################################################################
 
-#----------------------------------------------------
-# Toolchain configuration
-#----------------------------------------------------
-# Compiler
-CC:=gcc
+# Name of the target (files will be named like that)
+TARGET = Testsuite.exe
 
-CFLAGS = -I..
-CFLAGS += -c                      # Compile and assemble, but do not link
-CFLAGS += -g                       # Generate debug information in default format
-CFLAGS += -Os                      # Optimize for space rather than speed
-CFLAGS += -std=c11                 # Use this C standard
-CFLAGS += -Wextra                  # Print extra (possibly unwanted) warnings
-CFLAGS += -Wunused                 # Enable all -Wunused- warnings
-CFLAGS += -fpack-struct            # Pack all structure members together without holes
-CFLAGS += -fshort-enums            # Use the smallest needed integer for enum values
-CFLAGS += -ffunction-sections      # Place each function their own section
-CFLAGS += -fdata-sections          # Place data items into their own section
-CFLAGS += -funsigned-char          # Make any unqualfied char type an unsigned char
-CFLAGS += -funsigned-bitfields     # Make any unqualified bitfield type unsigned
-
-
-#Linker
-LD:=gcc
-LDFLAGS=-g
+# Path where objects files and binaries will be located after creation
+BUILDPATH = ./build
 
 # Simulator/Emulator
 RUN:=./
@@ -33,20 +14,15 @@ RUN:=./
 # Clean up
 RM:=rm
 
-#----------------------------------------------------
-# Files
-#----------------------------------------------------
-# Name of target file
-TARGET:=Testsuite.exe
-BUILDPATH=./build
-
-
+################################################################################
+# Project files
+################################################################################
 VPATH = ..
 VPATH += ../protocol
 VPATH += ../display
 VPATH += ../util
 
-# Sourcefiles
+# List of all sources (only source-files)
 SOURCES  = testsuite.c
 SOURCES += graphx.c
 SOURCES += protocol.c
@@ -59,7 +35,66 @@ SOURCES += test_graphx.c
 SOURCES += test_protocol.c
 SOURCES += test_cartridge.c
 
-OBJECTS=$(SOURCES:%.c=$(BUILDPATH)/%.o)
+################################################################################
+# Building Object files 
+################################################################################
+
+# Pattern of the objects files 
+OBJ_PATTERN = $(BUILDPATH)/%.o
+
+# Change file extension from .c to .o
+TMP1 =  $(SOURCES:%.c=$(OBJ_PATTERN))
+
+# Change file extension from .cpp to .o
+TMP2 = $(TMP1:%.cpp=$(OBJ_PATTERN))
+
+# Final list ob object files to generate
+OBJECTS = $(TMP2)
+
+
+################################################################################
+# Compiler
+################################################################################
+CC = g++
+
+CFLAGS = -I.                       # Include current file location to search path
+CFLAGS = -I..                       # Include current file location to search path
+CFLAGS += -c                       # Compile and assemble, but do not link
+#CFLAGS += -g                       # Generate debug information in default format
+CFLAGS += -Os                      # Optimize for space rather than speed
+CFLAGS += -std=c++11                 # Use this C standard
+
+#CFLAGS += -Werror                  # Treat all warnings as errors
+CFLAGS += -Wall                    # Print all warnings
+CFLAGS += -Wextra                  # Print extra (possibly unwanted) warnings
+CFLAGS += -Wunused                 # Enable all -Wunused- warnings
+CFLAGS += -Wshadow                 # Warn if a variable declaration shadows one from the parent context
+
+CFLAGS += -fpack-struct            # Pack all structure members together without holes
+CFLAGS += -fshort-enums            # Use the smallest needed integer for enum values
+CFLAGS += -ffunction-sections      # Place each function their own section
+CFLAGS += -fdata-sections          # Place data items into their own section
+CFLAGS += -funsigned-char          # Make any unqualfied char type an unsigned char
+CFLAGS += -funsigned-bitfields     # Make any unqualified bitfield type unsigned
+
+CFLAGS += $(EXTRA_FLAGS)
+
+
+################################################################################
+# Linker
+################################################################################
+LD = g++
+
+LDFLAGS = 
+
+
+
+
+################################################################################
+# Makefile targets
+################################################################################
+
+
 
 MKDIR=mkdir -p
 #----------------------------------------------------
@@ -71,22 +106,20 @@ run: $(TARGET)
 	echo 'Running $(TARGET)...'
 	$(RUN)/$(BUILDPATH)/$(TARGET)
 	
-#----------------------------------------------------
-# Linker stage
-#----------------------------------------------------
-$(TARGET): $(OBJECTS)
-	echo 'Linking...'
-	$(LD) $(LDFLAGS) -o  $(BUILDPATH)/$@ $(OBJECTS)
-#	$(LD) $(LDFLAGS) -o $(notdir $@) $(notdir $(OBJECTS))
 
-#----------------------------------------------------
-# Compiler
-#----------------------------------------------------
-$(BUILDPATH)/%.o: %.c
-	echo 'Compiling...'
-	$(MKDIR) $(BUILDPATH)
+
+$(TARGET): $(OBJECTS)
+	@echo "\n\n-----\n building .elf file\n-----"
+	$(LD) $(LDFLAGS) $(OBJECTS) -o $(BUILDPATH)/$(TARGET)
+
+
+$(OBJ_PATTERN): %.c
+	@echo "\n\n-----\n compiling c file '$<' -> '$@'\n-----"
 	$(CC) $(CFLAGS) $< -o $@
-	#$(CC) $(CFLAGS) -o $(notdir $@) -c $<
+
+$(OBJ_PATTERN): %.cpp
+	@echo "\n\n-----\n compiling c++ file '$<' -> '$@'\n-----"
+	$(CC) $(CFLAGS) $< -o $@
 	
 #----------------------------------------------------
 # Clean Project
