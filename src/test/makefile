@@ -12,8 +12,8 @@ BUILDPATH = ./build
 RUN:=./
 
 # Clean up
-RM:=rm
-
+RM    = rm -f
+MKDIR = mkdir -p
 ################################################################################
 # Project files
 ################################################################################
@@ -96,11 +96,13 @@ LDFLAGS =
 
 
 
-MKDIR=mkdir -p
 #----------------------------------------------------
 # Build all
 #----------------------------------------------------
-all: clean $(TARGET) run
+all: prepare clean $(TARGET) run
+
+prepare:
+	$(MKDIR) $(BUILDPATH)
 
 run: $(TARGET)
 	echo 'Running $(TARGET)...'
@@ -126,6 +128,6 @@ $(OBJ_PATTERN): %.cpp
 #----------------------------------------------------
 clean:
 	echo 'Running clean...'
-	$(RM) -f build/*
+	$(RM) $(BUILDPATH)/*
 	echo 'Clean finished.'
 	
