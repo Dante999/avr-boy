@@ -46,6 +46,9 @@ void graphx_clear_sprite(const sprite_t *sprite);
 void graphx_putc(const struct font *f, uint8_t x, uint8_t y, const char c);
 void graphx_puts(const struct font *f, uint8_t x, uint8_t y, const char *s);
 
+void graphx_putc_P(const uint8_t *f, uint8_t x, uint8_t y, const char c);
+void graphx_puts_P(const uint8_t *f, uint8_t x, uint8_t y, const char *s);
+
 void graphx_draw_pixel(uint8_t x, uint8_t y, uint8_t color);
 void graphx_draw_vline(uint8_t x, uint8_t y0, uint8_t y1, uint8_t color);
 void graphx_draw_hline(uint8_t x0, uint8_t x1, uint8_t y, uint8_t color);

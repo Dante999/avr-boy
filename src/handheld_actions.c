@@ -10,7 +10,7 @@
 
 uint8_t action_cmd_received_draw_text(c_text_t *t)
 {
-	graphx_puts(&font5x7, t->coord.x, t->coord.y, t->text);
+	graphx_puts_P(font5x7_data, t->coord.x, t->coord.y, t->text);
 	return PRTCL_CMD_ACK;
 }
 
@@ -38,14 +38,19 @@ uint8_t action_cmd_received_sprite(c_sprite_t *sprite)
 
 	if (old_sprite->x != sprite->coord.x ||
 	    old_sprite->y != sprite->coord.y) {
-		graphx_clear_sprite(old_sprite);
+
+		for (uint8_t i = 0; i < SPRITE_MAX_INDEX; i++) {
+			graphx_clear_sprite(sprite_get(i));
+		}
 	}
 
 	sprite_set_coord(sprite->index, sprite->coord.x, sprite->coord.y);
 	sprite_set_fgdata(sprite->index, sprite->data);
 	sprite_set_show(sprite->index, sprite->show);
 
-	graphx_draw_sprite((sprite_t *)sprite_get(sprite->index));
+	for (uint8_t i = 0; i < SPRITE_MAX_INDEX; i++) {
+		graphx_draw_sprite((sprite_t *)sprite_get(i));
+	}
 
 	return PRTCL_CMD_ACK;
 }

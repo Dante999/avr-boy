@@ -40,8 +40,8 @@ static void draw_keyvalue(uint8_t index, const char *key, const char *value)
 {
 	uint8_t y = Y_KEYVALUE_START + (Y_DELTA * index);
 
-	graphx_puts(&font5x7, X_KEY_START, y, key);
-	graphx_puts(&font5x7, X_VALUE_START, y, value);
+	graphx_puts_P(font5x7_data, X_KEY_START, y, key);
+	graphx_puts_P(font5x7_data, X_VALUE_START, y, value);
 }
 
 static uint8_t get_index(uint8_t current_index, c_buttonstat_t *buttons)
@@ -72,14 +72,13 @@ static void draw_cursor(uint8_t index)
 {
 	static uint8_t old_index = 0;
 
-	//	if (old_index != index) {
-	graphx_puts(&font5x7, 0, Y_KEYVALUE_START + (Y_DELTA * old_index), " ");
+	graphx_puts_P(font5x7_data, 0, Y_KEYVALUE_START + (Y_DELTA * old_index),
+	              " ");
 
 	graphx_draw_tile(0, Y_KEYVALUE_START + (Y_DELTA * index), cursor_tile(),
 	                 5, 8);
 
 	old_index = index;
-	//	}
 }
 
 void menuconfig_refresh(c_buttonstat_t *buttons)
@@ -87,7 +86,7 @@ void menuconfig_refresh(c_buttonstat_t *buttons)
 
 	static uint8_t current_index = 0;
 
-	graphx_puts(&font5x7, 16, 0, "configuration");
+	graphx_puts_P(font5x7_data, 16, 0, "configuration");
 	graphx_draw_hline(5, 127 - 5, 10, GRAPHX_PIXEL_ON);
 
 	current_index = get_index(current_index, buttons);

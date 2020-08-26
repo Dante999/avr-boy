@@ -86,13 +86,13 @@ OBJECTS = $(TMP2)
 ################################################################################
 # Compiler
 ################################################################################
-CC = avr-gcc
+CC = avr-g++
 
 CFLAGS = -I.                       # Include current file location to search path
 CFLAGS += -c                       # Compile and assemble, but do not link
 #CFLAGS += -g                       # Generate debug information in default format
 CFLAGS += -Os                      # Optimize for space rather than speed
-CFLAGS += -std=c11                 # Use this C standard
+CFLAGS += -std=c++11                 # Use this C standard
 
 CFLAGS += -Werror                  # Treat all warnings as errors
 CFLAGS += -Wall                    # Print all warnings
