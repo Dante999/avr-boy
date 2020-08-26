@@ -1,3 +1,3 @@
 language: c++
 compiler: gcc
-script: make -C src/handheld/test
+script: make -C test

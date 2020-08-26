@@ -9,16 +9,13 @@
 #define LOG_COMMUNICATION 1
 
 #if LOG_COMMUNICATION
-#	include "../util/logger.h"
+#	include "util/logger.h"
 #endif
 
 static struct protocol_package m_received;
 
-
 static cartridge_cb_before_communicate m_callback_before_communicate = NULL;
-static cartridge_cb_after_communicate  m_callback_after_communicate = NULL;
-
-
+static cartridge_cb_after_communicate  m_callback_after_communicate  = NULL;
 
 static void emit_before_communicate(void)
 {
