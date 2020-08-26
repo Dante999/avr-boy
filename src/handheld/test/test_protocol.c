@@ -21,7 +21,7 @@
 #include <string.h>
 
 #include "mock_transceiver.h"
-#include "protocol/protocol.h"
+#include "core/protocol.h"
 
 static void test_protocol_receiver_callback(void)
 {

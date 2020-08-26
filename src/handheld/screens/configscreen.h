@@ -17,12 +17,11 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  *
  ******************************************************************************/
-#ifndef BUTTON_H
-#define BUTTON_H
+#ifndef MENUCONFIG_H
+#define MENUCONFIG_H
 
-#include "protocol/core.h"
+#include "core/core.h"
 
-void button_debug(c_buttonstat_t *button);
-void button_read(c_buttonstat_t *button);
-void button_init(void);
-#endif // BUTTON_H
+void menuconfig_refresh(c_buttonstat_t *buttons);
+
+#endif // MENUCONFIG_H

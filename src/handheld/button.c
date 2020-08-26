@@ -22,7 +22,6 @@
 #include <stdint.h>
 
 #include "driver/pcf8574.h"
-#include "protocol/core.h"
 #include "util/logger.h"
 
 #define ROW0 (1 << 7)

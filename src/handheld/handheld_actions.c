@@ -1,12 +1,12 @@
-#include "protocol/handheld_actions.h"
+#include "core/handheld_actions.h"
 
 #include "button.h"
 #include "display/font5x7.h"
 #include "display/graphx.h"
 #include "display/lcd.h"
 #include "display/sprite.h"
-#include "protocol/core.h"
-#include "protocol/protocol.h"
+#include "core/core.h"
+#include "core/protocol.h"
 
 uint8_t action_cmd_received_draw_text(c_text_t *t)
 {

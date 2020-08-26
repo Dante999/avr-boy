@@ -35,7 +35,7 @@ EXTRA_FLAGS += -DLOG_LEVEL=LEVEL_INFO
 ################################################################################
 
 VPATH  = driver
-VPATH += protocol
+VPATH += ../core
 VPATH += display
 VPATH += util
 VPATH += screens
@@ -89,6 +89,7 @@ OBJECTS = $(TMP2)
 CC = avr-g++
 
 CFLAGS = -I.                       # Include current file location to search path
+CFLAGS += -I..
 CFLAGS += -c                       # Compile and assemble, but do not link
 #CFLAGS += -g                       # Generate debug information in default format
 CFLAGS += -Os                      # Optimize for space rather than speed

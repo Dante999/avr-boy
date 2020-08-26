@@ -1,6 +1,6 @@
 #include "mock_transceiver.h"
-#include "protocol/cartridge.h"
-#include "protocol/protocol.h"
+#include "core/cartridge.h"
+#include "core/protocol.h"
 #include "unity.h"
 
 void test_cartridge_draw_text(void)

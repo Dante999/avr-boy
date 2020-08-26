@@ -23,7 +23,7 @@
 #define PROTOCOL_LOG 1
 
 #if PROTOCOL_LOG
-#	include "../util/logger.h"
+#	include "util/logger.h"
 #endif
 
 enum state { WAITFOR_SYNC, WAITFOR_CMD, WAITFOR_LENGTH, WAITFOR_DATA };

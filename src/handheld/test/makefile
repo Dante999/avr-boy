@@ -18,9 +18,9 @@ MKDIR = mkdir -p
 # Project files
 ################################################################################
 VPATH = ..
-VPATH += ../protocol
 VPATH += ../display
 VPATH += ../util
+VPATH += ../../core
 
 # List of all sources (only source-files)
 SOURCES  = testsuite.c
@@ -58,7 +58,8 @@ OBJECTS = $(TMP2)
 CC = g++
 
 CFLAGS = -I.                       # Include current file location to search path
-CFLAGS = -I..                       # Include current file location to search path
+CFLAGS += -I..                       # Include current file location to search path
+CFLAGS += -I../..
 CFLAGS += -c                       # Compile and assemble, but do not link
 #CFLAGS += -g                       # Generate debug information in default format
 CFLAGS += -Os                      # Optimize for space rather than speed

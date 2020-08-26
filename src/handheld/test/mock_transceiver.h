@@ -3,7 +3,7 @@
 
 #include <stdint.h>
 
-#include "protocol/protocol.h"
+#include "core/protocol.h"
 
 #define MOCK_BUFFER_SIZE 255
 
