@@ -48,7 +48,8 @@ SOURCES += cartridge.c
 SOURCES += protocol.c 
 SOURCES += core.c
 SOURCES += logger.c
-SOURCES += spaceship.cpp
+SOURCES += spritelist.cpp
+SOURCES += ball.cpp
 
 ################################################################################
 # Building Object files 

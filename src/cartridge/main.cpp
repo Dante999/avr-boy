@@ -18,10 +18,10 @@
 #include <stdio.h>
 #include <util/delay.h>
 
+#include "ball.hpp"
+#include "core/cartridge.h"
 #include "driver/spimaster.hpp"
 #include "driver/uart.hpp"
-#include "core/cartridge.h"
-#include "spaceship.h"
 #include "util/logger.h"
 
 #ifndef F_CPU
@@ -42,8 +42,6 @@ static void loop_until_handheld_ready(void)
 
 static void cb_before_communicate(void)
 {
-	//	spi_enable_slave();
-	//	_delay_ms(50);
 	loop_until_handheld_ready();
 }
 
@@ -63,43 +61,6 @@ static char cb_receive(void)
 	return SPI::transceive(PRTCL_CMD_ACK);
 }
 
-static void animate_spaceship(Spaceship &ship)
-{
-	static const uint8_t y_min = 9;
-	static const uint8_t y_max = 50;
-
-	static uint8_t y   = 0;
-	static uint8_t dir = 0;
-
-	ship.move(y, 30);
-
-	if (dir == 1) {
-
-		if (y < y_max) {
-			y++;
-		}
-		else {
-			dir = 0;
-			y--;
-		}
-	}
-	else {
-
-		if (y > y_min) {
-			y--;
-		}
-		else {
-			dir = 1;
-			y++;
-		}
-	}
-
-	cartridge_sprite(ship.get_sprite(Spaceship::POS_TOPLEFT));
-	cartridge_sprite(ship.get_sprite(Spaceship::POS_TOPRIGHT));
-	cartridge_sprite(ship.get_sprite(Spaceship::POS_BOTLEFT));
-	cartridge_sprite(ship.get_sprite(Spaceship::POS_BOTRIGHT));
-}
-
 /*******************************************************************************
  * @brief   the main function
  *
@@ -113,6 +74,7 @@ int main(void)
 
 	SPI::init_hw();
 	Uart::init_hw();
+	SpriteList::init();
 
 	LOG_INFO("----------------------------------");
 	LOG_INFO("|          AVR BOY - CARTRIDGE   |");
@@ -148,14 +110,50 @@ int main(void)
 	LOG_INFO("pinging successfull...");
 
 	cartridge_clear_screen();
-	cartridge_draw_text(5, 5, "Hello World!");
+	cartridge_draw_text(5, 8, "Hello World!");
+	cartridge_draw_text(5, 16, "This is a small");
+	cartridge_draw_text(5, 24, "demonstration");
 	cartridge_display_buffer();
 
-	Spaceship ship;
+	const uint8_t x_min = 0;
+	const uint8_t x_max = 127 - 8;
+	const uint8_t y_min = 0;
+	const uint8_t y_max = 64 - 8;
+
+	Ball ball1(SpriteList::SPRITE_BALL1, x_min, x_max, y_min, y_max);
+	ball1.move(10, 5);
+	ball1.set_startdir(Ball::DIR_UP);
+
+	Ball ball2(SpriteList::SPRITE_BALL2, x_min, x_max, y_min, y_max);
+	ball2.move(30, 10);
+	ball2.set_startdir(Ball::DIR_DOWN);
+
+	Ball ball3(SpriteList::SPRITE_BALL3, x_min, x_max, y_min, y_max);
+	ball3.move(50, 15);
+	ball3.set_startdir(Ball::DIR_LEFT);
+
+	Ball ball4(SpriteList::SPRITE_BALL4, x_min, x_max, y_min, y_max);
+	ball4.move(70, 20);
+	ball4.set_startdir(Ball::DIR_RIGHT);
+
+	Ball ball5(SpriteList::SPRITE_BALL5, x_min, x_max, y_min, y_max);
+	ball5.move(90, 25);
+	ball5.set_startdir(Ball::DIR_UPLEFT);
 
 	while (1) {
 
-		animate_spaceship(ship);
+		ball1.bounce();
+		ball2.bounce();
+		ball3.bounce();
+		ball4.bounce();
+		ball5.bounce();
+
+		cartridge_sprite(ball1.sprite());
+		cartridge_sprite(ball2.sprite());
+		cartridge_sprite(ball3.sprite());
+		cartridge_sprite(ball4.sprite());
+		cartridge_sprite(ball5.sprite());
+
 		cartridge_display_buffer();
 
 	} // end of main-loop
