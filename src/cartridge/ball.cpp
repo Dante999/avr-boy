@@ -19,7 +19,7 @@ Ball::Ball(SpriteList::SPRITE_INDEX index, uint8_t min_x, uint8_t max_x,
 	m_ballsprite->data[7] = 0x3c;
 }
 
-void Ball::set(uint8_t x, uint8_t y)
+void Ball::set_coord(uint8_t x, uint8_t y)
 {
 	m_ballsprite->coord.x = x;
 	m_ballsprite->coord.y = y;
@@ -68,24 +68,60 @@ void Ball::bounce()
 	}
 }
 
-bool Ball::would_hit_left()
+bool Ball::poke_up()
 {
-	return !(m_ballsprite->coord.x > m_min_x);
+	uint8_t &y = m_ballsprite->coord.y;
+
+	if (y > m_min_y) {
+		y--;
+		return true;
+	}
+	else {
+		y++;
+		return false;
+	}
 }
 
-bool Ball::would_hit_right()
+bool Ball::poke_down()
 {
-	return !(m_ballsprite->coord.x < m_max_x);
+	uint8_t &y = m_ballsprite->coord.y;
+
+	if (y < m_max_y) {
+		y++;
+		return true;
+	}
+	else {
+		y--;
+		return false;
+	}
 }
 
-bool Ball::would_hit_top()
+bool Ball::poke_left()
 {
-	return !(m_ballsprite->coord.y < m_max_y);
+	uint8_t &x = m_ballsprite->coord.x;
+
+	if (x > m_min_x) {
+		x--;
+		return true;
+	}
+	else {
+		x++;
+		return false;
+	}
 }
 
-bool Ball::would_hit_bot()
+bool Ball::poke_right()
 {
-	return !(m_ballsprite->coord.y > m_min_y);
+	uint8_t &x = m_ballsprite->coord.x;
+
+	if (x < m_max_x) {
+		x++;
+		return true;
+	}
+	else {
+		x--;
+		return false;
+	}
 }
 
 c_sprite_t *Ball::sprite()
@@ -95,167 +131,91 @@ c_sprite_t *Ball::sprite()
 
 void Ball::move_up(void)
 {
-	uint8_t &y = m_ballsprite->coord.y;
-
-	if (would_hit_top()) {
+	if (!poke_up()) {
 		m_dir = DIR_DOWN;
-		y--;
-	}
-	else {
-		y++;
 	}
 }
 
 void Ball::move_down(void)
 {
-	uint8_t &y = m_ballsprite->coord.y;
-
-	if (would_hit_bot()) {
+	if (!poke_down()) {
 		m_dir = DIR_UP;
-		y++;
-	}
-	else {
-		y--;
 	}
 }
 
 void Ball::move_left(void)
 {
-	uint8_t &x = m_ballsprite->coord.x;
-
-	if (would_hit_left()) {
+	if (!poke_left()) {
 		m_dir = DIR_RIGHT;
-		x++;
-	}
-	else {
-		x--;
 	}
 }
 void Ball::move_right(void)
 {
-	uint8_t &x = m_ballsprite->coord.x;
-
-	if (would_hit_right()) {
+	if (!poke_right()) {
 		m_dir = DIR_LEFT;
-		x--;
-	}
-	else {
-		x++;
 	}
 }
 
 void Ball::move_upleft()
 {
-	uint8_t &x = m_ballsprite->coord.x;
-	uint8_t &y = m_ballsprite->coord.y;
+	bool hit_top  = !poke_up();
+	bool hit_left = !poke_left();
 
-	// touches top-left corner
-	if (would_hit_left() && would_hit_top()) {
-		x++;
-		y--;
+	if (hit_top && hit_left) {
 		m_dir = DIR_DOWNRIGHT;
 	}
-	// touches only top-side
-	else if (would_hit_top()) {
-		x--;
-		y--;
+	else if (hit_top) {
 		m_dir = DIR_DOWNLEFT;
 	}
-	// touches only left-side
-	else if (would_hit_left()) {
-		x++;
-		y++;
+	else if (hit_left) {
 		m_dir = DIR_UPRIGHT;
-	}
-	else {
-		x--;
-		y++;
 	}
 }
 
 void Ball::move_upright()
 {
-	uint8_t &x = m_ballsprite->coord.x;
-	uint8_t &y = m_ballsprite->coord.y;
+	bool hit_top   = !poke_up();
+	bool hit_right = !poke_right();
 
-	// touches top-right corner
-	if (would_hit_top() && would_hit_right()) {
-		x--;
-		y--;
+	if (hit_top && hit_right) {
 		m_dir = DIR_DOWNLEFT;
 	}
-	// touches only top-side
-	else if (would_hit_top()) {
-		x++;
-		y--;
+	else if (hit_top) {
 		m_dir = DIR_DOWNRIGHT;
 	}
-	// touches only right-side
-	else if (would_hit_right()) {
-		x--;
-		y++;
+	else if (hit_right) {
 		m_dir = DIR_UPLEFT;
-	}
-	else {
-		x++;
-		y++;
 	}
 }
 
 void Ball::move_downleft()
 {
-	uint8_t &x = m_ballsprite->coord.x;
-	uint8_t &y = m_ballsprite->coord.y;
+	bool hit_bot  = !poke_down();
+	bool hit_left = !poke_left();
 
-	// touches top-right corner
-	if (would_hit_bot() && would_hit_right()) {
-		x--;
-		y++;
-		m_dir = DIR_UPLEFT;
-	}
-	// touches only top-side
-	else if (would_hit_bot()) {
-		x++;
-		y++;
+	if (hit_bot && hit_left) {
 		m_dir = DIR_UPRIGHT;
 	}
-	// touches only right-side
-	else if (would_hit_left()) {
-		x--;
-		y--;
-		m_dir = DIR_DOWNRIGHT;
+	else if (hit_bot) {
+		m_dir = DIR_UPLEFT;
 	}
-	else {
-		x--;
-		y--;
+	else if (hit_left) {
+		m_dir = DIR_DOWNRIGHT;
 	}
 }
 
 void Ball::move_downright()
 {
-	uint8_t &x = m_ballsprite->coord.x;
-	uint8_t &y = m_ballsprite->coord.y;
+	bool hit_bot   = !poke_down();
+	bool hit_right = !poke_right();
 
-	// touches top-right corner
-	if (would_hit_bot() && would_hit_right()) {
-		x--;
-		y++;
+	if (hit_bot && hit_right) {
 		m_dir = DIR_UPLEFT;
 	}
-	// touches only top-side
-	else if (would_hit_bot()) {
-		x++;
-		y++;
+	else if (hit_bot) {
 		m_dir = DIR_UPRIGHT;
 	}
-	// touches only right-side
-	else if (would_hit_right()) {
-		x--;
-		y--;
+	else if (hit_right) {
 		m_dir = DIR_DOWNLEFT;
-	}
-	else {
-		x++;
-		y--;
 	}
 }
