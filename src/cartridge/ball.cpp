@@ -19,7 +19,7 @@ Ball::Ball(SpriteList::SPRITE_INDEX index, uint8_t min_x, uint8_t max_x,
 	m_ballsprite->data[7] = 0x3c;
 }
 
-void Ball::move(uint8_t x, uint8_t y)
+void Ball::set(uint8_t x, uint8_t y)
 {
 	m_ballsprite->coord.x = x;
 	m_ballsprite->coord.y = y;

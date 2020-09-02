@@ -121,23 +121,23 @@ int main(void)
 	const uint8_t y_max = 64 - 8;
 
 	Ball ball1(SpriteList::SPRITE_BALL1, x_min, x_max, y_min, y_max);
-	ball1.move(10, 5);
+	ball1.set(10, 5);
 	ball1.set_startdir(Ball::DIR_UP);
 
 	Ball ball2(SpriteList::SPRITE_BALL2, x_min, x_max, y_min, y_max);
-	ball2.move(30, 10);
+	ball2.set(30, 10);
 	ball2.set_startdir(Ball::DIR_DOWN);
 
 	Ball ball3(SpriteList::SPRITE_BALL3, x_min, x_max, y_min, y_max);
-	ball3.move(50, 15);
+	ball3.set(50, 15);
 	ball3.set_startdir(Ball::DIR_LEFT);
 
 	Ball ball4(SpriteList::SPRITE_BALL4, x_min, x_max, y_min, y_max);
-	ball4.move(70, 20);
+	ball4.set(70, 20);
 	ball4.set_startdir(Ball::DIR_RIGHT);
 
 	Ball ball5(SpriteList::SPRITE_BALL5, x_min, x_max, y_min, y_max);
-	ball5.move(90, 25);
+	ball5.set(90, 25);
 	ball5.set_startdir(Ball::DIR_UPLEFT);
 
 	while (1) {

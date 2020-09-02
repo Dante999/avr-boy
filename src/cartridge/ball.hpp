@@ -22,7 +22,7 @@ class Ball {
 	     uint8_t min_y, uint8_t max_y);
 	c_sprite_t *sprite(void);
 
-	void move(uint8_t x, uint8_t y);
+	void set(uint8_t x, uint8_t y);
 	void set_startdir(DIRECTION dir);
 	void bounce(void);
 
